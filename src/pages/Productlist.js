@@ -5,7 +5,13 @@ import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../features/product/productSlice";
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import '../styles/dashboard.css';
+import { config } from "../utils/axiosconfig";
+
+const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service";
+
 
 const columns = [
   {
@@ -50,6 +56,19 @@ const columns = [
 const Productlist = () => {
   const dispatch = useDispatch();
 
+  const handleDelete = async (id) => {
+    if (window.confirm(`Are you sure that you want to delete Product with ID: ${id}`)) {
+        const res = await axios.delete(`${URL}/${id}`, config);
+        console.log(res)
+        if (res.status === 200) {
+            //re-render Data
+            getProducts();
+            toast.success("Deleted Successfully ~");
+        } else {
+            toast.error("Delete: Error!");
+        }
+    }
+}
   useEffect(() => {
     dispatch(getProducts());
   }, []);
@@ -72,7 +91,7 @@ const Productlist = () => {
           <Link to={`update/${productState[i].id}`} className=" fs-3 text-danger">
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
+          <Link  onClick={() => handleDelete(productState[i].id)} className="ms-3 fs-3 text-danger">
             <AiFillDelete />
           </Link>
          

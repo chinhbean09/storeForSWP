@@ -35,9 +35,11 @@ const columns = [
 
 const Orders = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getOrders());
   }, []);
+  
   const orderState = useSelector((state) => state.auth.orders);
 
   const data1 = [];

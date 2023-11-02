@@ -1,7 +1,7 @@
 const getTokenFromLocalStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
-console.log('headers')
+// console.log('headers')
 export const config = {
   
   headers: {

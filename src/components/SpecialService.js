@@ -2,9 +2,7 @@ import styled from "styled-components";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { AiFillStar } from 'react-icons/ai';
 import React, { useState, useEffect } from 'react';
-import { Table, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Checkbox, Form, Input, Upload, Radio, Select, Space } from 'antd';
 import { config } from "../utils/axiosconfig";
@@ -47,7 +45,9 @@ const SpecialDetailForm = (props) => {
   const [clothes, setClothes] = useState([]);
   const { name, description, price, unit, cloth, materials } = state;
   const [errors, setErrors] = useState(error_init);
+  const defaultMaterialValue = [materials];
 
+console.log(defaultMaterialValue)
   const getOneService = async (id) => {
     const res = await axios.get(`${URL}/${id}`, config);
     if (res.status === 200) {
@@ -137,6 +137,11 @@ console.log(state)
       errors.unit_err = 'Unit is Required';
       isValid = false;
     }
+    if (!Array.isArray(materials) || materials.length === 0) {
+      errors.materials_err = 'Material is Required'; // Sửa thông báo lỗi thành "Material is Required"
+      isValid = false;
+    }
+    
 
     setErrors(errors);
     return isValid;
@@ -207,20 +212,15 @@ console.log(state)
                 >
                   <br />
                   <Form.Item label="Name">
-                    <Input type="text" name='name' value={state.name} onChange={handleInputChange} />
+                    <Input type="text" name='name' value={name} onChange={handleInputChange} />
                     {errors.name_err && <span className='error'>{errors.name_err}</span>}
                   </Form.Item>
-                  {/* <Form.Item label="Material">
-                    <Input type="text" name='material' value={state.material} onChange={handleInputChange} />
-                    {errors.material_err && <span className='error'>{errors.material_err}</span>}
-                  </Form.Item> */}
+                  
                   <Form.Item label="Material">
-                    {/* <Input type="text" name='cloth' value={state.cloth} onChange={handleInputChange} /> */}
-                    <Select
+                  <Select
                       mode="multiple"
                       size='large'
                       placeholder="Please select"
-                     
                       value={materials}
                       onChange={handleMaterialInputChange}
                       style={{
@@ -228,15 +228,12 @@ console.log(state)
                       }}
                       options={data2}
                     />
-                    {errors.cloth_err && <span className='error'>{errors.cloth_err}</span>}
+                    {errors.materials_err && <span className='error'>{errors.materials_err}</span>}
                   </Form.Item>
                   <Form.Item label="Cloth">
-                    {/* <Input type="text" name='cloth' value={state.cloth} onChange={handleInputChange} /> */}
                     <Select
-                      // mode="multiple"
                       size='small'
-                      placeholder="Please select"
-                      
+                      placeholder="Please select"               
                       value={state.cloth}
                       onChange={handleClothInputChange}
                       style={{

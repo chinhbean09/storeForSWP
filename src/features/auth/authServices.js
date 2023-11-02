@@ -19,7 +19,6 @@ const register = async (userInfoDTO) => {
 };
 const getOrders = async () => {
   const response = await axios.get(`${base_url}userInfoDTO/getallorders`, config);
-
   return response.data;
 };
 const getOrder = async (id) => {
