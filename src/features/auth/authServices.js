@@ -1,6 +1,7 @@
 import axios from "axios";
 import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
+
 const login = async (userInfoDTO) => {
   const response = await axios.post(`${base_url}auth/authenticate`, userInfoDTO);
   if (response.data) {
@@ -8,6 +9,7 @@ const login = async (userInfoDTO) => {
   }
   return response.data;
 };
+
 const register = async (userInfoDTO) => {
   const response = await axios.post(`${base_url}userInfoDTO/register`, userInfoDTO);
   if (response.data) {

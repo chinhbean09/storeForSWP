@@ -31,10 +31,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
-        <Route path="/admin" element={<MainLayout />}>
-        
-          <Route index element={<Dashboard />} />
-          
+        <Route path="/admin" element={<MainLayout />}>       
+          <Route index element={<Dashboard />} />          
           <Route path="blog-list" element={<Bloglist />} />
           <Route path="blog" element={<Addblog />} />
           <Route path="blog/:id" element={<Addblog />} />
@@ -57,10 +55,12 @@ function App() {
           <Route path="product" element={<Addproduct />} />
           <Route path="list-product/add" element={<SpecialDetailForm />} />
           <Route path="list-product/update/:id" element={<SpecialDetailForm />} />
-          
+          <Route path="special-service/add" element={<StandardDetailForm />} />
+          <Route path="special-service/update/:id" element={<StandardDetailForm />} />
+
         </Route>
       </Routes>
-    </Router>
+    </Router> 
   );
 }
 
