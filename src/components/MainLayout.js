@@ -35,7 +35,7 @@ const MainLayout = () => {
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">DC</span>
-            <span className="lg-logo">Dev Corner</span>
+            <span className="lg-logo">The laundry</span>
           </h2>
         </div>
         <Menu
@@ -57,24 +57,29 @@ const MainLayout = () => {
             {
               key: "customers",
               icon: <AiOutlineUser className="fs-4" />,
-              label: "Customers",
+              label: "Khách hàng",
             },
             {
               key: "Catalog",
               icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Catalog",
+              label: "Mục lục",
               children: [
                 {
                   key: "list-product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Product List",
+                  label: "Giặt Hấp",
+                },
+                {
+                  key: "product",
+                  icon: <AiOutlineShoppingCart className="fs-4" />,
+                  label: "Giặt sấy",
                 },
               ],
             },
             {
               key: "orders",
               icon: <FaClipboardList className="fs-4" />,
-              label: "Orders",
+              label: "Đơn đặt hàng",
             },
           ]}
         />
@@ -95,8 +100,8 @@ const MainLayout = () => {
             }
           )}
           <div className="d-flex gap-4 align-items-center">
-            <div className="position-relative">
-              <IoIosNotifications className="fs-4" />
+            <div className="position-relative"  >
+              <IoIosNotifications className="fs-4" style={{ width: '25px' }}/>
               <span className="badge bg-warning rounded-circle p-1 position-absolute">
                 3
               </span>
