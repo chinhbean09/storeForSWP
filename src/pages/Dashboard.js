@@ -1,6 +1,6 @@
 import React from "react";
 import { BsArrowDownRight, BsArrowUpRight } from "react-icons/bs";
-import Column from "antd/es/table/Column";
+import Column from "@ant-design/plots/es/components/column";
 import { Table } from "antd";
 const columns = [
   {
@@ -32,60 +32,60 @@ for (let i = 0; i < 46; i++) {
 const Dashboard = () => {
   const data = [
     {
-      type: "Jan",
+      month: "Jan",
       sales: 38,
     },
     {
-      type: "Feb",
+      month: "Feb",
       sales: 52,
     },
     {
-      type: "Mar",
+      month: "Mar",
       sales: 61,
     },
     {
-      type: "Apr",
+      month: "Apr",
       sales: 145,
     },
     {
-      type: "May",
+      month: "May",
       sales: 48,
     },
     {
-      type: "Jun",
+      month: "Jun",
+      sales: 138,
+    },
+    {
+      month: "July",
       sales: 38,
     },
     {
-      type: "July",
+      month: "Aug",
       sales: 38,
     },
     {
-      type: "Aug",
+      month: "Sept",
+      sales: 80,
+    },
+    {
+      month: "Oct",
       sales: 38,
     },
     {
-      type: "Sept",
+      month: "Nov",
       sales: 38,
     },
     {
-      type: "Oct",
-      sales: 38,
-    },
-    {
-      type: "Nov",
-      sales: 38,
-    },
-    {
-      type: "Dec",
+      month: "Dec",
       sales: 38,
     },
   ];
   const config = {
     data,
-    xField: "type",
+    xField: "month",
     yField: "sales",
-    color: ({ type }) => {
-      return "#ffd333";
+    color: ({ month }) => {
+      return "#27A4f2";
     },
     label: {
       position: "middle",

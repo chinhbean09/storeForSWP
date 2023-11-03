@@ -53,7 +53,7 @@ const columns = [
   },
 ];
 
-const Productlist = () => {
+const LaundryService = () => {
   const dispatch = useDispatch();
 
   const handleDelete = async (id) => {
@@ -116,4 +116,4 @@ const Productlist = () => {
   );
 };
 
-export default Productlist;
+export default LaundryService;
