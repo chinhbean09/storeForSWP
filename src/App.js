@@ -9,10 +9,10 @@ import MainLayout from "./components/MainLayout";
 import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
 import Productlist from "./pages/Productlist";
-import Products from "./pages/Product";
 import ViewOrder from "./pages/ViewOrder";
 import StandardDetailForm from "./components/StandardForm";
 import SpecialDetailForm from "./components/SpecialService";
+import LaundryService from "./pages/LaundryService";
 function App() {
   return (
     <Router>
@@ -27,7 +27,7 @@ function App() {
           <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
           <Route path="list-product" element={<Productlist />} />
-          <Route path="product" element={<Products />} />
+          <Route path="laundry" element={<LaundryService />} />
           <Route path="list-product/add" element={<SpecialDetailForm />} />
           <Route path="list-product/update/:id" element={<SpecialDetailForm />} />
           <Route path="special-service/add" element={<StandardDetailForm />} />

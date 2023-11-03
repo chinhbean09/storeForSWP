@@ -52,17 +52,17 @@ const MainLayout = () => {
             {
               key: "",
               icon: <AiOutlineDashboard className="fs-4" />,
-              label: "Dashboard",
+              label: "Bảng Điều Khiển",
             },
             {
               key: "customers",
               icon: <AiOutlineUser className="fs-4" />,
-              label: "Khách hàng",
+              label: "Khách Hàng",
             },
             {
               key: "Catalog",
               icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Mục lục",
+              label: "Mục Lục",
               children: [
                 {
                   key: "list-product",
@@ -70,16 +70,16 @@ const MainLayout = () => {
                   label: "Giặt Hấp",
                 },
                 {
-                  key: "product",
+                  key: "laundry",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Giặt sấy",
+                  label: "Giặt Sấy",
                 },
               ],
             },
             {
               key: "orders",
               icon: <FaClipboardList className="fs-4" />,
-              label: "Đơn đặt hàng",
+              label: "Đơn Đặt Hàng",
             },
           ]}
         />
@@ -101,7 +101,7 @@ const MainLayout = () => {
           )}
           <div className="d-flex gap-4 align-items-center">
             <div className="position-relative"  >
-              <IoIosNotifications className="fs-4" style={{ width: '25px' }}/>
+              <IoIosNotifications className="fs-4" style={{ width: '30px' }}/>
               <span className="badge bg-warning rounded-circle p-1 position-absolute">
                 3
               </span>
