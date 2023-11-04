@@ -26,7 +26,8 @@ const error_init = {
   description_err: '',
   image_err: '',
   unit_err: '',
-  cloth_err: ''
+  cloth_err: '',
+  materials_err:''
 }
 
 const normFile = (e) => {
@@ -35,7 +36,7 @@ const normFile = (e) => {
   }
   return e?.fileList;
 };
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service/get";
+const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service";
 
 const SpecialDetailForm = (props) => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const SpecialDetailForm = (props) => {
   const [errors, setErrors] = useState(error_init);
   const defaultMaterialValue = [materials];
 
-console.log(defaultMaterialValue)
+
   const getOneService = async (id) => {
     const res = await axios.get(`${URL}/${id}`, config);
     if (res.status === 200) {
@@ -83,37 +84,31 @@ console.log(defaultMaterialValue)
     })
   }
 
-  // const data3 = [];
-  // for(let i = 0; i < materials.length; i++){
-  //   data3.push({
-  //     value:materials[i].id
-      
-  //   })
-  // }
-  
-  //let intersection  = data2.filter(o => data3.some(({value,label}) => o.label === label && o.value === value));
-
   useEffect(() => {
     if (id) getOneService(id);
     getAllCloth();
     getAllMaterial();
   }, [id]);
 
+
 console.log(state)
+
+
   const updateService = async (id, data) => {
-    const res = await axios.get(`${URL}/${id}`, data);
+    const res = await axios.put(`${URL}/update/${id}`, data, config);
     if (res.status === 200) {
       toast.success(`Updated Product with ID: ${id} successfully ~`);
-      navigate('/dashboard');
+      navigate('/admin/list-product');
     }
   }
   
+  
 
   const addNewService = async (data) => {
-    const res = await axios.post(`${URL}`, data);
+    const res = await axios.post(`${URL}/create`, data, config);
     if (res.status === 200 || res.status === 201) {
       toast.success("New Product has been added successfully ~");
-      navigate('/dashboard');
+      navigate('/admin/list-product');
     }
   }
   const validateForm = () => {
@@ -149,10 +144,10 @@ console.log(state)
 
   const handleSubmit = (event) => {
 
-    // event.preventDefault();
+    //event.preventDefault();
     if (validateForm()) {
-      // if (id) updateService(id, state);
-      // else addNewService(state);
+      if (id) updateService(id, state);
+      else addNewService(state);
       console.log(state)
     } else {
       toast.error("Some info is invalid ~ Pls check again");
@@ -166,7 +161,6 @@ console.log(state)
 
   const handleClothInputChange = (event) => {
     setState({...state, cloth: event});
-    console.log(state.cloth)
   }
 
   
@@ -192,9 +186,8 @@ console.log(state)
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}
                 // className="float-end"
-                >
+>
                   Form disabled
-
                 </Checkbox>
                 <Form
                   labelCol={{

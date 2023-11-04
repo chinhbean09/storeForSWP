@@ -19,6 +19,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { base_url } from "../utils/baseUrl";
 
 
 const { Header, Sider, Content } = Layout;
@@ -30,6 +31,7 @@ const MainLayout = () => {
   } = theme.useToken();
   const navigate = useNavigate();
   return (
+    
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
@@ -84,6 +86,9 @@ const MainLayout = () => {
           ]}
         />
       </Sider>
+
+
+
       <Layout className="site-layout">
         <Header
           className="d-flex justify-content-between ps-1 pe-5"
@@ -139,9 +144,10 @@ const MainLayout = () => {
                   <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
-                  >
-                    Logout
+                    to="/   "
+                  > LogOut
+                   {/* <a href=`${base_url}/auth/logout`> Logout </a>  */}
+
                   </Link>
                 </li>
               </div>
