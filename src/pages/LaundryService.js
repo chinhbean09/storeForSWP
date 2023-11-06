@@ -9,6 +9,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/dashboard.css';
 import { config } from "../utils/axiosconfig";
+import StandardDetailForm from "../components/StandardForm";
 
 const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service";
 
@@ -31,12 +32,12 @@ const columns = [
   {
     title: "material",
     dataIndex: "materials",
-    
+
   },
   {
     title: "cloth",
     dataIndex: "cloth",
-    
+
   },
   {
     title: "unit",
@@ -54,76 +55,11 @@ const columns = [
 ];
 
 const LaundryService = () => {
-  const dispatch = useDispatch();
-  const selectData = state => state.auth;
-  // const {user:currUser} = useSelector((state) => state.auth);
-   const {user:currUser} = useSelector(selectData);
-  const handleDelete = async (id) => {
-    if (window.confirm(`Are you sure that you want to delete Product with ID: ${id}`)) {
-      const res = await axios.delete(`${URL}/delete/${id}`, config);
-      console.log(res)
-      if (res.status === 200) {
-        //re-render Data
-        dispatch(getProducts());
-        toast.success("Deleted Successfully ~");
-      } else {
-        toast.error("Delete: Error!");
-      }
-    }
-  }
-  useEffect(() => {
-    //dispatch(resetState());
 
-    dispatch(getProducts(currUser.userInfoDTO.id));
-
-
-  }, []);
-  const productState = useSelector((state) => state.product.products);
-
-//   if (!productState) {
-//     return <div>Loading...</div>;
-// }
-
-console.log(productState);
-  const data1 = [];
-
-  for (let i = 0; i < productState.length; i++) {
-    data1.push({
-      key: i + 1,
-      id: productState[i].id,
-      name: productState[i].name,
-      description: productState[i].description,
-      materials: productState[i].materials.map((material) => material.name + " "),
-      price: productState[i].details[0].price,
-      unit: productState[i].details[0].unit,
-      cloth: productState[i].cloth.name,
-
-      action: (
-        <>
-          <Link to={`update/${productState[i].id}`} className=" fs-3 text-danger">
-            <BiEdit />
-          </Link>
-          <Link onClick={() => handleDelete(productState[i].id)} className="ms-3 fs-3 text-danger">
-            <AiFillDelete />
-          </Link>
-        </>
-      ),
-    });
-  }
-  console.log(data1);
   return (
-    
-    <div>
-      <div className="btn-add">
-        <Link to={'add'}>
-          <button className='add-staff-btn'>ADD NEW PRODUCT</button>
-        </Link>
-      </div>
-      <h3 className="mb-4 title">Products</h3>
 
-      <div>
-        <Table columns={columns} dataSource={data1} />
-      </div>
+    <div>
+      <StandardDetailForm></StandardDetailForm>
     </div>
   );
 };

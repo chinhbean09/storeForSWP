@@ -5,7 +5,8 @@ import { base_url } from "../../utils/baseUrl";
 const login = async (userInfoDTO) => {
   const response = await axios.post(`${base_url}auth/authenticate`, userInfoDTO);
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("access_token", JSON.stringify(response.data.access_token));
+    localStorage.setItem("userInfoDTO", JSON.stringify(response.data.userInfoDTO));
   }
   return response.data;
 };
@@ -13,8 +14,15 @@ const login = async (userInfoDTO) => {
 const register = async (userInfoDTO) => {
   const response = await axios.post(`${base_url}userInfoDTO/register`, userInfoDTO);
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("access_token", JSON.stringify(response.data.access_token));
+    localStorage.setItem("userInfoDTO", JSON.stringify(response.data.userInfoDTO));
   }
+  return response.data;
+};
+
+const logout = async () => {
+  const response = await axios.get(`${base_url}/auth/logout`);
+  
   return response.data;
 };
 const getOrders = async () => {
@@ -36,6 +44,7 @@ const authService = {
   register,
   getOrders,
   getOrder,
+  logout
 };
 
 export default authService;

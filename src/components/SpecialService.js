@@ -6,6 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Checkbox, Form, Input, Upload, Radio, Select, Space } from 'antd';
 import { config } from "../utils/axiosconfig";
+import LoadingSpinner from "./LoadingSpinner";
+
 const { TextArea } = Input;
 
 const initialState = {
@@ -47,11 +49,18 @@ const SpecialDetailForm = (props) => {
   const { name, description, price, unit, cloth, materials } = state;
   const [errors, setErrors] = useState(error_init);
   const defaultMaterialValue = [materials];
-
+  const [isSuccess, setStateIsSuccess] =  useState(false);
 
   const getOneService = async (id) => {
-    const res = await axios.get(`${URL}/${id}`, config);
+    const res = await axios.get(`${URL}/${id}`, { headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+      Accept: "application/json",
+      "Access-Control-Allow-Origin":"*",
+      'ngrok-skip-browser-warning': 'true'
+      
+    },});
     if (res.status === 200) {
+      setStateIsSuccess(true);
       setState(res.data);
     }
   }
@@ -174,7 +183,7 @@ console.log(state)
 
   return (
     <Wrapper>
-
+      {!isSuccess ? <LoadingSpinner /> : 
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">
@@ -277,7 +286,7 @@ console.log(state)
 
           </div>
         </div>
-      </div>
+      </div>}
     </Wrapper>
 
   );

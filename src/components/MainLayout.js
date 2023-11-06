@@ -18,18 +18,21 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { base_url } from "../utils/baseUrl";
+import { logout } from "../features/auth/authSlice";
 
 
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
-  const {user:currUser} = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const {userInfoDTO} = useSelector((state) => state.auth);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+  console.log("Main Layout" + JSON.parse(localStorage.getItem("access_token")));
   return (
     
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
@@ -127,8 +130,8 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">{currUser.userInfoDTO.email}</h5>
-                <p className="mb-0">{currUser.userInfoDTO.fullName}</p>
+                <h5 className="mb-0">{userInfoDTO.email}</h5>
+                <p className="mb-0">{userInfoDTO.fullName}</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -144,7 +147,8 @@ const MainLayout = () => {
                   <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/   "
+                    to="/"
+                    onClick={() => dispatch(logout())}
                   > LogOut
                    {/* <a href=`${base_url}/auth/logout`> Logout </a>  */}
 

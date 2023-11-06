@@ -6,110 +6,131 @@ import { AiFillStar } from 'react-icons/ai';
 import React, { useState, useEffect } from 'react';
 import { Table, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import {Checkbox,   Form,   Input,    Upload, } from 'antd';
+import { Checkbox, Form, Input, Upload, } from 'antd';
 import { config } from "../utils/axiosconfig";
-  const { TextArea } = Input;
+import TableEditable from "./TableEditable";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewStandardService, getStandardService, updateStandardService, } from "../features/product/productSlice";
+import { useForm } from "antd/es/form/Form";
+import { base_url } from "../utils/baseUrl";
 
-  const initialState = {
-    name: '',
-    price: '',
-    description: '',
-    image: '',
-}
+const { TextArea } = Input;
+// const initialState = {
+//   id: '',
+//   name: '',
+//   price: '',
+//   description: '',
+//   image: '',
+//   price: '',
+//   unit: '',
+//   materials: [],
+//   cloth: '',
+// }
 
 const error_init = {
-    name_err: '',
-    price_err: '',
-    description_err: '',
-    image_err: '',
+  name_err: '',
+  price_err: '',
+  description_err: '',
+  image_err: '',
 }
 
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
-  const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service/get";
+const normFile = (e) => {
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e?.fileList;
+};
+const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service";
 
-const StandardDetailForm = (props) => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [state, setState] = useState(initialState);
-    const { name, description } = state;
-    const [errors, setErrors] = useState(error_init);
+const StandardDetailForm = () => {
+  const { userInfoDTO } = useSelector((state) => state.auth);
+  //const [state, setState] = useState(initialState);
+  const { standardService } = useSelector((state) => state.product);
+  const { id, name, description, imageBanner } = standardService;
+ 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+  useEffect(() => {
+    //dispatch(resetState())
+    dispatch(getStandardService(userInfoDTO.id));
 
-    const getOneService = async (id) => {
-        const res = await axios.get(`${URL}/${id}`,config);
-        if (res.status === 200) {
-            setState(res.data);
-        }
-    }
-    
-    
-    useEffect(() => {
-        if(id) getOneService(id);
-    }, [id]);
-    console.log(state)
-    const updateService = async (id, data) => {
-        const res = await axios.get(`${URL}/${id}`, data);
-        if (res.status === 200) {
-            toast.success(`Updated Product with ID: ${id} successfully ~`);
-            navigate('/dashboard');
-        }
-    }
-    const addNewService = async (data) => {
-        const res = await axios.post(`${URL}`, data);
-        if (res.status === 200 || res.status === 201) {
-            toast.success("New Product has been added successfully ~");
-            navigate('/dashboard');
-        }
-    }
-    const validateForm = () => {
-        let isValid = true;
-        let errors = { ...error_init };
+    // setState(standardService);
 
-        if (name.trim() === '') {
-            errors.name_err = 'Name is Required';
-            isValid = false;
-        }
+
+
+  }, []);
+
+
+
+
+  const [errors, setErrors] = useState(error_init);
+
+
+
+
+
+
+
+
+
+
+
+  // const validateForm = () => {
+  //   let isValid = true;
+  //   let errors = { ...error_init };
+
+  //   if (name.trim() === '') {
+  //     errors.name_err = 'Name is Required';
+  //     isValid = false;
+  //   }
+
+  //   if (description.trim() === '') {
+  //     errors.description_err = 'Description is required';
+  //     isValid = false;
+  //   }
+
+  //   setErrors(errors);
+  //   return isValid;
+  // }
+  const updateStandardService = async (id,data) => {
+    const res = await axios.put(`${base_url}store/standard-service/update/${id}`,data,{
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        'ngrok-skip-browser-warning': 'true'
+  
+      },
+    });
+    return res.data;
+  }
+
+  const handleSubmit = (event) => {
+
+    form
+      .validateFields()
+      .then((values) => {
+        if (standardService !== undefined) {
         
-        if (description.trim() === '') {
-            errors.description_err = 'Description is required';
-            isValid = false;
+          updateStandardService(id, values);
         }
 
-        setErrors(errors);
-        return isValid;
-    }
-
-    const handleSubmit = (event) => {
-    
-        // event.preventDefault();
-        if (validateForm()) {
-            if (id) updateService(id, state);
-            else addNewService(state);
-            console.log(state)
-        } else {
-            toast.error("Some info is invalid ~ Pls check again");
+        else {
+          dispatch(addNewStandardService(values));
         }
-    }
+      })
+      .catch((info) => {
+        console.log('Validate Failed:', info);
+      });
+  }
 
-    const handleInputChange = (event) => {
-        let { name, value } = event.target;
-        setState((state) => ({ ...state, [name]: value }));
-    }
+  // const handleInputChange = (event) => {
+  //   let { name, value } = event.target;
+  //   setState((state) => ({ ...state, [name]: value }));
+  // }
 
   const [componentDisabled, setComponentDisabled] = useState(true);
-    const data = [
-        {
-            key:1,
-            to:5,
-            from:1,
-            price:10000,
-            unit:'kg'
-        }
-    ]
 
 
   function starRating(params) {
@@ -123,32 +144,7 @@ const StandardDetailForm = (props) => {
   function generateCurrency(params) {
     return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
   }
-  const columns = [
-    {
-      title: 'No',
-      dataIndex: 'key',
-    },
-    {
-      title: 'Từ',
-      dataIndex: 'from',
-    },
-    {
-      title: 'Đến',
-      dataIndex: 'to',
 
-    },
-    {
-      title: 'Đơn vị',
-      dataIndex: 'unit',
-
-    },
-    {
-      title: 'Giá tiền',
-      dataIndex: 'price',
-
-    },
-
-  ];
 
   return (
     <Wrapper>
@@ -158,69 +154,65 @@ const StandardDetailForm = (props) => {
           <div class="col-lg-8">
             <div class="card mb-4">
               <div class="card-body">
-              <h2>{id ? "Update Form" : "Add New Service"}</h2>
-              <Checkbox
-        checked={componentDisabled}
-        onChange={(e) => setComponentDisabled(e.target.checked)}
-      >
-        Form disabled
-      </Checkbox>
-      
-      <Form
-        labelCol={{
-          span: 4,
-        }}
-        wrapperCol={{
-          span: 14,
-        }}
-        layout="horizontal"
-        disabled={componentDisabled}
-        style={{
-          maxWidth: 1600,
-        }}
-        onFinish={handleSubmit}
-      >
-        <Form.Item label="Name">
-          <Input type="text" name='name' value={state.name} onChange={handleInputChange} />
-          {errors.name_err && <span className='error'>{errors.name_err}</span>}
-        </Form.Item>
-        <Form.Item label="Description">
-          <TextArea rows={4} type="text" name='description' value={state.description} onChange={handleInputChange} />
-          {errors.description_err && <span className='error'>{errors.description_err}</span>}
-        </Form.Item>
-        <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
-          <Upload action="/upload.do" listType="picture-card">
-            <div>
-              <PlusOutlined />
-              <div
-                style={{
-                  marginTop: 8,
-                }}
-              >
-                Upload
-              </div>
-            </div>
-          </Upload>
+                <h2>{id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
+                <Checkbox
+                  checked={componentDisabled}
+                  onChange={(e) => setComponentDisabled(e.target.checked)}
+                >
+                  Form disabled
+                </Checkbox>
 
-        </Form.Item>
-        <Form.Item className="float-end">
+                <Form
+                  form={form}
+                  labelCol={{
+                    span: 4,
+                  }}
+                  wrapperCol={{
+                    span: 14,
+                  }}
+                  layout="horizontal"
+                  disabled={componentDisabled}
+                  style={{
+                    maxWidth: 1600,
+                  }}
+                  onFinish={handleSubmit}
+                >
+                  <Form.Item label="Name" name='name'  rules={[{ required: true, message: `Vui lòng nhập dữ liệu !`}]}>
+                    <Input type="text"/>
+                    {/* {errors.name_err && <span className='error'>{errors.name_err}</span>} */}
+                  </Form.Item>
+                  <Form.Item label="Description" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !`}]} >
+                    <TextArea rows={4} type="text"/>
+                    {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
+                  </Form.Item>
+                  <Form.Item label="Upload" valuePropName="fileList">
+                    <Upload action="/upload.do" listType="picture-card">
+                      <div>
+                        <PlusOutlined />
+                        <div
+                          style={{
+                            marginTop: 8,
+                          }}
+                        >
+                          Upload
+                        </div>
+                      </div>
+                    </Upload>
+
+                  </Form.Item>
+                  <Form.Item className="float-end">
                     <button type='submit' className='form-button'>{id ? "Update" : "Submit"}</button>
-        </Form.Item>
+                  </Form.Item>
 
-      </Form>
+                </Form>
               </div>
             </div>
             <h3 className="px-5 fw-bold">Bảng Giá : </h3>
-            <Table
-              columns={columns} key={data.key} dataSource={data} size="middle" bordered
-              className="my-4"
-              pagination={false}
-            >
-            </Table>    
-          </div> 
+            {/* <TableEditable/> */}
+          </div>
         </div>
       </div>
-      </Wrapper>
+    </Wrapper>
 
   );
 };

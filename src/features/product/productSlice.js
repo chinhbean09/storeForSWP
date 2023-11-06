@@ -21,10 +21,48 @@ export const createProducts = createAsyncThunk(
     }
   }
 );
+
+
+export const addNewStandardService = createAsyncThunk(
+  "product/standard/create",
+  async (productData, thunkAPI) => {
+    try {
+      return await productService.addNewStandardService(productData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getStandardService = createAsyncThunk(
+  "product/standard/get",
+  async (id, thunkAPI) => {
+    try {
+      return await productService.getStandardService(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const updateStandardService = createAsyncThunk(
+  "product/standard/update",
+  async (data,thunkAPI) => {
+   
+    try {
+      const {id, values} = data;
+      console.log(data)
+      return await productService.updateStandardService(`${id}`, values);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 
 const initialState = {
   products: [],
+  standardService:"",
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -61,6 +99,54 @@ export const productSlice = createSlice({
         state.createdProduct = action.payload;
       })
       .addCase(createProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+
+      .addCase(getStandardService.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStandardService.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.standardService = action.payload;
+      })
+      .addCase(getStandardService.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+
+      .addCase(addNewStandardService.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addNewStandardService.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.createdProduct = action.payload;
+      })
+      .addCase(addNewStandardService.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+
+      .addCase(updateStandardService.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateStandardService.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.updatedProduct = action.payload;
+      })
+      .addCase(updateStandardService.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;

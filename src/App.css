@@ -1,7 +1,7 @@
 :root {
   --color-212529: #212529;
-  --color-ffd333: #ffd333;
-  --color-47ad24: #47ad24;
+  --color-ffd333: hsl(47, 100%, 60%);
+  --color-47ad24: #9cbe91;
   --color-e52e2e: #e52e2e;
   --color-828599: #828599;
   --color-3d464d: #ed464d;
