@@ -24,6 +24,7 @@ import { logout } from "../features/auth/authSlice";
 
 
 const { Header, Sider, Content } = Layout;
+
 const MainLayout = () => {
   const dispatch = useDispatch();
   const {userInfoDTO} = useSelector((state) => state.auth);

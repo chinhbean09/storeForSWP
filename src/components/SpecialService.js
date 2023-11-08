@@ -48,7 +48,6 @@ const SpecialDetailForm = (props) => {
   const [clothes, setClothes] = useState([]);
   const { name, description, price, unit, cloth, materials } = state;
   const [errors, setErrors] = useState(error_init);
-  const defaultMaterialValue = [materials];
   const [isSuccess, setStateIsSuccess] =  useState(false);
 
   const getOneService = async (id) => {
