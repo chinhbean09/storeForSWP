@@ -8,9 +8,7 @@ import { Link } from "react-router-dom";
 import { } from "../features/auth/authSlice";
 import { config } from "../utils/axiosconfig";
 
-
-
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/base/order/all";
+const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/all";
 
 const columns = [
   {
@@ -44,14 +42,16 @@ const columns = [
 ];
 
 const Orders = () => {
+  const { userInfoDTO } = useSelector((state) => state.auth);
+
   const [state, setState] = useState([]);
 
   useEffect(() => {
-    getHistoryOrders();
+    getHistoryOrders(userInfoDTO.id);
   }, []);
 
   const getHistoryOrders = async (id) => {
-    const res = await axios.get(`${URL}`,config);
+    const res = await axios.get(`${URL}/${id}`,config);
     if (res.status === 200) {
       setState(res.data);
     }
