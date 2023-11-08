@@ -1,12 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authServices";
 
-const getUserfromLocalStorage = localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
-  : null;
+let  access_token = localStorage.getItem('access_token')
+  ? JSON.parse(localStorage.getItem('access_token'))
+  : null
+
+  
+let  userInfoDTO = localStorage.getItem('userInfoDTO')
+? JSON.parse(localStorage.getItem('userInfoDTO'))
+: null
+
 const initialState = {
-  user: getUserfromLocalStorage,
-  orders: [],
+  userInfoDTO,
+  access_token,
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -33,31 +39,26 @@ export const signup = createAsyncThunk(
   }
 );
 
-export const getOrders = createAsyncThunk(
-  "order/get-orders",
-  async (thunkAPI) => {
-    try {
-      return await authService.getOrders();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const getOrderByUser = createAsyncThunk(
-  "order/get-order",
-  async (id, thunkAPI) => {
-    try {
-      return await authService.getOrder(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
+
+
 
 export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      localStorage.removeItem('userInfoDTO') 
+      localStorage.setItem('access_token',JSON.stringify(state.access_token)) 
+      state.userInfoDTO= null;
+      state.access_token = null;
+      state.isError = false;
+      state.isLoading = false;
+      state.isSuccess=false;
+      
+   
+
+    },
+  },
   extraReducers: (buildeer) => {
     buildeer
       .addCase(login.pending, (state) => {
@@ -67,7 +68,9 @@ export const authSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        
+        state.userInfoDTO = action.payload.userInfoDTO;
+        state.access_token = action.payload.access_token;
         state.message = "success";
       })
       .addCase(login.rejected, (state, action) => {
@@ -76,38 +79,8 @@ export const authSlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
-      .addCase(getOrders.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getOrders.fulfilled, (state, action) => {
-        state.isError = false;
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.orders = action.payload;
-        state.message = "success";
-      })
-      .addCase(getOrders.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-        state.isLoading = false;
-      })
-      .addCase(getOrderByUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getOrderByUser.fulfilled, (state, action) => {
-        state.isError = false;
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.orderbyuser = action.payload;
-        state.message = "success";
-      })
-      .addCase(getOrderByUser.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-        state.isLoading = false;
-      })
+     
+      
       .addCase(signup.pending, (state) => {
         state.isLoading = true;
       })
@@ -124,9 +97,11 @@ export const authSlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
-      
+
+
+
   },
 });
-
+export const { logout } = authSlice.actions
 export default authSlice.reducer;
 

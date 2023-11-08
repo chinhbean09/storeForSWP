@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Table } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
@@ -9,9 +9,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/dashboard.css';
 import { config } from "../utils/axiosconfig";
+import productService from "../features/product/productService";
+import { base_url } from "../utils/baseUrl";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service";
-
 
 const columns = [
   {
@@ -54,37 +56,42 @@ const columns = [
 ];
 
 const Productlist = () => {
+
   const dispatch = useDispatch();
-  const selectData = state => state.auth;
-  // const {user:currUser} = useSelector((state) => state.auth);
-   const {user:currUser} = useSelector(selectData);
+  const { userInfoDTO } = useSelector((state) => state.auth);
+
+  console.log("product:" + JSON.parse(localStorage.getItem("access_token")));
   const handleDelete = async (id) => {
     if (window.confirm(`Are you sure that you want to delete Product with ID: ${id}`)) {
       const res = await axios.delete(`${URL}/delete/${id}`, config);
       console.log(res)
       if (res.status === 200) {
         //re-render Data
-        dispatch(getProducts());
+        // dispatch(getProducts());
         toast.success("Deleted Successfully ~");
       } else {
         toast.error("Delete: Error!");
       }
     }
   }
+
+
+
+
+
   useEffect(() => {
-    //dispatch(resetState());
 
-    dispatch(getProducts(currUser?.userInfoDTO.id));
+    dispatch(resetState());
+    dispatch(getProducts(userInfoDTO.id))
+   
+  }, [dispatch]);
 
 
-  }, [dispatch],[]);
+  //   if (!productState) {
+  //     return <div>Loading...</div>;
+  // }
   const productState = useSelector((state) => state.product.products);
-
-//   if (!productState) {
-//     return <div>Loading...</div>;
-// }
-
-console.log(productState);
+  const { isSuccess } = useSelector((state) => state.product);
   const data1 = [];
 
   for (let i = 0; i < productState.length; i++) {
@@ -110,9 +117,9 @@ console.log(productState);
       ),
     });
   }
-  console.log(data1);
+
   return (
-    
+
     <div>
       <div className="btn-add">
         <Link to={'add'}>
@@ -120,10 +127,13 @@ console.log(productState);
         </Link>
       </div>
       <h3 className="mb-4 title">Products</h3>
+ 
+        <div>
+        {!isSuccess ? <LoadingSpinner /> :   <Table columns={columns} dataSource={data1} />}
+        
+        </div>
 
-      <div>
-        <Table columns={columns} dataSource={data1} />
-      </div>
+
     </div>
   );
 };
