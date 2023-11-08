@@ -54,6 +54,11 @@ const TableEditable = () => {
 
     const [editingKey, setEditingKey] = useState('');
     const { userInfoDTO } = useSelector((state) => state.auth);
+      useEffect(() => {
+        getPricesOfStandardService(userInfoDTO.id);
+        console.log(getPricesOfStandardService);
+    }, []);
+    
     const getPricesOfStandardService = async (id) => {
         const res = await axios.get(`${URL}/prices?store=${id}`,{
           headers: {
@@ -69,9 +74,7 @@ const TableEditable = () => {
         }
     }
 
-    useEffect(() => {
-        getPricesOfStandardService(userInfoDTO.id);
-    }, []);
+  
 
     const updateService = async (id, data) => {
         const res = await axios.put(`${URL}/prices/update/${id}`, data, {
@@ -260,7 +263,10 @@ const TableEditable = () => {
                     onCancel={() => {
                         setOpen(false);
                     }}
-                    reset={getPricesOfStandardService(userInfoDTO.id)}
+                    reset={()=>{
+                        getPricesOfStandardService(userInfoDTO.id)
+                    }}
+                    
                 />
             </div>
 

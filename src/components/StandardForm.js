@@ -4,28 +4,24 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AiFillStar } from 'react-icons/ai';
 import React, { useState, useEffect } from 'react';
-import { Table, Card } from 'antd';
+import { Checkbox, Form, Input, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { Checkbox, Form, Input, Upload, } from 'antd';
 import { config } from "../utils/axiosconfig";
 import TableEditable from "./TableEditable";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewStandardService, getStandardService, updateStandardService, } from "../features/product/productSlice";
+import { addNewStandardService, getStandardService, resetState, } from "../features/product/productSlice";
 import { useForm } from "antd/es/form/Form";
 import { base_url } from "../utils/baseUrl";
+import LoadingSpinner from "./LoadingSpinner";
 
 const { TextArea } = Input;
-// const initialState = {
-//   id: '',
-//   name: '',
-//   price: '',
-//   description: '',
-//   image: '',
-//   price: '',
-//   unit: '',
-//   materials: [],
-//   cloth: '',
-// }
+const initialState = {
+  id: '',
+  name: '',
+  price: '',
+  description: '',
+  imageBanner: '',
+}
 
 const error_init = {
   name_err: '',
@@ -45,22 +41,24 @@ const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-serv
 const StandardDetailForm = () => {
   const { userInfoDTO } = useSelector((state) => state.auth);
   //const [state, setState] = useState(initialState);
-  const { standardService } = useSelector((state) => state.product);
-  const { id, name, description, imageBanner } = standardService;
- 
+
+  //const { id, name, description, imageBanner } = standardService;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+
   useEffect(() => {
-    //dispatch(resetState())
+    dispatch(resetState())
     dispatch(getStandardService(userInfoDTO.id));
 
-    // setState(standardService);
+    // form.setFieldsValue({
+    //   name: standardService?.name,
+    //   description: standardService?.description
+    // });
 
-
-
-  }, []);
-
+  }, [dispatch]);
+  const { standardService, isSuccess } = useSelector((state) => state.product);
 
 
 
@@ -93,18 +91,37 @@ const StandardDetailForm = () => {
   //   setErrors(errors);
   //   return isValid;
   // }
-  const updateStandardService = async (id,data) => {
-    const res = await axios.put(`${base_url}store/standard-service/update/${id}`,data,{
+  const updateStandardService = async (id, data) => {
+    const res = await axios.put(`${base_url}store/standard-service/update/${id}`, data, {
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
         'ngrok-skip-browser-warning': 'true'
-  
+
       },
     });
-    return res.data;
+    if (res.status === 200) {
+      console.log(res.data);
+      toast.success(`Updated Product with ID: ${id} successfully ~`);
+      navigate('/admin/laundry');
+    }
+
   }
+  // const getStandardService = async (id) => {
+  //   const res = await axios.get(`${base_url}store/standard-service/get?store=${id}`,{
+  //     headers: {
+  //       Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+  //       Accept: "application/json",
+  //       "Access-Control-Allow-Origin": "*",
+  //       'ngrok-skip-browser-warning': 'true'
+
+  //     },
+  //   });
+  //   if(res.status === 200){
+  //     setState(res.data)
+  //   }
+  // }
 
   const handleSubmit = (event) => {
 
@@ -112,8 +129,8 @@ const StandardDetailForm = () => {
       .validateFields()
       .then((values) => {
         if (standardService !== undefined) {
-        
-          updateStandardService(id, values);
+
+          updateStandardService(standardService?.id, values);
         }
 
         else {
@@ -148,70 +165,71 @@ const StandardDetailForm = () => {
 
   return (
     <Wrapper>
+      {!isSuccess ? <LoadingSpinner /> :
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <h2>{standardService?.id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
+                  <Checkbox
+                    checked={componentDisabled}
+                    onChange={(e) => setComponentDisabled(e.target.checked)}
+                  >
+                    Form disabled
+                  </Checkbox>
 
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="card mb-4">
-              <div class="card-body">
-                <h2>{id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
-                <Checkbox
-                  checked={componentDisabled}
-                  onChange={(e) => setComponentDisabled(e.target.checked)}
-                >
-                  Form disabled
-                </Checkbox>
+                  <Form
+                    form={form}
+                    labelCol={{
+                      span: 4,
+                    }}
+                    wrapperCol={{
+                      span: 14,
+                    }}
+                    layout="horizontal"
+                    disabled={componentDisabled}
+                    style={{
+                      maxWidth: 1600,
+                    }}
+                    onFinish={handleSubmit}
 
-                <Form
-                  form={form}
-                  labelCol={{
-                    span: 4,
-                  }}
-                  wrapperCol={{
-                    span: 14,
-                  }}
-                  layout="horizontal"
-                  disabled={componentDisabled}
-                  style={{
-                    maxWidth: 1600,
-                  }}
-                  onFinish={handleSubmit}
-                >
-                  <Form.Item label="Name" name='name'  rules={[{ required: true, message: `Vui lòng nhập dữ liệu !`}]}>
-                    <Input type="text"/>
-                    {/* {errors.name_err && <span className='error'>{errors.name_err}</span>} */}
-                  </Form.Item>
-                  <Form.Item label="Description" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !`}]} >
-                    <TextArea rows={4} type="text"/>
-                    {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
-                  </Form.Item>
-                  <Form.Item label="Upload" valuePropName="fileList">
-                    <Upload action="/upload.do" listType="picture-card">
-                      <div>
-                        <PlusOutlined />
-                        <div
-                          style={{
-                            marginTop: 8,
-                          }}
-                        >
-                          Upload
+                  >
+                    <Form.Item label="Name" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                      <Input defaultValue={standardService.name} ></Input>
+                      {/* {errors.name_err && <span className='error'>{errors.name_err}</span>} */}
+                    </Form.Item>
+                    <Form.Item label="Description" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} >
+                      <TextArea defaultValue={standardService.description} rows={4} />
+                      {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
+                    </Form.Item>
+                    <Form.Item label="Upload" valuePropName="fileList">
+                      <Upload action="/upload.do" listType="picture-card">
+                        <div>
+                          <PlusOutlined />
+                          <div
+                            style={{
+                              marginTop: 8,
+                            }}
+                          >
+                            Upload
+                          </div>
                         </div>
-                      </div>
-                    </Upload>
+                      </Upload>
 
-                  </Form.Item>
-                  <Form.Item className="float-end">
-                    <button type='submit' className='form-button'>{id ? "Update" : "Submit"}</button>
-                  </Form.Item>
+                    </Form.Item>
+                    <Form.Item className="float-end">
+                      <button type='submit' className='form-button'>{standardService?.id ? "Update" : "Submit"}</button>
+                    </Form.Item>
 
-                </Form>
+                  </Form>
+                </div>
               </div>
+              <h3 className="px-5 fw-bold">Bảng Giá : </h3>
+              <TableEditable /> 
             </div>
-            <h3 className="px-5 fw-bold">Bảng Giá : </h3>
-            {/* <TableEditable/> */}
           </div>
-        </div>
-      </div>
+        </div>}
     </Wrapper>
 
   );
