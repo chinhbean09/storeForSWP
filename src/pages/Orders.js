@@ -1,30 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { getOrders } from "../features/auth/authSlice";
+import {FaMotorcycle  } from 'react-icons/fa';
+import { GiWashingMachine } from 'react-icons/gi';
+import { MdOutlineDoneOutline } from 'react-icons/md';
+import axios from 'axios';
+
 const columns = [
   {
     title: "SNo",
     dataIndex: "key",
   },
   {
-    title: "Name",
+    title: "User Name",
     dataIndex: "name",
-  },
-  {
-    title: "Product",
-    dataIndex: "product",
-  },
-  {
-    title: "Amount",
-    dataIndex: "amount",
   },
   {
     title: "Date",
     dataIndex: "date",
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
   },
 
   {
@@ -33,36 +38,59 @@ const columns = [
   },
 ];
 
-const Orders = () => {
+const Orders = (order) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getOrders());
   }, []);
-  
+  const handleIconClick = (id) => {
+    const newStatus = "done";
+    axios
+      .patch(`http://localhost:3000/order/${id}`, {
+        status: newStatus,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setOrders((prevStores) =>
+          prevStores.map((order) =>
+            order.id === id ? { ...order, status: newStatus } : order
+          )
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const orderState = useSelector((state) => state.auth.orders);
+  const [orders,setOrders]=useState(orderState);
 
   const data1 = [];
-  for (let i = 0; i < orderState.length; i++) {
+  for (let i = 0; i < orders.length; i++) {
     data1.push({
       key: i + 1,
-      name: orderState[i].orderby.firstname,
-      product: (
-        <Link to={`/admin/order/${orderState[i].orderby._id}`}>
-          View Orders
-        </Link>
-      ),
-      amount: orderState[i].paymentIntent.amount,
-      date: new Date(orderState[i].createdAt).toLocaleString(),
+      name: orders[i].orderby.username,
       action: (
         <>
-          <Link to="/" className=" fs-3 text-danger">
-            <BiEdit />
-          </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
-          </Link>
-        </>
+        <Link to={`/admin/order/${orders[i].orderby.id}`}>
+          <button>View Orders</button>
+        </Link>
+        <MdOutlineDoneOutline onClick={handleIconClick(order.id)}/>
+</>
+      ),
+      status: (
+        <>
+        if(${orders[i].orderby.status == 'washing'}){
+        <GiWashingMachine />
+      }if(${orders[i].orderby.status == 'done'}){
+        <FaMotorcycle />
+      }
+      </>
+      ),
+      date: new Date(orders[i].createdAt).toLocaleString(),
+      price: (
+        orders[i].orderby.price
       ),
     });
   }
