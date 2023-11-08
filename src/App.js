@@ -32,7 +32,6 @@ function App() {
           <Route path="list-product/update/:id" element={<SpecialDetailForm />} />
           <Route path="special-service/add" element={<StandardDetailForm />} />
           <Route path="special-service/update/:id" element={<StandardDetailForm />} />
-
         </Route>
       </Routes>
     </Router> 
