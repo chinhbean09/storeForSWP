@@ -17,7 +17,6 @@ const ModalForm = ({ open,  onCancel , reset}) => {
               Accept: "application/json",
               "Access-Control-Allow-Origin": "*",
               'ngrok-skip-browser-warning': 'true'
-        
             },
           });
         if (res.status === 200) {
