@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Table } from "antd";
+import { Input, Table, Form } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
@@ -62,23 +62,54 @@ const ViewOrder = () => {
       date: orderState[i].product.createdAt,
       action: (
         <>
-          <Link to="/" className=" fs-3 text-danger">
+          {/* <Link to="/" className=" fs-3 text-danger">
             <BiEdit />
           </Link>
           <Link className="ms-3 fs-3 text-danger" to="/">
             <AiFillDelete />
-          </Link>
+          </Link> */}
+
+          <Input></Input>
         </>
       ),
     });
   }
   return (
-    <div>
-      <h3 className="mb-4 title">View Order</h3>
-      <div>
-        <Table columns={columns} dataSource={data1} />
+
+
+
+    <>
+
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-8">
+
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+
+                  <Table></Table>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+            <div class="card mb-4">
+              <h2 class="fw-bolder">Khách hàng</h2>
+
+                <Form>
+
+
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+
+    </>
+
   );
 };
 
