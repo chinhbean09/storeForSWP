@@ -182,7 +182,7 @@ console.log(state)
 
   return (
     <Wrapper>
-      {!isSuccess ? <LoadingSpinner /> : 
+      
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">
@@ -250,7 +250,7 @@ console.log(state)
                       {errors.unit_err && <span className='error'>{errors.unit_err}</span>}
                     </Form.Item>
                     <Form.Item label="Price">
-                      <Input type="number" name='price' value={price} onChange={handleInputChange} />
+                      <Input type="number" name='price' value={price} onChange={handleInputChange} min={1000}/>
                       {errors.price_err && <span className='error'>{errors.price_err}</span>}
                     </Form.Item>
               
@@ -285,7 +285,7 @@ console.log(state)
 
           </div>
         </div>
-      </div>}
+      </div>
     </Wrapper>
 
   );

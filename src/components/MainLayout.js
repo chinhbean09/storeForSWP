@@ -40,7 +40,7 @@ const MainLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">DC</span>
+            <span className="sm-logo"></span>
             <span className="lg-logo">The laundry</span>
           </h2>
         </div>
@@ -60,11 +60,11 @@ const MainLayout = () => {
               icon: <AiOutlineDashboard className="fs-4" />,
               label: "Bảng Điều Khiển",
             },
-            {
-              key: "customers",
-              icon: <AiOutlineUser className="fs-4" />,
-              label: "Khách Hàng",
-            },
+            // {
+            //   key: "customers",
+            //   icon: <AiOutlineUser className="fs-4" />,
+            //   label: "Khách Hàng",
+            // },
             {
               key: "Catalog",
               icon: <AiOutlineShoppingCart className="fs-4" />,
@@ -110,10 +110,10 @@ const MainLayout = () => {
           )}
           <div className="d-flex gap-4 align-items-center">
             <div className="position-relative"  >
-              <IoIosNotifications className="fs-4" style={{ width: '30px' }}/>
+              {/* <IoIosNotifications className="fs-4" style={{ width: '30px' }}/>
               <span className="badge bg-warning rounded-circle p-1 position-absolute">
                 3
-              </span>
+              </span> */}
             </div>
 
             <div className="d-flex gap-3 align-items-center dropdown">

@@ -21,31 +21,27 @@ const columns = [
     dataIndex: "key",
   },
   {
-    title: "Name",
+    title: "Tên",
     dataIndex: "name",
-    sorter: (a, b) => a.name.length - b.title.name,
+    // sorter: (a, b) => a.name.length - b.title.name,
   },
+  
   {
-    title: "Description",
-    dataIndex: "description",
-    sorter: (a, b) => a.description.length - b.description.length,
-  },
-  {
-    title: "material",
+    title: "Chất liệu",
     dataIndex: "materials",
 
   },
   {
-    title: "cloth",
+    title: "Loại áo",
     dataIndex: "cloth",
 
   },
   {
-    title: "unit",
+    title: "Đơn vị tính",
     dataIndex: "unit",
   },
   {
-    title: "Price",
+    title: "Giá",
     dataIndex: "price",
     sorter: (a, b) => a.price - b.price,
   },
@@ -75,8 +71,7 @@ const Productlist = () => {
     }
   }
 
-
-
+  
 
 
   useEffect(() => {
@@ -99,7 +94,7 @@ const Productlist = () => {
       key: i + 1,
       id: productState[i].id,
       name: productState[i].name,
-      description: productState[i].description,
+      
       materials: productState[i].materials.map((material) => material.name + " "),
       price: productState[i].details[0].price,
       unit: productState[i].details[0].unit,
@@ -123,10 +118,10 @@ const Productlist = () => {
     <div>
       <div className="btn-add">
         <Link to={'add'}>
-          <button className='add-staff-btn'>ADD NEW PRODUCT</button>
+          <button className='add-staff-btn'>THÊM MỚI DỊCH VỤ</button>
         </Link>
       </div>
-      <h3 className="mb-4 title">Products</h3>
+      <h3 className="mb-4 title">Dịch vụ</h3>
  
         <div>
         {!isSuccess ? <LoadingSpinner /> :   <Table columns={columns} dataSource={data1} />}
