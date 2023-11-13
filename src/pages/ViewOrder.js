@@ -40,12 +40,13 @@ const columns = [
 
 
 const ViewOrder = () => {
-  
+
   const { userInfoDTO } = useSelector((state) => state.auth);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [order, setOrder] = useState();
- 
+  const [error, setError] = useState("");
+
   const [isLoading, setLoading] = useState(true);
   const [standard, setStandard] = useState();
 
@@ -55,7 +56,7 @@ const ViewOrder = () => {
   };
 
   const { id } = useParams()
- 
+
 
 
   const onFinish = (e) => {
@@ -66,8 +67,8 @@ const ViewOrder = () => {
     } else {
       updateWeight(item.id, e.weight);
       updateOrder(id, 3)
-      
-   
+
+
     }
     navigate(`/admin/order/${id}`)
 
@@ -75,46 +76,57 @@ const ViewOrder = () => {
   };
 
   const getOrder = async (id) => {
+    try {
+      setError("");
+      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/order/${id}`, {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          'ngrok-skip-browser-warning': 'true'
 
-    const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/order/${id}`, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
+        },
+      })
 
-      },
-    })
-
-    if(res.status === 200 ){
-      setOrder(res.data);
-   
+      if (res.status === 200) {
+        setOrder(res.data);
+        
+        setLoading(false)
+      } else {
+        setLoading(true)
+      
+      }
+    } catch (error) {
       setLoading(false)
-    }else{
-      setLoading(true)
+      setError(error.toJSON().message)
     }
 
-  }
-
-  const getPrices= async (id) => {
-
-    const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/standard-service/prices?store=${id}`, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
-
-      },
-    })
-
-    setStandard(res.data);
 
   }
 
-  
+  const getPrices = async (id) => {
+    try {
+      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/standard-service/prices?store=${id}`, {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          'ngrok-skip-browser-warning': 'true'
+
+        },
+      })
+
+      setStandard(res.data);
+    } catch (error) {
+      setError(error.message)
+    }
+
+
+  }
+
+
 
 
   const updateOrder = async (id, values) => {
@@ -128,14 +140,14 @@ const ViewOrder = () => {
 
       },
     })
-    if(res.status === 200 ){
+    if (res.status === 200) {
       setOrder(res.data)
       setLoading(false)
-    }else{
+    } else {
       setLoading(true)
     }
-     
-  
+
+
 
   }
 
@@ -150,20 +162,20 @@ const ViewOrder = () => {
 
       },
     })
-    
-   
+
+
 
   }
 
 
- 
+
 
 
   function generateCurrency(params) {
     return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
   }
 
-  
+
 
 
   function checkStandardd(params) {
@@ -185,35 +197,35 @@ const ViewOrder = () => {
     });
   }
 
-  console.log(standard)
+ 
 
 
   const data2 = useState([]);
   for (let i = 0; i < standard?.length; i++) {
     data2.push({
-      from:  standard[i].from,
-      to:  standard[i].to
+      from: standard[i].from,
+      to: standard[i].to
     })
 
 
   }
-  const min =  data2.reduce(function(prev, current) {
+  const min = data2.reduce(function (prev, current) {
     return (prev && prev.from < current.from) ? prev : current
-  }) 
+  })
 
-  const max =  data2.reduce(function(prev, current) {
+  const max = data2.reduce(function (prev, current) {
     return (prev && prev.to > current.to) ? prev : current
-  }) 
+  })
 
   console.log(min.from + "&" + max.to)
   useEffect(() => {
-   
-      getOrder(id);
-      getPrices(userInfoDTO.id)
-    
-    
-   
-}, [])
+
+    getOrder(id);
+    getPrices(userInfoDTO.id)
+
+
+
+  }, [])
 
   function renderComponent(params) {
     return (
@@ -251,8 +263,12 @@ const ViewOrder = () => {
 
 
               </Form>
-
             case 2:
+              return <h2 style={{ color: "blue", textAlign: "center" }}>Đang chờ lấy hàng...</h2>
+            case 3:
+              return <h2 style={{ color: "blue", textAlign: "center" }}>Đơn đang vận chuyển đến cửa hàng</h2>
+
+            case 4:
               return <Form
 
                 form={form}
@@ -274,8 +290,12 @@ const ViewOrder = () => {
                   <Button success size="large" type="primary" htmlType="submit" style={{ minWidth: "18rem" }}>Xác nhận hoàn thành</Button>
                 </Form.Item>
               </Form>
-            case 3:
+            case 5:
               return <h2 style={{ color: "blue", textAlign: "center" }}>Đơn sẵn sàng vận chuyển</h2>
+            case 6:
+              return <h2 style={{ color: "red", textAlign: "center" }}>Đơn đang vận chuyển</h2>
+            case 7:
+              return <h2 style={{ color: "red", textAlign: "center" }}>Đơn đã hoàn thành</h2>
 
             case 0:
               return <h2 style={{ color: "red", textAlign: "center" }}>Đơn đã hủy</h2>
@@ -288,15 +308,14 @@ const ViewOrder = () => {
   }
 
 
-
+console.log(error.length)
 
   return (
 
 
 
     <>
-
-      {isLoading ? <LoadingSpinner/> :<div class="container-fluid py-2">
+      {error.length < 1 ? ( isLoading ? <LoadingSpinner/> : <div class="container-fluid py-2">
         <div class="row">
           <div class="col-lg-8">
 
@@ -306,7 +325,7 @@ const ViewOrder = () => {
                   <label className="d-flex start display-7 pb-2">Chi tiết đơn hàng</label>
 
                   <h6 className="d-flex float-start">Ngày đặt:   {order ? (order?.orderDate) : ""}</h6>
-                  {order? <Table dataSource={data1} columns={columns} pagination={false}></Table> : ""}
+                  {order ? <Table dataSource={data1} columns={columns} pagination={false}></Table> : ""}
 
                 </div>
                 <div class="row p-3 float-end">
@@ -328,7 +347,7 @@ const ViewOrder = () => {
 
 
                       </div>
-                      <h4 style={{ textAlign: "right", color: "green" }}>{order ? (generateCurrency(order?.total)) : ""}</h4>
+                      <h4 style={{ textAlign: "right", color: "green" }}>{order.total ? (generateCurrency(order?.total)) : ""}</h4>
 
                     </div>
 
@@ -417,8 +436,9 @@ const ViewOrder = () => {
 
         </div>
       </div>
- }
-      
+      ) : <><h2 style={{color:"red"}}>{error}</h2></>}
+
+
 
     </>
 

@@ -25,8 +25,8 @@ function renderComponent(params) {
 
 
           case 2:
-            return (<Tag color="orange" key={1}>
-              Đang chờ xác nhận
+            return (<Tag color="cyan" key={2}>
+              Đang chờ lấy đồ từ khách...
             </Tag>);
 
 
@@ -41,8 +41,23 @@ function renderComponent(params) {
 
 
           case 4:
-            return (<Tag color="green" key={4}>
-              Đã hoàn thành
+            return (<Tag color="yellow" key={4}>
+              Đơn đang xử lý
+            </Tag>);
+
+          case 5:
+            return (<Tag color="blue" key={5}>
+              Đơn sẵn sàng vận chuyển
+            </Tag>);
+
+          case 6:
+            return (<Tag color="cyan" key={6}>
+              Đơn đang được vận chuyển đến khách
+            </Tag>);
+
+          case 7:
+            return (<Tag color="green" key={7}>
+              Đơn đã 
             </Tag>);
 
 
