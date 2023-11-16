@@ -103,7 +103,15 @@ console.log(state)
 
 
   const updateService = async (id, data) => {
-    const res = await axios.put(`${URL}/update/${id}`, data, config);
+    const res = await axios.put(`${URL}/update/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        'ngrok-skip-browser-warning': 'true'
+
+      },
+    } );
     if (res.status === 200) {
       toast.success(`Updated Product with ID: ${id} successfully ~`);
       navigate('/admin/list-product');
@@ -113,7 +121,15 @@ console.log(state)
   
 
   const addNewService = async (data) => {
-    const res = await axios.post(`${URL}/create`, data, config);
+    const res = await axios.post(`${URL}/create`, data,  {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        'ngrok-skip-browser-warning': 'true'
+
+      },
+    });
     if (res.status === 200 || res.status === 201) {
       toast.success("New Product has been added successfully ~");
       navigate('/admin/list-product');

@@ -61,12 +61,12 @@ const ViewOrder = () => {
 
   const onFinish = (e) => {
     const item = order.items[checkStandardd(data1)];
-    console.log(item.id)
-    if (item < 0) {
-      updateOrder(id, e.status)
+    console.log("sssss" +item)
+    if (checkStandardd(data1) < 0) {
+      updateOrder(id,5)
     } else {
       updateWeight(item.id, e.weight);
-      updateOrder(id, 3)
+      updateOrder(id,5)
 
 
     }
