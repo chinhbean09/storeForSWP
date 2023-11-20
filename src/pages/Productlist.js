@@ -63,8 +63,9 @@ const Productlist = () => {
       console.log(res)
       if (res.status === 200) {
         //re-render Data
-        // dispatch(getProducts());
+      
         toast.success("Deleted Successfully ~");
+        dispatch(getProducts(userInfoDTO.id));
       } else {
         toast.error("Delete: Error!");
       }

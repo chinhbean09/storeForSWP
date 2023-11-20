@@ -57,7 +57,7 @@ function renderComponent(params) {
 
           case 7:
             return (<Tag color="green" key={7}>
-              Đơn đã 
+              Đơn đã hoàn thành
             </Tag>);
 
 
@@ -95,7 +95,7 @@ const columns = [
   {
     title: "Ngày Đặt Hàng",
     dataIndex: "date",
-    //sorter: (a, b) => a.name.length - b.title.name,
+    
   },
   {
     title: "Khách hàng",
@@ -106,18 +106,20 @@ const columns = [
     title: "Trạng Thái",
     dataIndex: "status",
     key: "status",
+    sorter: (a,b) => a.status - b.status,
     render: (status) => (
-      <>
+      <>               
         {renderComponent(status)}
 
       </>
+    
 
     )
   },
   {
     title: "Tổng Giá",
     dataIndex: "total",
-    sorter: (a, b) => a.total - b.total,
+    
   },
   {
     title: "Hành Động",

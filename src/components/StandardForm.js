@@ -128,7 +128,7 @@ const StandardDetailForm = () => {
     form
       .validateFields()
       .then((values) => {
-        if (standardService !== undefined) {
+        if (standardService?.id !== undefined) {
 
           updateStandardService(standardService?.id, values);
         }
@@ -165,71 +165,76 @@ const StandardDetailForm = () => {
 
   return (
     <Wrapper>
-      {!isSuccess ? <LoadingSpinner /> :
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-8">
-              <div class="card mb-4">
-                <div class="card-body">
-                  <h2>{standardService?.id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
-                  <Checkbox
-                    checked={componentDisabled}
-                    onChange={(e) => setComponentDisabled(e.target.checked)}
-                  >
-                    Form disabled
-                  </Checkbox>
+      {standardService.id && isSuccess ? (<div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-body">
+                <h2>{standardService?.id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
+                <Checkbox
+                  checked={componentDisabled}
+                  onChange={(e) => setComponentDisabled(e.target.checked)}
+                >
+                  Form disabled
+                </Checkbox>
 
-                  <Form
-                    form={form}
-                    labelCol={{
-                      span: 4,
-                    }}
-                    wrapperCol={{
-                      span: 14,
-                    }}
-                    layout="horizontal"
-                    disabled={componentDisabled}
-                    style={{
-                      maxWidth: 1600,
-                    }}
-                    onFinish={handleSubmit}
+                <Form
+                  form={form}
+                  labelCol={{
+                    span: 4,
+                  }}
+                  wrapperCol={{
+                    span: 14,
+                  }}
+                  layout="horizontal"
+                  disabled={componentDisabled}
+                  style={{
+                    maxWidth: 1600,
+                  }}
+                  onFinish={handleSubmit}
+                  initialValues={{
+                    name: standardService?.name,
+                    description: standardService?.description
+                  }}
 
-                  >
-                    <Form.Item label="Name" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
-                      <Input defaultValue={standardService.name} ></Input>
-                      {/* {errors.name_err && <span className='error'>{errors.name_err}</span>} */}
-                    </Form.Item>
-                    <Form.Item label="Description" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} >
-                      <TextArea defaultValue={standardService.description} rows={4} />
-                      {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
-                    </Form.Item>
-                    <Form.Item label="Upload" valuePropName="fileList">
-                      <Upload action="/upload.do" listType="picture-card">
-                        <div>
-                          <PlusOutlined />
-                          <div
-                            style={{
-                              marginTop: 8,
-                            }}
-                          >
-                            Upload
-                          </div>
+                >
+                  <Form.Item label="Name" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                    <Input defaultValue={standardService?.name} ></Input>
+                    {/* {errors.name_err && <span className='error'>{errors.name_err}</span>} */}
+                  </Form.Item>
+                  <Form.Item label="Description" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} >
+                    <TextArea rows={4} defaultValue={standardService?.description} />
+                    {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
+                  </Form.Item>
+                  <Form.Item label="Upload" valuePropName="fileList">
+                    <Upload action="/upload.do" listType="picture-card">
+                      <div>
+                        <PlusOutlined />
+                        <div
+                          style={{
+                            marginTop: 8,
+                          }}
+                        >
+                          Upload
                         </div>
-                      </Upload>
+                      </div>
+                    </Upload>
 
-                    </Form.Item>
-                    <Form.Item className="float-end">
-                      <button type='submit' className='form-button'>{standardService?.id ? "Update" : "Submit"}</button>
-                    </Form.Item>
+                  </Form.Item>
+                  <Form.Item className="float-end">
+                    <button type='submit' className='form-button'>{standardService?.id ? "Update" : "Submit"}</button>
+                  </Form.Item>
 
-                  </Form>
-                </div>
+                </Form>
               </div>
-              <h3 className="px-5 fw-bold">Bảng Giá : </h3>
-              <TableEditable /> 
             </div>
+            {standardService?.id ? (<><h3 className="px-5 fw-bold">Bảng Giá : </h3>
+              <TableEditable /></>) : ""}
+
           </div>
-        </div>}
+        </div>
+      </div>): <LoadingSpinner/>}
+      
     </Wrapper>
 
   );
