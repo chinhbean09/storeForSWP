@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service/prices";
 
 
-const ModalForm = ({ open,  onCancel}) => {
+const ModalForm = ({ open,  onCancel , reset}) => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const addNewService = async (data) => {
@@ -22,7 +22,7 @@ const ModalForm = ({ open,  onCancel}) => {
         if (res.status === 200) {
           toast.success(`Tạo mới thành công`);
           navigate('/admin/laundry');
-          
+         
 
         }
       }
@@ -83,6 +83,7 @@ const ModalForm = ({ open,  onCancel}) => {
                     .then((values) => {
                         form.resetFields();
                         addNewService(values);
+                        reset();
                         onCancel();
                     })
                     .catch((info) => {

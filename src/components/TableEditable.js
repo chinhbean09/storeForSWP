@@ -255,7 +255,7 @@ const TableEditable = () => {
                         setOpen(true);
                     }}
                 >
-                    Add new price
+                    Thêm giá mới
                 </Button>
                 <ModalForm
                     open={open}
