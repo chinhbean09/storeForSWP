@@ -46,7 +46,7 @@ const EditableCell = ({
 const TableEditable = () => {
 
 
-    const [data, setData ] = useState([]);
+    const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -54,27 +54,27 @@ const TableEditable = () => {
 
     const [editingKey, setEditingKey] = useState('');
     const { userInfoDTO } = useSelector((state) => state.auth);
-      useEffect(() => {
+    useEffect(() => {
         getPricesOfStandardService(userInfoDTO.id);
         console.log(getPricesOfStandardService);
     }, []);
-    
+
     const getPricesOfStandardService = async (id) => {
-        const res = await axios.get(`${URL}/prices?store=${id}`,{
-          headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-            'ngrok-skip-browser-warning': 'true'
-      
-          },
+        const res = await axios.get(`${URL}/prices?store=${id}`, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                'ngrok-skip-browser-warning': 'true'
+
+            },
         });
         if (res.status === 200) {
             setData(res.data);
         }
     }
 
-  
+
 
     const updateService = async (id, data) => {
         const res = await axios.put(`${URL}/prices/update/${id}`, data, {
@@ -93,7 +93,7 @@ const TableEditable = () => {
         }
     }
     const deleteService = async (id) => {
-        const res = await axios.delete(`${URL}/prices/delete/${id}`,{
+        const res = await axios.delete(`${URL}/prices/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
                 Accept: "application/json",
@@ -235,16 +235,16 @@ const TableEditable = () => {
 
 
     const dataSource = []
-    for(let i = 0; i < data.length; i++){
+    for (let i = 0; i < data.length; i++) {
         dataSource.push({
-        key: data[i].id,
-        from: data[i].from,
-        to:data[i].to,
-        price:data[i].price,
-        unit:data[i].unit,
-      })
+            key: data[i].id,
+            from: data[i].from,
+            to: data[i].to,
+            price: data[i].price,
+            unit: data[i].unit,
+        })
     }
-  
+
     return (
         <div className='p-4'>
             <div className='p-3 d-flex float-end'>
@@ -263,10 +263,10 @@ const TableEditable = () => {
                     onCancel={() => {
                         setOpen(false);
                     }}
-                    reset={()=>{
+                    reset={() => {
                         getPricesOfStandardService(userInfoDTO.id)
                     }}
-                    
+
                 />
             </div>
 
