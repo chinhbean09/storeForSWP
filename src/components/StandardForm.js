@@ -165,9 +165,11 @@ const StandardDetailForm = () => {
 
   return (
     <Wrapper>
-      {standardService.id && isSuccess ? (<div class="container-fluid">
+
+      <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">
+         
             <div class="card mb-4">
               <div class="card-body">
                 <h2>{standardService?.id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
@@ -228,12 +230,13 @@ const StandardDetailForm = () => {
                 </Form>
               </div>
             </div>
+
             {standardService?.id ? (<><h3 className="px-5 fw-bold">Bảng Giá : </h3>
               <TableEditable /></>) : ""}
 
           </div>
         </div>
-      </div>): <LoadingSpinner/>}
+      </div>
       
     </Wrapper>
 

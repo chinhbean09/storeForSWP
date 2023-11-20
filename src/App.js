@@ -13,6 +13,7 @@ import ViewOrder from "./pages/ViewOrder";
 import StandardDetailForm from "./components/StandardForm";
 import SpecialDetailForm from "./components/SpecialService";
 import LaundryService from "./pages/LaundryService";
+import CreateStore from "./pages/CreateStore";
 function App() {
   return (
     <Router>
@@ -23,8 +24,9 @@ function App() {
         <Route path="/reset-password" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
         <Route path="/admin" element={<MainLayout />}>       
-          <Route index element={<Dashboard />} />          
+          <Route index element={<Dashboard />} />       
           <Route path="orders" element={<Orders />} />
+          <Route path="design-store" element={<CreateStore />} />
           <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
           <Route path="list-product" element={<Productlist />} />

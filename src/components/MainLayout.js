@@ -6,22 +6,15 @@ import {
   AiOutlineUser,
   AiOutlineBgColors,
 } from "react-icons/ai";
-import { RiCouponLine } from "react-icons/ri";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { ImBlog } from "react-icons/im";
-import { IoIosNotifications } from "react-icons/io";
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
-import { SiBrandfolder } from "react-icons/si";
-import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { base_url } from "../utils/baseUrl";
 import { logout } from "../features/auth/authSlice";
-
 
 const { Header, Sider, Content } = Layout;
 
@@ -60,11 +53,11 @@ const MainLayout = () => {
               icon: <AiOutlineDashboard className="fs-4" />,
               label: "Bảng Điều Khiển",
             },
-            // {
-            //   key: "customers",
-            //   icon: <AiOutlineUser className="fs-4" />,
-            //   label: "Khách Hàng",
-            // },
+            {
+              key: "design-store",
+              icon: <AiOutlineDashboard className="fs-4" />,
+              label: "Thiết Kế Cửa Hàng",
+            },
             {
               key: "Catalog",
               icon: <AiOutlineShoppingCart className="fs-4" />,
