@@ -57,7 +57,7 @@ const districts = [
     value: "Quận 8",
   },
   {
-    value: "Quận 9",
+    value: "Quan 9",
   },
 ];
 
@@ -76,7 +76,9 @@ const CreateStore = (props) => {
 
   const data = {
     name: state.name,
-    address: state.address
+    address: state.address,
+    district: state.district,
+    phone: state.phone
   }
   
 
@@ -98,13 +100,30 @@ const CreateStore = (props) => {
     }
   }
 
+  
+
+  const updateStore = async (data) => {
+    const res = await axios.put(`${URL}/update`, data, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        'ngrok-skip-browser-warning': 'true'
+
+      },
+    });
+    if (res.status === 200 || res.status === 201) {
+      toast.success("New Information has been added successfully ~");
+      navigate('/admin/design-store');
+    }
+  }
+
     useEffect(() => {
+
       getInfoStore();
       
     },[]);
-    console.log(data.address)
-
-  // console.log(state)
+    console.log(data)
 
   const designStore = async (data) => {
     const res = await axios.post(`${URL}/create`, data, {
@@ -126,30 +145,6 @@ const CreateStore = (props) => {
   const validateForm = () => {
     let isValid = true;
     let errors = { ...error_init };
-
-    // if (name.trim() === '') {
-    //   errors.name_err = 'Name is Required';
-    //   isValid = false;
-    // }
-
-    // if (description.trim() === '') {
-    //   errors.description_err = 'Description is required';
-    //   isValid = false;
-    // }
-    // if (isNaN(price) || parseInt(price) < 1000 || price === '') {
-    //   errors.price_err = 'Price must be a positive number and more than or equal 1000';
-    //   isValid = false;
-    // }
-    // if (unit.trim() === '') {
-    //   errors.unit_err = 'Unit is Required';
-    //   isValid = false;
-    // }
-    // if (!Array.isArray(materials) || materials.length === 0) {
-    //   errors.materials_err = 'Material is Required'; // Sửa thông báo lỗi thành "Material is Required"
-    //   isValid = false;
-    // }
-
-
     setErrors(errors);
     return isValid;
   }
@@ -158,28 +153,17 @@ const CreateStore = (props) => {
     form
       .validateFields()
       .then((values) => {
-        // if (store?.id !== undefined) {
-
-        //   updateStandardService(standardService?.id, values);
-        // }
-
-        // else {
-        console.log(values)
-        
-        designStore(values);
-        // }
+        if (state.id) updateStore(state);
+        else designStore(values);
+     
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
       });
   }
-  // if (validateForm()) {
-  //     designStore(event);
-  // } else {
-  //   toast.error("Some info is invalid ~ Pls check again");
-  // }
-  // console.log(event)
-  //}
+  
+  console.log(state.id)
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -196,11 +180,15 @@ const CreateStore = (props) => {
     if (event && event.target) {
       let { name, value } = event.target;
       setState((state) => ({ ...state, [name]: value }));
+      
     }
+  };
+  const handleDistrictChange = (event) => {
+    setState({...state, district: event});
   };
 
   const [componentDisabled, setComponentDisabled] = useState(true);
-
+  console.log(data.district)
   return (
     <Wrapper>
 
@@ -232,41 +220,33 @@ const CreateStore = (props) => {
                   }}
                   
                   onFinish={handleSubmit}
-
-                  
                 >
 
                   <br />
 
-                  {/* <Form.Item label="Name">
-                    <Input type="text" name='name' value={name} onChange={handleInputChange} />
-                    {errors.name_err && <span className='error'>{errors.name_err}</span>}
-                  </Form.Item> */}
-
                   <Form.Item label="Name">
-                    <Input name='name' defaultValue={name} rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} />
+                    <Input type="text" name='name' value={data.name} onChange={handleInputChange} />
                     {errors.name_err && <span className='error'>{errors.name_err}</span>}
-
                   </Form.Item>
-
                   <Form.Item label="Địa Chỉ" >
-                    <Input  name='address' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} value={data.address} />
+                    <Input  type="text" name='address' value={data.address}  rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} onChange={handleInputChange}/>
                     {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
                   </Form.Item>
-
-                  <Form.Item label="Quận Cửa Hàng" name="district">
-
+{/*  */}
+                  <Form.Item label="Quận Cửa Hàng" >
                     <Select
+                      name="district"
                       size='large'
                       placeholder="Please select"
-                      value={district}
-                      onChange={handleInputChange}
-                      options={districts}
-                    />
-
+                      value={data.district}
+                      onChange={handleDistrictChange}
+                      style={{
+                        width: '100%',
+                      }}
+                      options={districts}/>
                   </Form.Item>
 
-                  <Form.Item label="Phone" name="phone"
+                  <Form.Item label="Số Điện Thoại " 
                     rules={[
                       {
                         required: true,
@@ -275,9 +255,10 @@ const CreateStore = (props) => {
                     ]}
                   >
                     <Input
+                    name="phone"
                       type="text"
-                      value={phone}
-                      // onChange={handleInputChange}
+                      value={data.phone}
+                      onChange={handleInputChange}
                       // addonBefore={prefixSelector}
                       style={{
                         width: "100%",
