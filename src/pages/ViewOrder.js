@@ -61,12 +61,12 @@ const ViewOrder = () => {
 
   const onFinish = (e) => {
     const item = order.items[checkStandardd(data1)];
-    console.log("sssss" +item)
+    console.log("sssss" + item)
     if (checkStandardd(data1) < 0) {
-      updateOrder(id,5)
+      updateOrder(5)
     } else {
       updateWeight(item.id, e.weight);
-      updateOrder(id,5)
+      updateOrder(5)
 
 
     }
@@ -78,7 +78,7 @@ const ViewOrder = () => {
   const getOrder = async (id) => {
     try {
       setError("");
-      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/order/${id}`, {
+      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/${id}`, {
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
           "Accept": "application/json",
@@ -91,11 +91,11 @@ const ViewOrder = () => {
 
       if (res.status === 200) {
         setOrder(res.data);
-        
+
         setLoading(false)
       } else {
         setLoading(true)
-      
+
       }
     } catch (error) {
       setLoading(false)
@@ -107,7 +107,7 @@ const ViewOrder = () => {
 
   const getPrices = async (id) => {
     try {
-      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/standard-service/prices?store=${id}`, {
+      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service/prices?store=${id}`, {
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
           "Accept": "application/json",
@@ -129,33 +129,31 @@ const ViewOrder = () => {
 
 
 
-  const updateOrder = async (id, values) => {
+  const updateOrder = async (values) => {
 
-    const res = await axios.put(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/order/update/${id}?status=${values}`, {
+    const res = await axios.put(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/update/${id}?status=${values}`,null,{
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
         'ngrok-skip-browser-warning': 'true'
 
-      },
-    })
+      }
+    },)
     if (res.status === 200) {
       setOrder(res.data)
       setLoading(false)
     } else {
       setLoading(true)
     }
-
-
-
   }
 
-  const updateWeight = async (id, values) => {
+  const updateWeight = async (values) => {
 
-    const res = await axios.put(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/order/item/update/${id}?weight=${values}`, {
+    const res = await axios.put(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/item/update/${id}?weight=${values}`,null,{
+     
       headers: {
-
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
         'ngrok-skip-browser-warning': 'true'
@@ -197,7 +195,7 @@ const ViewOrder = () => {
     });
   }
 
- 
+
 
 
   const data2 = useState([]);
@@ -242,12 +240,12 @@ const ViewOrder = () => {
                 <Form.Item name="confirm" style={{ paddingTop: "20px" }}>
 
 
-                  <Button success onClick={() => updateOrder(order?.id, 2)} style={{ marginRight: '40px' }} size="large" type="primary">Xác nhận</Button>
+                  <Button success onClick={() => updateOrder(2)} style={{ marginRight: '40px' }} size="large" type="primary">Xác nhận</Button>
 
                   <Popconfirm
                     title="Hủy đơn hàng"
                     description="Bạn thật sự muốn từ chối đơn hàng này ?"
-                    onConfirm={() => updateOrder(order?.id, 0)}
+                    onConfirm={() => updateOrder(0)} 
 
                     okText="Xác nhận"
                     cancelText="Hủy"
@@ -293,9 +291,9 @@ const ViewOrder = () => {
             case 5:
               return <h2 style={{ color: "blue", textAlign: "center" }}>Đơn sẵn sàng vận chuyển</h2>
             case 6:
-              return <h2 style={{ color: "red", textAlign: "center" }}>Đơn đang vận chuyển</h2>
+              return <h2 style={{ color: "cyan", textAlign: "center" }}>Đơn đang vận chuyển</h2>
             case 7:
-              return <h2 style={{ color: "red", textAlign: "center" }}>Đơn đã hoàn thành</h2>
+              return <h2 style={{ color: "#33ff33", textAlign: "center" }}>Đơn đã hoàn thành</h2>
 
             case 0:
               return <h2 style={{ color: "red", textAlign: "center" }}>Đơn đã hủy</h2>
@@ -308,14 +306,14 @@ const ViewOrder = () => {
   }
 
 
-console.log(error.length)
+  console.log(error.length)
 
   return (
 
 
 
     <>
-      {error.length < 1 ? ( isLoading ? <LoadingSpinner/> : <div class="container-fluid py-2">
+      {error.length < 1 ? (isLoading ? <LoadingSpinner /> : <div class="container-fluid py-2">
         <div class="row">
           <div class="col-lg-8">
 
@@ -436,7 +434,7 @@ console.log(error.length)
 
         </div>
       </div>
-      ) : <><h2 style={{color:"red"}}>{error}</h2></>}
+      ) : <><h2 style={{ color: "red" }}>{error}</h2></>}
 
 
 
