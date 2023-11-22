@@ -160,14 +160,10 @@ console.log(state)
       errors.materials_err = 'Material is Required'; // Sửa thông báo lỗi thành "Material is Required"
       isValid = false;
     }
-    
-
     setErrors(errors);
     return isValid;
   }
-
   const handleSubmit = (event) => {
-
     //event.preventDefault();
     if (validateForm()) {
       if (id) updateService(id, state);
@@ -189,7 +185,6 @@ console.log(state)
 
   
   const handleMaterialInputChange = (event) => {
-
     setState({...state, materials: event});
    
   }
