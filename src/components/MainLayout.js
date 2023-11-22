@@ -32,10 +32,12 @@ const MainLayout = () => {
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
-          <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo"></span>
+          <Link to="/" style={{fontSize:'26px', textDecoration: 'none'}}>
+          <h2 className="text-white text-center py-3 mb-0">
+            <span className="sm-logo">Store</span>
             <span className="lg-logo">The laundry</span>
           </h2>
+          </Link>
         </div>
         <Menu
           theme="dark"
