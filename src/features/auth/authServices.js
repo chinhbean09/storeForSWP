@@ -12,7 +12,7 @@ const login = async (userInfoDTO) => {
 };
 
 const register = async (userInfoDTO) => {
-  const response = await axios.post(`${base_url}userInfoDTO/register`, userInfoDTO);
+  const response = await axios.post(`${base_url}auth/register`, userInfoDTO);
   if (response.data) {
     localStorage.setItem("access_token", JSON.stringify(response.data.access_token));
     localStorage.setItem("userInfoDTO", JSON.stringify(response.data.userInfoDTO));

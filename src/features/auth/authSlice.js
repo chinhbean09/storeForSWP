@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
     }
   }
 );
-export const signup = createAsyncThunk(
+export const register = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
     try {
@@ -81,17 +81,17 @@ export const authSlice = createSlice({
       })
      
       
-      .addCase(signup.pending, (state) => {
+      .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(signup.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state, action) => {
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.createdUser = action.payload;
+        state.userInfoDTO = action.payload.userInfoDTO;
         state.message = "success";
       })
-      .addCase(signup.rejected, (state, action) => {
+      .addCase(register.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
