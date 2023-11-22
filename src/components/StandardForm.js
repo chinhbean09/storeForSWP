@@ -177,7 +177,7 @@ const StandardDetailForm = () => {
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}
                 >
-                  Form disabled
+                  Biểu mẫu bị vô hiệu hóa
                 </Checkbox>
 
                 <Form
@@ -208,7 +208,7 @@ const StandardDetailForm = () => {
                     <TextArea rows={4} defaultValue={standardService?.description} />
                     {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
                   </Form.Item>
-                  <Form.Item label="Upload" valuePropName="fileList">
+                  <Form.Item label="Tải lên" valuePropName="fileList">
                     <Upload action="/upload.do" listType="picture-card">
                       <div>
                         <PlusOutlined />

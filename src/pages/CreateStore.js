@@ -197,12 +197,12 @@ const CreateStore = (props) => {
           <div class="col-lg-8">
             <div class="card mb-4">
               <div class="card-body">
-                <h2>{"Design Store"}</h2>
+                <h2>{"Đăng ký cửa hàng"}</h2>
                 <br></br>
                 <Checkbox
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}>
-                  Form disabled
+                  Biểu mẫu bị vô hiệu hóa
                 </Checkbox>
 
                 <Form
@@ -266,7 +266,7 @@ const CreateStore = (props) => {
                     />
                   </Form.Item>
 
-                  <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
+                  <Form.Item label="Tải lên" valuePropName="fileList" getValueFromEvent={normFile}>
                     <Upload action="/upload.do" listType="picture-card">
                       <div>
                         <PlusOutlined />

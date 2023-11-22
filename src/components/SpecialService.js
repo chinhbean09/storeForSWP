@@ -148,8 +148,8 @@ console.log(state)
       errors.description_err = 'Description is required';
       isValid = false;
     }
-    if (isNaN(price) || parseInt(price) < 1000 || price === '') {
-      errors.price_err = 'Price must be a positive number and more than or equal 1000';
+    if (isNaN(price) || parseInt(price) < 1|| price === '') {
+      errors.price_err = 'Price must be a positive number and more than or equal 1';
       isValid = false;
     }
     if (unit.trim() === '') {
@@ -261,7 +261,7 @@ console.log(state)
                       {errors.unit_err && <span className='error'>{errors.unit_err}</span>}
                     </Form.Item>
                     <Form.Item label="Price">
-                      <Input type="number" name='price' value={price} onChange={handleInputChange} min={1000}/>
+                      <Input type="number" name='price' value={price} onChange={handleInputChange} min={1}/>
                       {errors.price_err && <span className='error'>{errors.price_err}</span>}
                     </Form.Item>
               
