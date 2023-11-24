@@ -5,12 +5,10 @@ import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Checkbox, Form, Input, Upload, Select } from 'antd';
-import { config } from "../utils/axiosconfig";
-
-// const { TextArea } = Input;
+import { useDispatch, useSelector } from "react-redux";
+import {createStore,getStore,updateStore} from "../features/store/storeSlice"
 
 const initialState = {
-
   name: '',
   address: '',
   district: '',
@@ -65,14 +63,20 @@ const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store";
 
 const CreateStore = (props) => {
 
-  
+  const { userInfoDTO } = useSelector((state) => state.auth);
   const { Option } = Select;
   const [form] = Form.useForm();
-
+  const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
   const { name, address, district, phone } = state;
+  
+  useEffect(() => {
+    dispatch(getStore(userInfoDTO.id));
+  }, [dispatch]);
+
+  const { store } = useSelector((state) => state.store);
 
   const data = {
     name: state.name,
@@ -80,50 +84,8 @@ const CreateStore = (props) => {
     district: state.district,
     phone: state.phone
   }
-  
 
-  
   const [errors, setErrors] = useState(error_init);
-
-  const getInfoStore = async () => {
-    const res = await axios.get(`${URL}/get`, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
-      },
-    });
-
-    if (res.status === 200) {
-      setState(res.data);
-    }
-  }
-
-  
-
-  const updateStore = async (data) => {
-    const res = await axios.put(`${URL}/update`, data, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
-
-      },
-    });
-    if (res.status === 200 || res.status === 201) {
-      toast.success("New Information has been added successfully ~");
-      navigate('/admin/design-store');
-    }
-  }
-
-    useEffect(() => {
-
-      getInfoStore();
-      
-    },[]);
-    console.log(data)
 
   const designStore = async (data) => {
     const res = await axios.post(`${URL}/create`, data, {
@@ -132,7 +94,6 @@ const CreateStore = (props) => {
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
         'ngrok-skip-browser-warning': 'true'
-
       },
     });
     if (res.status === 200 || res.status === 201) {
@@ -150,19 +111,17 @@ const CreateStore = (props) => {
   }
 
   const handleSubmit = (event) => {
-    form
-      .validateFields()
-      .then((values) => {
-        if (state.id) updateStore(state);
-        else designStore(values);
-     
+    form.validateFields().then((values) => {
+       
+      if(store?.id !== undefined){
+        updateStore(store?.id,values);
+      } else {dispatch(createStore(values));}
+
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
       });
   }
-  
-  console.log(state.id)
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -176,11 +135,11 @@ const CreateStore = (props) => {
       </Select>
     </Form.Item>
   );
+
   const handleInputChange = (event) => {
     if (event && event.target) {
       let { name, value } = event.target;
       setState((state) => ({ ...state, [name]: value }));
-      
     }
   };
   const handleDistrictChange = (event) => {
@@ -188,23 +147,21 @@ const CreateStore = (props) => {
   };
 
   const [componentDisabled, setComponentDisabled] = useState(true);
-  console.log(data.district)
+
   return (
     <Wrapper>
-
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">
             <div class="card mb-4">
               <div class="card-body">
-                <h2>{"Đăng ký cửa hàng"}</h2>
+                <h2>{store?.id? " Cập nhật thông tin cửa hàng": "Đăng ký thông tin cửa hàng"}</h2>
                 <br></br>
                 <Checkbox
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}>
                   Biểu mẫu bị vô hiệu hóa
                 </Checkbox>
-
                 <Form
                   form={form}
                   labelCol={{
@@ -218,63 +175,51 @@ const CreateStore = (props) => {
                   style={{
                     maxWidth: 1600,
                   }}
-                  
-                  onFinish={handleSubmit}
-                >
-
-                  <br />
-
-                  <Form.Item label="Name">
-                    <Input type="text" name='name' value={data.name} onChange={handleInputChange} />
-                    {errors.name_err && <span className='error'>{errors.name_err}</span>}
+                  fields={[
+                    {
+                      name: ["name"],
+                      value: store?.name,
+                    },
+                    {
+                      name:["district"],
+                      value: store?.district,
+                    },
+                    {
+                      name:["address"],
+                      value: store?.address
+                    },
+                    {
+                      name:["phone"],
+                      value: store?.phone 
+                    }
+                    
+                  ]} onFinish={handleSubmit}>
+                  <Form.Item label="Tên Cửa Hàng" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                    <Input  defaultValue={store?.name} ></Input>
                   </Form.Item>
-                  <Form.Item label="Địa Chỉ" >
-                    <Input  type="text" name='address' value={data.address}  rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} onChange={handleInputChange}/>
-                    {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
+                  <Form.Item label="Địa Chỉ" name='address' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                    <Input  defaultValue={store?.address} ></Input>
                   </Form.Item>
-{/*  */}
-                  <Form.Item label="Quận Cửa Hàng" >
+                  <Form.Item label="Quận Cửa Hàng" name="district" rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
                     <Select
-                      name="district"
                       size='large'
                       placeholder="Please select"
-                      value={data.district}
-                      onChange={handleDistrictChange}
-                      style={{
-                        width: '100%',
-                      }}
+                      defaultValue={store?.district}
                       options={districts}/>
                   </Form.Item>
-
-                  <Form.Item label="Số Điện Thoại " 
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your phone number!",
-                      },
-                    ]}
-                  >
+                  <Form.Item label="Số Điện Thoại" name="phone" rules={[{required: true,message: "Please input your phone number!"}]}>
                     <Input
-                    name="phone"
                       type="text"
-                      value={data.phone}
-                      onChange={handleInputChange}
-                      // addonBefore={prefixSelector}
+                      value={store?.phone}
                       style={{
-                        width: "100%",
-                      }}
-                    />
+                        width: "100%",}}/>
                   </Form.Item>
 
                   <Form.Item label="Tải lên" valuePropName="fileList" getValueFromEvent={normFile}>
                     <Upload action="/upload.do" listType="picture-card">
                       <div>
                         <PlusOutlined />
-                        <div
-                          style={{
-                            marginTop: 8,
-                          }}
-                        >
+                        <div style={{marginTop: 8,}}>
                           Upload
                         </div>
                       </div>
@@ -282,9 +227,8 @@ const CreateStore = (props) => {
 
                   </Form.Item>
                   <Form.Item className="float-end">
-                    <button type='submit' className='form-button'>{id ? "Update" : "Submit"}</button>
+                    <button type='submit' className='form-button'>{store?.id ? "Update" : "Submit"}</button>
                   </Form.Item>
-
                 </Form>
               </div>
             </div>
@@ -385,5 +329,5 @@ const Wrapper = styled.section`
     }
   }
 `;
-
+ 
 export default CreateStore;

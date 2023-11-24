@@ -135,6 +135,7 @@ console.log(state)
       navigate('/admin/list-product');
     }
   }
+  
   const validateForm = () => {
     let isValid = true;
     let errors = { ...error_init };
@@ -193,7 +194,6 @@ console.log(state)
 
   return (
     <Wrapper>
-      
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">

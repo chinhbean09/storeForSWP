@@ -1,27 +1,17 @@
 import styled from "styled-components";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AiFillStar } from 'react-icons/ai';
 import React, { useState, useEffect } from 'react';
 import { Checkbox, Form, Input, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { config } from "../utils/axiosconfig";
 import TableEditable from "./TableEditable";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewStandardService, getStandardService, resetState, } from "../features/product/productSlice";
-import { useForm } from "antd/es/form/Form";
+import { addNewStandardService, getStandardService, resetState} from "../features/product/productSlice";
 import { base_url } from "../utils/baseUrl";
-import LoadingSpinner from "./LoadingSpinner";
 
 const { TextArea } = Input;
-const initialState = {
-  id: '',
-  name: '',
-  price: '',
-  description: '',
-  imageBanner: '',
-}
 
 const error_init = {
   name_err: '',
@@ -40,10 +30,6 @@ const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-serv
 
 const StandardDetailForm = () => {
   const { userInfoDTO } = useSelector((state) => state.auth);
-  //const [state, setState] = useState(initialState);
-
-  //const { id, name, description, imageBanner } = standardService;
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -52,45 +38,12 @@ const StandardDetailForm = () => {
     dispatch(resetState())
     dispatch(getStandardService(userInfoDTO.id));
 
-    // form.setFieldsValue({
-    //   name: standardService?.name,
-    //   description: standardService?.description
-    // });
-
   }, [dispatch]);
+
   const { standardService, isSuccess } = useSelector((state) => state.product);
-
-
 
   const [errors, setErrors] = useState(error_init);
 
-
-
-
-
-
-
-
-
-
-
-  // const validateForm = () => {
-  //   let isValid = true;
-  //   let errors = { ...error_init };
-
-  //   if (name.trim() === '') {
-  //     errors.name_err = 'Name is Required';
-  //     isValid = false;
-  //   }
-
-  //   if (description.trim() === '') {
-  //     errors.description_err = 'Description is required';
-  //     isValid = false;
-  //   }
-
-  //   setErrors(errors);
-  //   return isValid;
-  // }
   const updateStandardService = async (id, data) => {
     const res = await axios.put(`${base_url}store/standard-service/update/${id}`, data, {
       headers: {
@@ -98,7 +51,6 @@ const StandardDetailForm = () => {
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
         'ngrok-skip-browser-warning': 'true'
-
       },
     });
     if (res.status === 200) {
@@ -106,25 +58,9 @@ const StandardDetailForm = () => {
       toast.success(`Updated Product with ID: ${id} successfully ~`);
       navigate('/admin/laundry');
     }
-
   }
-  // const getStandardService = async (id) => {
-  //   const res = await axios.get(`${base_url}store/standard-service/get?store=${id}`,{
-  //     headers: {
-  //       Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-  //       Accept: "application/json",
-  //       "Access-Control-Allow-Origin": "*",
-  //       'ngrok-skip-browser-warning': 'true'
-
-  //     },
-  //   });
-  //   if(res.status === 200){
-  //     setState(res.data)
-  //   }
-  // }
 
   const handleSubmit = (event) => {
-
     form
       .validateFields()
       .then((values) => {
@@ -141,11 +77,6 @@ const StandardDetailForm = () => {
         console.log('Validate Failed:', info);
       });
   }
-
-  // const handleInputChange = (event) => {
-  //   let { name, value } = event.target;
-  //   setState((state) => ({ ...state, [name]: value }));
-  // }
 
   const [componentDisabled, setComponentDisabled] = useState(true);
 

@@ -1,5 +1,4 @@
 import axios from "axios";
-//import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 
@@ -17,7 +16,6 @@ const getProducts = async (id) => {
   });
   return response.data;
 };
-
 
 
 const createProduct = async (product) => {
@@ -42,11 +40,11 @@ const updateStandardService = async (id,data) => {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       'ngrok-skip-browser-warning': 'true'
-
     },
   });
   return res.data;
 }
+
 const addNewStandardService = async (data) => {
   const res = await axios.post(`${base_url}store/standard-service/create`, data, {
     headers: {
@@ -54,7 +52,6 @@ const addNewStandardService = async (data) => {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
       'ngrok-skip-browser-warning': 'true'
-
     },
   });
   return res.data;
