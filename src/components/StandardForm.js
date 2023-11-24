@@ -26,8 +26,6 @@ const normFile = (e) => {
   }
   return e?.fileList;
 };
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service";
-
 const StandardDetailForm = () => {
   const { userInfoDTO } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -65,11 +63,8 @@ const StandardDetailForm = () => {
       .validateFields()
       .then((values) => {
         if (standardService?.id !== undefined) {
-
           updateStandardService(standardService?.id, values);
-        }
-
-        else {
+        } else {
           dispatch(addNewStandardService(values));
         }
       })
@@ -79,7 +74,6 @@ const StandardDetailForm = () => {
   }
 
   const [componentDisabled, setComponentDisabled] = useState(true);
-
 
   function starRating(params) {
     const stars = [];
@@ -100,17 +94,14 @@ const StandardDetailForm = () => {
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">
-         
             <div class="card mb-4">
               <div class="card-body">
                 <h2>{standardService?.id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
                 <Checkbox
                   checked={componentDisabled}
-                  onChange={(e) => setComponentDisabled(e.target.checked)}
-                >
+                  onChange={(e) => setComponentDisabled(e.target.checked)}>
                   Biểu mẫu bị vô hiệu hóa
                 </Checkbox>
-
                 <Form
                   form={form}
                   labelCol={{

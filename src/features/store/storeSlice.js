@@ -1,12 +1,13 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import storeService from "./storeService";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
+import useStoreService from "./storeService";
+import { toast } from "react-toastify";
 
 
 export const createStore = createAsyncThunk(
     "store/create",
     async (storeData, thunkAPI) => {
       try {
-        return await storeService.addNewStore(storeData);
+        return await useStoreService.createStore(storeData);
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
       }
@@ -19,8 +20,7 @@ export const createStore = createAsyncThunk(
      
       try {
         const {id, values} = data;
-        console.log(data)
-        return await storeService.updateStore(`${id}`, values);
+        return await useStoreService.updateStore(id , values);
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
       }
@@ -31,12 +31,14 @@ export const createStore = createAsyncThunk(
     "store/get",
     async (id, thunkAPI) => {
       try {
-        return await storeService.getStore(id);
+        return await useStoreService.getStore(id);
       } catch (error) {
         return thunkAPI.rejectWithValue(error);
       }
     }
   );
+
+  export const resetState = createAction("Reset_all");
 
   const initialState = {
     store:[],
@@ -76,6 +78,7 @@ export const createStore = createAsyncThunk(
           state.isLoading = false;
           state.isError = false;
           state.isSuccess = true;
+          toast.success(`Đã thiết kế thành công cửa hàng của bạn `);
           state.addStore = action.payload;
         })
         .addCase(createStore.rejected, (state, action) => {
@@ -100,6 +103,7 @@ export const createStore = createAsyncThunk(
           state.isSuccess = false;
           state.message = action.error;
         })
+        .addCase(resetState, () => initialState);
     },
   });
   export default storeSlice.reducer;

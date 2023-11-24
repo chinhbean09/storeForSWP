@@ -48,7 +48,6 @@ export const getStandardService = createAsyncThunk(
 export const updateStandardService = createAsyncThunk(
   "product/standard/update",
   async (data,thunkAPI) => {
-   
     try {
       const {id, values} = data;
       console.log(data)

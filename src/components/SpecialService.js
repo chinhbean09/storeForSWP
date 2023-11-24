@@ -6,7 +6,6 @@ import React, { useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Checkbox, Form, Input, Upload, Radio, Select, Space } from 'antd';
 import { config } from "../utils/axiosconfig";
-import LoadingSpinner from "./LoadingSpinner";
 
 const { TextArea } = Input;
 

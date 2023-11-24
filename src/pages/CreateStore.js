@@ -4,9 +4,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import React, { useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Checkbox, Form, Input, Upload, Select } from 'antd';
+import { Checkbox, Form, Input, Upload, Select, InputNumber } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
-import {createStore,getStore,updateStore} from "../features/store/storeSlice"
+import {createStore,getStore, resetState} from "../features/store/storeSlice"
+import { base_url } from "../utils/baseUrl";
+
 
 const initialState = {
   name: '',
@@ -55,7 +57,7 @@ const districts = [
     value: "Quận 8",
   },
   {
-    value: "Quan 9",
+    value: "Quận 9",
   },
 ];
 
@@ -71,24 +73,37 @@ const CreateStore = (props) => {
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
   const { name, address, district, phone } = state;
-  
+
   useEffect(() => {
+
+    dispatch(resetState())
     dispatch(getStore(userInfoDTO.id));
   }, [dispatch]);
 
   const { store } = useSelector((state) => state.store);
+  
 
-  const data = {
-    name: state.name,
-    address: state.address,
-    district: state.district,
-    phone: state.phone
-  }
+
 
   const [errors, setErrors] = useState(error_init);
 
-  const designStore = async (data) => {
-    const res = await axios.post(`${URL}/create`, data, {
+  const handleSubmit = (event) => {
+    form.validateFields().then((values) => {
+      if(store?.id !== undefined){
+        updateStore(store?.id,values);
+        
+      } else {
+        console.log(values)
+        dispatch (createStore(values)
+        );}
+      })
+      .catch((info) => {
+        console.log('Validate Failed:', info);
+      });
+  }
+
+  const updateStore = async (id,data) => {
+    const res = await axios.put(`${base_url}store/update?store=${id}`,data,{
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
         Accept: "application/json",
@@ -96,55 +111,12 @@ const CreateStore = (props) => {
         'ngrok-skip-browser-warning': 'true'
       },
     });
-    if (res.status === 200 || res.status === 201) {
-      toast.success("New Information has been added successfully ~");
+    if (res.status === 200) {
+      toast.success(`Đã thiết kế thành công cửa hàng của bạn `);
       navigate('/admin/design-store');
     }
+    return res.data;
   }
-
-
-  const validateForm = () => {
-    let isValid = true;
-    let errors = { ...error_init };
-    setErrors(errors);
-    return isValid;
-  }
-
-  const handleSubmit = (event) => {
-    form.validateFields().then((values) => {
-       
-      if(store?.id !== undefined){
-        updateStore(store?.id,values);
-      } else {dispatch(createStore(values));}
-
-      })
-      .catch((info) => {
-        console.log('Validate Failed:', info);
-      });
-  }
-
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-      >
-        <Option value="84">+84</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
-
-  const handleInputChange = (event) => {
-    if (event && event.target) {
-      let { name, value } = event.target;
-      setState((state) => ({ ...state, [name]: value }));
-    }
-  };
-  const handleDistrictChange = (event) => {
-    setState({...state, district: event});
-  };
 
   const [componentDisabled, setComponentDisabled] = useState(true);
 
@@ -175,6 +147,7 @@ const CreateStore = (props) => {
                   style={{
                     maxWidth: 1600,
                   }}
+                  onFinish={handleSubmit}
                   fields={[
                     {
                       name: ["name"],
@@ -193,24 +166,24 @@ const CreateStore = (props) => {
                       value: store?.phone 
                     }
                     
-                  ]} onFinish={handleSubmit}>
-                  <Form.Item label="Tên Cửa Hàng" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                  ]}>
+                  <Form.Item label="Tên Cửa Hàng" name='name' rules={[{  required: true, message: `Vui lòng nhập tên cửa hàng !` }]}>
                     <Input  defaultValue={store?.name} ></Input>
                   </Form.Item>
-                  <Form.Item label="Địa Chỉ" name='address' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                  <Form.Item label="Địa Chỉ" name='address' rules={[{ required: true, message: `Vui lòng nhập địa chỉ !` }]}>
                     <Input  defaultValue={store?.address} ></Input>
                   </Form.Item>
-                  <Form.Item label="Quận Cửa Hàng" name="district" rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                  <Form.Item label="Quận Cửa Hàng" name="district" rules={[{ required: true, message: `Vui lòng chọn quận cửa hàng !` }]}>
                     <Select
                       size='large'
-                      placeholder="Please select"
+                      placeholder="Chọn Quận Cửa Hàng"
                       defaultValue={store?.district}
                       options={districts}/>
                   </Form.Item>
-                  <Form.Item label="Số Điện Thoại" name="phone" rules={[{required: true,message: "Please input your phone number!"}]}>
-                    <Input
+                  <Form.Item label="Số Điện Thoại" name="phone" rules={[{required: true,message: "Vui lòng nhập số điện thoại!"}]}>
+                    <InputNumber
                       type="text"
-                      value={store?.phone}
+                      defaultValue={store?.phone}
                       style={{
                         width: "100%",}}/>
                   </Form.Item>
