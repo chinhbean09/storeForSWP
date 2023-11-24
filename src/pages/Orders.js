@@ -148,7 +148,7 @@ const Orders = () => {
     });
     if (res.status === 200) {
       setState(res.data);
-    }
+    } else {}
   }
 
   //const orderState = useSelector((state) => state.auth.orders);

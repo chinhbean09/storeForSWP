@@ -116,6 +116,7 @@ const CreateStore = (props) => {
       toast.success(`Đã thiết kế thành công cửa hàng của bạn `);
       navigate('/admin/design-store');
       setForceRerender(!forceRerender);
+      setComponentDisabled(true)
     }
     return res.data;
   }
