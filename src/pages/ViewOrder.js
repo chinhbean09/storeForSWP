@@ -148,7 +148,7 @@ const ViewOrder = () => {
     }
   }
 
-  const updateWeight = async (values) => {
+  const updateWeight = async (id,values) => {
 
     const res = await axios.put(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/item/update/${id}?weight=${values}`,null,{
      
@@ -169,11 +169,17 @@ const ViewOrder = () => {
 
 
 
+  // function generateCurrency(params) {
+  //   return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  // }
+
   function generateCurrency(params) {
-    return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    return params.toLocaleString('it-IT', {
+      style: 'currency',
+      currency: 'VND',
+      minimumFractionDigits: 2, // Đảm bảo hiển thị ít nhất 2 chữ số thập phân
+    });
   }
-
-
 
 
   function checkStandardd(params) {
@@ -188,6 +194,7 @@ const ViewOrder = () => {
       quantity: order.items[i].quantity,
       price: order.items[i].laundryService.isStandard ? "" : generateCurrency(order.items[i].laundryService.details[0].price),
       total: generateCurrency(order.items[i].total),
+      
 
 
       isStandard: order.items[i].laundryService.isStandard ? ("Giặt sấy") : ("Giặt hấp")
@@ -337,15 +344,11 @@ const ViewOrder = () => {
 
                         <h5>Tổng chi phí:</h5>
 
-
                       </div>
                       <div className="col-2" style={{ textAlign: "left" }}>
 
-
-
-
                       </div>
-                      <h4 style={{ textAlign: "right", color: "green" }}>{order.total ? (generateCurrency(order?.total)) : ""}</h4>
+                      <h4 style={{ textAlign: "right", color: "green" }}>{order.total ? generateCurrency(order?.total) : ""}</h4>
 
                     </div>
 
@@ -353,16 +356,8 @@ const ViewOrder = () => {
 
                 </div>
 
-
-
-
-
-
               </div>
             </div>
-
-
-
 
           </div>
 
@@ -373,22 +368,10 @@ const ViewOrder = () => {
               <div className="card m-3">
 
                 {renderComponent(order?.status)}
-
-
-
-
-
-
               </div>
-
-
-
-
             </div>
 
             <div className="card mb-4 p-3">
-
-
 
               <h5 class="fw-bolder">Thông tin khách hàng</h5>
 
@@ -409,20 +392,10 @@ const ViewOrder = () => {
                     <p>{order?.user?.phone}</p>
                   </div>
 
-
-
                 </div>
 
 
-
-
-
               </div>
-
-
-
-
-
 
 
 
