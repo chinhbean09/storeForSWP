@@ -78,6 +78,7 @@ export const createStore = createAsyncThunk(
           state.isLoading = false;
           state.isError = false;
           state.isSuccess = true;
+          state.store = action.payload || null;
           toast.success(`Đã thiết kế thành công cửa hàng của bạn `);
           state.addStore = action.payload;
         })

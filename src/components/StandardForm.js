@@ -31,12 +31,12 @@ const StandardDetailForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [forceRerender, setForceRerender] = useState(false); // state for forceUpdate
 
   useEffect(() => {
-    dispatch(resetState())
+    dispatch(resetState());
     dispatch(getStandardService(userInfoDTO.id));
-
-  }, [dispatch]);
+  }, [dispatch, forceRerender]); // include forceRerender in dependencies
 
   const { standardService, isSuccess } = useSelector((state) => state.product);
 
@@ -46,33 +46,36 @@ const StandardDetailForm = () => {
     const res = await axios.put(`${base_url}store/standard-service/update/${id}`, data, {
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'ngrok-skip-browser-warning': 'true',
       },
     });
     if (res.status === 200) {
       console.log(res.data);
       toast.success(`Updated Product with ID: ${id} successfully ~`);
       navigate('/admin/laundry');
+      setForceRerender(!forceRerender); // trigger a re-render
     }
-  }
+  };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     form
       .validateFields()
-      .then((values) => {
+      .then(async (values) => {
         if (standardService?.id !== undefined) {
-          updateStandardService(standardService?.id, values);
+          await updateStandardService(standardService?.id, values);
         } else {
-          dispatch(addNewStandardService(values));
+          await dispatch(addNewStandardService(values));
         }
+        navigate('/admin/laundry');
+        setForceRerender(!forceRerender); // trigger a re-render
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
       });
-  }
-
+  };
+  
   const [componentDisabled, setComponentDisabled] = useState(true);
 
   function starRating(params) {
@@ -116,17 +119,23 @@ const StandardDetailForm = () => {
                     maxWidth: 1600,
                   }}
                   onFinish={handleSubmit}
-                  initialValues={{
-                    name: standardService?.name,
-                    description: standardService?.description
-                  }}
-
-                >
-                  <Form.Item label="Name" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                  fields={[
+                    {
+                      name: ["name"],
+                      value: standardService?.name,
+                    },
+                    {
+                      name:["description"],
+                      value: standardService?.description,
+                    },
+                    
+                    
+                  ]}>
+                  <Form.Item label="Tên Dịch Vụ" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
                     <Input defaultValue={standardService?.name} ></Input>
                     {/* {errors.name_err && <span className='error'>{errors.name_err}</span>} */}
                   </Form.Item>
-                  <Form.Item label="Description" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} >
+                  <Form.Item label="Mô tả" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} >
                     <TextArea rows={4} defaultValue={standardService?.description} />
                     {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
                   </Form.Item>
@@ -146,7 +155,7 @@ const StandardDetailForm = () => {
 
                   </Form.Item>
                   <Form.Item className="float-end">
-                    <button type='submit' className='form-button'>{standardService?.id ? "Update" : "Submit"}</button>
+                    <button type='submit' className='form-button'>{standardService?.id ? "Cập Nhật" : "Tạo"}</button>
                   </Form.Item>
 
                 </Form>

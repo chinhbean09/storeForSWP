@@ -73,29 +73,30 @@ const CreateStore = (props) => {
   const navigate = useNavigate();
   const [state, setState] = useState(initialState);
   const { name, address, district, phone } = state;
+  const [forceRerender, setForceRerender] = useState(false); // state for forceUpdate
+
 
   useEffect(() => {
 
     dispatch(resetState())
     dispatch(getStore(userInfoDTO.id));
-  }, [dispatch]);
+    dispatch(createStore())
+  }, [dispatch, forceRerender]);
 
   const { store } = useSelector((state) => state.store);
   
-
-
-
   const [errors, setErrors] = useState(error_init);
 
   const handleSubmit = (event) => {
     form.validateFields().then((values) => {
       if(store?.id !== undefined){
         updateStore(store?.id,values);
-        
       } else {
         console.log(values)
-        dispatch (createStore(values)
-        );}
+        dispatch (createStore(values));
+      }
+      navigate('/admin/design-store');
+      setForceRerender(!forceRerender);
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
@@ -114,6 +115,8 @@ const CreateStore = (props) => {
     if (res.status === 200) {
       toast.success(`Đã thiết kế thành công cửa hàng của bạn `);
       navigate('/admin/design-store');
+      setForceRerender(!forceRerender);
+      setComponentDisabled(true)
     }
     return res.data;
   }
@@ -133,7 +136,9 @@ const CreateStore = (props) => {
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}>
                   Biểu mẫu bị vô hiệu hóa
+              
                 </Checkbox>
+            
                 <Form
                   form={form}
                   labelCol={{
@@ -167,6 +172,7 @@ const CreateStore = (props) => {
                     }
                     
                   ]}>
+                       <br></br> 
                   <Form.Item label="Tên Cửa Hàng" name='name' rules={[{  required: true, message: `Vui lòng nhập tên cửa hàng !` }]}>
                     <Input  defaultValue={store?.name} ></Input>
                   </Form.Item>
@@ -200,7 +206,7 @@ const CreateStore = (props) => {
 
                   </Form.Item>
                   <Form.Item className="float-end">
-                    <button type='submit' className='form-button'>{store?.id ? "Update" : "Submit"}</button>
+                    <button type='submit' className='form-button'>{store?.id ? "Cập Nhật" : "Đăng ký"}</button>
                   </Form.Item>
                 </Form>
               </div>

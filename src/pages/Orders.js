@@ -21,53 +21,34 @@ function renderComponent(params) {
               </Tag>
 
             );
-
-
-
           case 2:
             return (<Tag color="cyan" key={2}>
               Đang chờ lấy đồ từ khách...
             </Tag>);
-
-
-
-
-
           case 3:
             return (<Tag color="blue" key={3}>
               Đang vận chuyển
             </Tag>);
-
-
-
           case 4:
             return (<Tag color="yellow" key={4}>
               Đơn đang xử lý
             </Tag>);
-
           case 5:
             return (<Tag color="blue" key={5}>
               Đơn sẵn sàng vận chuyển
             </Tag>);
-
           case 6:
             return (<Tag color="cyan" key={6}>
               Đơn đang được vận chuyển đến khách
             </Tag>);
-
           case 7:
             return (<Tag color="green" key={7}>
               Đơn đã hoàn thành
             </Tag>);
-
-
           case 0:
             return (<Tag color="red" key={0}>
               Đã hủy
             </Tag>);
-
-
-
           default:
             return null;
         }
@@ -79,14 +60,10 @@ function renderComponent(params) {
 function generateCurrency(params) {
   return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
 }
-
 function getDate(params) {
   const data = params?.split(".");
   return data[0];
-
 }
-
-
 const columns = [
   {
     title: "No",
@@ -110,16 +87,12 @@ const columns = [
     render: (status) => (
       <>               
         {renderComponent(status)}
-
       </>
-    
-
     )
   },
   {
     title: "Tổng Giá",
     dataIndex: "total",
-    
   },
   {
     title: "Hành Động",
@@ -137,17 +110,20 @@ const Orders = () => {
   }, []);
 
   const getHistoryOrders = async (id) => {
+    try {
     const res = await axios.get(`${URL}/${id}`, {
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
         'ngrok-skip-browser-warning': 'true'
-
       },
     });
     if (res.status === 200) {
       setState(res.data);
+    } 
+  } catch (error) {
+      console.error("Error:", error.message);
     }
   }
 
@@ -161,28 +137,26 @@ const Orders = () => {
       name: state[i].user.fullName,
       status: state[i].status,
 
-
-
-
       total: generateCurrency(state[i].total),
-
       action: (
         <>
           <Link to={`/admin/order/${state[i].id}`} className=" fs-3 text-danger">
             <BiEdit />
           </Link>
-          {/* <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
-          </Link> */}
+          
         </>
       ),
     });
   }
   return (
     <div>
-      <h3 className="mb-4 title">Quản lý đơn hàng</h3>
-      <div>{<Table columns={columns} dataSource={data1} />}</div>
-    </div>
+    <h3 className="mb-4 title">Quản lý đơn hàng</h3>
+    {state.length > 0 ? (
+      <Table columns={columns} dataSource={data1} />
+    ) : (
+      <p className="text-danger">Error fetching data. Please try again later.</p>
+    )}
+  </div>
   );
 };
 
