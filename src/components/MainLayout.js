@@ -15,7 +15,7 @@ import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authSlice";
-
+import withAuth from "../pages/withAuth";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -127,7 +127,7 @@ const MainLayout = () => {
                 aria-expanded="false"
               >
                 <h5 className="mb-0">{userInfoDTO.email}</h5>
-                <p className="mb-0">{userInfoDTO.fullName}</p>
+                <p className="mb-0">{userInfoDTO.fullName}</p>  
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -179,4 +179,4 @@ const MainLayout = () => {
     </Layout>
   );
 };
-export default MainLayout;
+export default withAuth(MainLayout);

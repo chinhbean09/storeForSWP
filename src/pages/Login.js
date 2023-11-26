@@ -14,8 +14,6 @@ let loginschema = yup.object().shape({
   password: yup.string().required("Password is Required"),
 });
 const Login = () => {
-
- 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formik = useFormik({
