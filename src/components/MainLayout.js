@@ -82,6 +82,11 @@ const MainLayout = () => {
               icon: <FaClipboardList className="fs-4" />,
               label: "Đơn Đặt Hàng",
             },
+            {
+              key: "manage-time",
+              icon: <FaClipboardList className="fs-4" />,
+              label: "Time Management",
+            },
           ]}
         />
       </Sider>

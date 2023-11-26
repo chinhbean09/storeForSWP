@@ -9,7 +9,7 @@ const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-serv
 const ModalForm = ({ open,  onCancel , reset}) => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
-    const addNewService = async (data) => {
+    const addNewTime = async (data) => {
         const res = await axios.post(`${URL}/create`, data, {
             headers: {
               Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
@@ -77,7 +77,7 @@ const ModalForm = ({ open,  onCancel , reset}) => {
                     .validateFields()
                     .then((values) => {
                         form.resetFields();
-                        addNewService(values);
+                        addNewTime(values);
                         reset();
                         onCancel();
                     })

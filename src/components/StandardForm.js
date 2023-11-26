@@ -78,19 +78,6 @@ const StandardDetailForm = () => {
   
   const [componentDisabled, setComponentDisabled] = useState(true);
 
-  function starRating(params) {
-    const stars = [];
-    for (let index = 0; index < params; index++) {
-      stars.push(<AiFillStar className='checked' key={index} />);
-    }
-    return stars;
-  }
-
-  function generateCurrency(params) {
-    return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-  }
-
-
   return (
     <Wrapper>
 

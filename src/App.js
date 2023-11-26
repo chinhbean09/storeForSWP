@@ -14,6 +14,7 @@ import StandardDetailForm from "./components/StandardForm";
 import SpecialDetailForm from "./components/SpecialService";
 import LaundryService from "./pages/LaundryService";
 import CreateStore from "./pages/CreateStore";
+import TimeManagement from "./pages/TimeManagement";
 function App() {
   return (
     <Router>
@@ -34,6 +35,8 @@ function App() {
           <Route path="list-product/update/:id" element={<SpecialDetailForm />} />
           <Route path="special-service/add" element={<StandardDetailForm />} />
           <Route path="special-service/update/:id" element={<StandardDetailForm />} />
+          <Route path="manage-time" element={<TimeManagement />} />
+
         </Route>
       </Routes>
     </Router> 

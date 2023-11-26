@@ -18,7 +18,7 @@ const EditableCell = ({
     min,
     ...restProps
 }) => {
-    const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+    const inputNode = inputType === 'number' ? <InputNumber min={min} /> : <Input />;
     return (
         <td {...restProps}>
             {editing ? (
@@ -33,7 +33,6 @@ const EditableCell = ({
                             message: `Vui lòng nhập ${title}!`,
                         },
                     ]}
-
                 >
                     {inputNode}
                 </Form.Item>
@@ -43,23 +42,20 @@ const EditableCell = ({
         </td>
     );
 };
-const TableEditable = () => {
-
-
+const EditTimePrice = () => {
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const [form] = Form.useForm();
-
-
     const [editingKey, setEditingKey] = useState('');
     const { userInfoDTO } = useSelector((state) => state.auth);
+
     useEffect(() => {
-        getPricesOfStandardService(userInfoDTO.id);
-        console.log(getPricesOfStandardService);
+        getPricesOfTime(userInfoDTO.id);
+        console.log(getPricesOfTime);
     }, []);
 
-    const getPricesOfStandardService = async (id) => {
+    const getPricesOfTime = async (id) => {
         const res = await axios.get(`${URL}/prices?store=${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
@@ -76,10 +72,10 @@ const TableEditable = () => {
 
 
 
-    const updateService = async (id, data) => {
+    const updateTime = async (id, data) => {
         const res = await axios.put(`${URL}/prices/update/${id}`, data, {
             headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Authorization: `Beare r ${JSON.parse(localStorage.getItem('access_token'))}`,
                 Accept: "application/json",
                 "Access-Control-Allow-Origin": "*",
                 'ngrok-skip-browser-warning': 'true'
@@ -88,11 +84,11 @@ const TableEditable = () => {
         });
         if (res.status === 200) {
             toast.success(`Cập nhật thành công !!!`);
-            getPricesOfStandardService(userInfoDTO.id);
+            getPricesOfTime(userInfoDTO.id);
             navigate('/admin/laundry');
         }
     }
-    const deleteService = async (id) => {
+    const deleteTime = async (id) => {
         const res = await axios.delete(`${URL}/prices/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
@@ -104,7 +100,7 @@ const TableEditable = () => {
         });
         if (res.status === 200) {
             toast.success(`Xóa thành công !!!`);
-            getPricesOfStandardService(userInfoDTO.id);
+            getPricesOfTime(userInfoDTO.id);
             navigate('/admin/laundry');
         }
     }
@@ -115,7 +111,6 @@ const TableEditable = () => {
             from: '',
             to: '',
             price: '',
-            unit: '',
             ...record,
         });
         setEditingKey(record.key);
@@ -136,7 +131,7 @@ const TableEditable = () => {
                     ...item,
                     ...row,
                 });
-                updateService(key, row)
+                updateTime(key, row)
                 setData(newData);
                 setEditingKey('');
             } else {
@@ -147,32 +142,33 @@ const TableEditable = () => {
             console.log('Validate Failed:', errInfo);
         }
     };
-
     const columns = [
         {
-            title: 'Từ',
+            title: 'Name',
+            dataIndex: 'from',
+            width: '15%',
+            editable: true, 
+        },
+
+        {
+            title: 'From',
             dataIndex: 'from',
             width: '15%',
             editable: true,
         },
         {
-            title: 'Đến',
+            title: 'To',
             dataIndex: 'to',
             width: '15%',
             editable: true,
         },
         {
-            title: 'Giá',
+            title: 'Price',
             dataIndex: 'price',
             width: '20%',
             editable: true,
         },
-        {
-            title: 'Đơn vị',
-            dataIndex: 'unit',
-            width: '10%',
-            editable: true,
-        },
+
         {
             title: 'operation',
             dataIndex: 'operation',
@@ -182,36 +178,27 @@ const TableEditable = () => {
                     <span>
                         <Typography.Link
                             onClick={() => save(record.key)}
-                            style={{
-                                marginRight: 8,
-                            }}
-                        >
-                            Lưu
+                            style={{marginRight: 8,}}>
+                            Save
                         </Typography.Link>
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                            <a style={{ color: "red" }}>Hủy</a>
+                            <a style={{ color: "red" }}>Cancel</a>
                         </Popconfirm>
                     </span>
                 ) : (<div className='px-1'>
                     <Typography.Link disabled={editingKey !== ''} style={{
                         marginRight: 8,
                     }} onClick={() => edit(record)}>
-                        Chỉnh sửa
+                        Edit
                     </Typography.Link>
-
                     <span>
                         {dataSource.length >= 1 ? (
-                            <Popconfirm disabled={editingKey !== ''} title="Sure to delete?" onConfirm={() => deleteService(record.key)} >
-                                <a style={{ color: "red" }}>Xóa</a>
+                            <Popconfirm disabled={editingKey !== ''} title="Sure to delete?" onConfirm={() => deleteTime(record.key)} >
+                                <a style={{ color: "red" }}>Delete</a>
                             </Popconfirm>
                         ) : null}
-
                     </span>
-
                 </div>
-
-
-
                 );
             },
         },
@@ -224,16 +211,14 @@ const TableEditable = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                inputType: col.dataIndex === 'unit' ? 'text' : 'number',
+                // inputType: col.dataIndex === 'unit' ? 'text' : 'number',
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
-                min: col.dataIndex === 'price' ? 10000 : 1
+                min: col.dataIndex === 'price' ? 10 : 1
             }),
         };
     });
-
-
     const dataSource = []
     for (let i = 0; i < data.length; i++) {
         dataSource.push({
@@ -241,22 +226,13 @@ const TableEditable = () => {
             from: data[i].from,
             to: data[i].to,
             price: data[i].price,
-            unit: data[i].unit,
         })
     }
 
     return (
         <div className='p-4'>
-            <div className='p-3 d-flex float-end'>
-                <Button
-
-                    type="primary"
-                    onClick={() => {
-                        setOpen(true);
-                    }}
-                >
-                    Thêm giá mới
-                </Button>
+            {/* <div className='p-3 d-flex float-end'>
+                
                 <ModalForm
                     open={open}
                     onCreate={save}
@@ -264,11 +240,11 @@ const TableEditable = () => {
                         setOpen(false);
                     }}
                     reset={() => {
-                        getPricesOfStandardService(userInfoDTO.id)
+                        getPricesOfTime(userInfoDTO.id)
                     }}
 
                 />
-            </div>
+            </div> */}
 
             <Form form={form} component={false}>
                 <Table
@@ -289,4 +265,4 @@ const TableEditable = () => {
 
     );
 };
-export default TableEditable;
+export default EditTimePrice;
