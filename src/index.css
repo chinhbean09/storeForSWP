@@ -76,3 +76,19 @@ main::-webkit-scrollbar {
   color: red;
   font-size: 12px;
 }
+.grid-three-column {
+  grid-template-columns: repeat(3, 1fr);
+}
+.text-danger1
+  {
+    font-size: 3.2rem;
+    color: rgb(218, 91, 91);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh; /* This ensures the container takes up the full height of the viewport */
+  }
+  .p-5{
+    padding: 2rem !important;
+  }

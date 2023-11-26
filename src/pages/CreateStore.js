@@ -130,12 +130,12 @@ const CreateStore = (props) => {
           <div class="col-lg-8">
             <div class="card mb-4">
               <div class="card-body">
-                <h2>{store?.id? " Cập nhật thông tin cửa hàng": "Đăng ký thông tin cửa hàng"}</h2>
+                <h2>{store?.id? "Update store information": "Register store information"}</h2>
                 <br></br>
                 <Checkbox
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}>
-                  Biểu mẫu bị vô hiệu hóa
+                  Form disabled
               
                 </Checkbox>
             
@@ -173,20 +173,20 @@ const CreateStore = (props) => {
                     
                   ]}>
                        <br></br> 
-                  <Form.Item label="Tên Cửa Hàng" name='name' rules={[{  required: true, message: `Vui lòng nhập tên cửa hàng !` }]}>
+                  <Form.Item label="Store name"  name='name' rules={[{  required: true, message: `Please enter store name!` }]}>
                     <Input  defaultValue={store?.name} ></Input>
                   </Form.Item>
-                  <Form.Item label="Địa Chỉ" name='address' rules={[{ required: true, message: `Vui lòng nhập địa chỉ !` }]}>
+                  <Form.Item label="Address" name='address' rules={[{ required: true, message: `Please enter store address!` }]}>
                     <Input  defaultValue={store?.address} ></Input>
                   </Form.Item>
-                  <Form.Item label="Quận Cửa Hàng" name="district" rules={[{ required: true, message: `Vui lòng chọn quận cửa hàng !` }]}>
+                  <Form.Item label="District" name="district" rules={[{ required: true, message: `Please select a store district!` }]}>
                     <Select
                       size='large'
-                      placeholder="Chọn Quận Cửa Hàng"
+                      placeholder="Select Store District"
                       defaultValue={store?.district}
                       options={districts}/>
                   </Form.Item>
-                  <Form.Item label="Số Điện Thoại" name="phone" rules={[{required: true,message: "Vui lòng nhập số điện thoại!"}]}>
+                  <Form.Item label="Phone number" name="phone" rules={[{required: true,message: "Please enter the phone number!"}]}>
                     <InputNumber
                       type="text"
                       defaultValue={store?.phone}
@@ -194,7 +194,7 @@ const CreateStore = (props) => {
                         width: "100%",}}/>
                   </Form.Item>
 
-                  <Form.Item label="Tải lên" valuePropName="fileList" getValueFromEvent={normFile}>
+                  <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
                     <Upload action="/upload.do" listType="picture-card">
                       <div>
                         <PlusOutlined />
@@ -206,7 +206,7 @@ const CreateStore = (props) => {
 
                   </Form.Item>
                   <Form.Item className="float-end">
-                    <button type='submit' className='form-button'>{store?.id ? "Cập Nhật" : "Đăng ký"}</button>
+                    <button type='submit' className='form-button'>{store?.id ? "Update" : "Register"}</button>
                   </Form.Item>
                 </Form>
               </div>

@@ -53,34 +53,34 @@ const MainLayout = () => {
             {
               key: "",
               icon: <AiOutlineDashboard className="fs-4" />,
-              label: "Bảng Điều Khiển",
+              label: "Dashboard",
             },
             {
               key: "design-store",
-              icon: <AiOutlineDashboard className="fs-4" />,
-              label: "Thiết Kế Cửa Hàng",
+              icon: <AiOutlineUser className="fs-4" />,
+              label: "Store Profile ",
             },
             {
               key: "Catalog",
               icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Mục Lục",
+              label: "Services",
               children: [
                 {
                   key: "list-product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Giặt Hấp",
+                  label: "Dry cleaning service",
                 },
                 {
                   key: "laundry",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Giặt Sấy",
+                  label: "Laundry service",
                 },
               ],
             },
             {
               key: "orders",
               icon: <FaClipboardList className="fs-4" />,
-              label: "Đơn Đặt Hàng",
+              label: "Order list",
             },
           ]}
         />

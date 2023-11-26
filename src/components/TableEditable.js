@@ -30,7 +30,7 @@ const EditableCell = ({
                     rules={[
                         {
                             required: true,
-                            message: `Vui lòng nhập ${title}!`,
+                            message: `Please enter ${title}!`,
                         },
                     ]}
 
@@ -87,7 +87,7 @@ const TableEditable = () => {
             },
         });
         if (res.status === 200) {
-            toast.success(`Cập nhật thành công !!!`);
+            toast.success(`Update successful !!!`);
             getPricesOfStandardService(userInfoDTO.id);
             navigate('/admin/laundry');
         }
@@ -103,7 +103,7 @@ const TableEditable = () => {
             },
         });
         if (res.status === 200) {
-            toast.success(`Xóa thành công !!!`);
+            toast.success(`Deleted successfully!!!`);
             getPricesOfStandardService(userInfoDTO.id);
             navigate('/admin/laundry');
         }
@@ -150,25 +150,25 @@ const TableEditable = () => {
 
     const columns = [
         {
-            title: 'Từ',
+            title: 'From',
             dataIndex: 'from',
             width: '15%',
             editable: true,
         },
         {
-            title: 'Đến',
+            title: 'To',
             dataIndex: 'to',
             width: '15%',
             editable: true,
         },
         {
-            title: 'Giá',
+            title: 'Price',
             dataIndex: 'price',
             width: '20%',
             editable: true,
         },
         {
-            title: 'Đơn vị',
+            title: 'Unit',
             dataIndex: 'unit',
             width: '10%',
             editable: true,
@@ -255,7 +255,7 @@ const TableEditable = () => {
                         setOpen(true);
                     }}
                 >
-                    Thêm giá mới
+                    Add new price
                 </Button>
                 <ModalForm
                     open={open}

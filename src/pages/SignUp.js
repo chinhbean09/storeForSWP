@@ -9,12 +9,12 @@ import { register } from "../features/auth/authSlice";
 let loginschema = yup.object().shape({
   email: yup
     .string()
-    .email("Email chưa hợp lệ")
-    .required("Yêu cầu nhập email"),
-  password: yup.string().required("Yêu cầu nhập mật khẩu"),
-  address: yup.string().required("Yêu cầu nhập địa chỉ"),
-  phone: yup.string().matches(/^[0-9]{10}$/g, 'Số điện thoại không hợp lệ'),
-  fullName: yup.string().matches(/^[\p{L}\s\-',.]+$/u, 'Họ và tên không hợp lệ')
+    .email("Email is not valid")
+    .required("Requires email entry"),
+  password: yup.string().required("Requires password entry"),
+  address: yup.string().required("Requires address entry"),
+  phone: yup.string().matches(/^[0-9]{10}$/g, 'invalid phone number'),
+  fullName: yup.string().matches(/^[\p{L}\s\-',.]+$/u, 'Full name is not valid')
 });
   
 const SignUp = () => {
@@ -75,7 +75,7 @@ const SignUp = () => {
           </div>
           <CustomInput
             type="password"
-            label="Mật khẩu"
+            label="Password"
             id="pass"
             name="password"
             onChng={formik.handleChange("password")}
@@ -88,7 +88,7 @@ const SignUp = () => {
           
           <CustomInput
                  type="text"
-                 label="Địa chỉ"
+                 label="Address"
                  id="address"
                  name="address"
                  onChng={formik.handleChange("address")}
@@ -100,7 +100,7 @@ const SignUp = () => {
                </div>
                 <CustomInput
                  type="text"
-                 label="Họ và tên"
+                 label="Full name"
                  id="fullName"
                  name="fullName"
                  onChng={formik.handleChange("fullName")}
@@ -112,7 +112,7 @@ const SignUp = () => {
                </div> 
                <CustomInput
                  type="text"
-                 label="Số điện thoại"
+                 label="Phone number"
                  id="phone"
                  name="phone"
                  onChng={formik.handleChange("phone")}

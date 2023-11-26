@@ -49,7 +49,7 @@ const ModalForm = ({ open,  onCancel , reset}) => {
         to: [
           { required: true, message: 'Required' },
           (formInstance) => ({
-            message: 'Giá trị của của "Đến" không được nhỏ hơn hoặc bằng giá trị của "Từ"',
+            message: 'The value of "To" cannot be less than or equal to the value of "From"',
             validator(rule, value) {
               if (value === null) {
                 return Promise.resolve();
@@ -70,8 +70,8 @@ const ModalForm = ({ open,  onCancel , reset}) => {
     return (
 
 
-        <Modal title=" Thêm mức giá mới" okText="Xác nhận"
-            cancelText="Hủy"
+        <Modal title=" Add new price" okText="Confirm"
+            cancelText="Cancel"
             open={open}
             onCancel={() => {
                 form.resetFields();
@@ -97,16 +97,16 @@ const ModalForm = ({ open,  onCancel , reset}) => {
             initialValues={{
                 modifier: 'public',
             }}>
-                <Form.Item label="Từ" name='from' rules={rules.from}>
+                <Form.Item label="From" name='from' rules={rules.from}>
                     <InputNumber min={1}/>
                 </Form.Item>
-                <Form.Item label="Đến" name='to' rules={rules.to}>
+                <Form.Item label="To" name='to' rules={rules.to}>
                     <InputNumber min={1} />
                 </Form.Item>
-                <Form.Item label="Giá" name='price' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !`}]}>
+                <Form.Item label="Price" name='price' rules={[{ required: true, message: `Please enter data!`}]}>
                     <InputNumber min={1000} />
                 </Form.Item>
-                <Form.Item label="Đơn vị tính" name='unit' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !`, }]}>
+                <Form.Item label="Unit" name='unit' rules={[{ required: true, message: `Please enter data!`, }]}>
                     <Input />
                 </Form.Item>
             </Form>

@@ -95,7 +95,6 @@ const Productlist = () => {
       key: i + 1,
       id: productState[i].id,
       name: productState[i].name,
-      
       materials: productState[i].materials.map((material) => material.name + " "),
       price: productState[i].details[0].price,
       unit: productState[i].details[0].unit,
@@ -119,10 +118,10 @@ const Productlist = () => {
     <div>
       <div className="btn-add">
         <Link to={'add'}>
-          <button className='add-staff-btn'>THÊM MỚI DỊCH VỤ</button>
+          <button className='add-staff-btn'>Add new service</button>
         </Link>
       </div>
-      <h3 className="mb-4 title">Dịch vụ</h3>
+      <h3 className="mb-4 title">Services</h3>
  
         <div>
         {!isSuccess ? <LoadingSpinner /> :   <Table columns={columns} dataSource={data1} />}
