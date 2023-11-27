@@ -53,34 +53,34 @@ const MainLayout = () => {
             {
               key: "",
               icon: <AiOutlineDashboard className="fs-4" />,
-              label: "Bảng Điều Khiển",
+              label: "Dashboard",
             },
             {
               key: "design-store",
               icon: <AiOutlineDashboard className="fs-4" />,
-              label: "Thiết Kế Cửa Hàng",
+              label: "Store Customized",
             },
             {
               key: "Catalog",
               icon: <AiOutlineShoppingCart className="fs-4" />,
-              label: "Mục Lục",
+              label: "Manage Services",
               children: [
                 {
                   key: "list-product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Giặt Hấp",
+                  label: "Dry Cleaning",
                 },
                 {
                   key: "laundry",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Giặt Sấy",
+                  label: "Laundry",
                 },
               ],
             },
             {
               key: "orders",
               icon: <FaClipboardList className="fs-4" />,
-              label: "Đơn Đặt Hàng",
+              label: "Orders",
             },
             {
               key: "manage-time",
@@ -117,14 +117,7 @@ const MainLayout = () => {
             </div>
 
             <div className="d-flex gap-3 align-items-center dropdown">
-              <div>
-                <img
-                  width={32}
-                  height={32}
-                  src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
-                  alt=""
-                />
-              </div>
+              
               <div
                 role="button"
                 id="dropdownMenuLink"
