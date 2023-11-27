@@ -12,46 +12,51 @@ const ModalTime = ({ open,  onCancel , reset}) => {
     const [time, setTime] = useState([]);
 
     const getTime = async () => {
-      const res = await axios.get("https://magpie-aware-lark.ngrok-free.app/api/v1/base/time", {
+      try {
+        const res = await axios.get("https://magpie-aware-lark.ngrok-free.app/api/v1/base/time", {
           headers: {
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-              Accept: "application/json",
-              "Access-Control-Allow-Origin": "*",
-              'ngrok-skip-browser-warning': 'true'
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+            'ngrok-skip-browser-warning': 'true'
           },
-      });
-      if (res.status === 200) {
+        });
+        if (res.status === 200) {
           setTime(res.data);
+        }
+      } catch (error) {
+        console.error("Error in getTime:", error);
       }
-  }
+    };
+
   useEffect(() => {
     getTime();
 }, []);
 
 const addNewTime = async (data) => {
-  try {
+    try {
       const res = await axios.post(`${URL}`, data, {
-          headers: {
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-              Accept: "application/json",
-              "Access-Control-Allow-Origin": "*",
-              'ngrok-skip-browser-warning': 'true'
-          },
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+          'ngrok-skip-browser-warning': 'true'
+        },
       });
       if (res.status === 200) {
-          toast.success(`Created successfully`);
-          navigate('');
+        toast.success(`Created successfully`);
+        navigate('/admin/manage-time');
+        reset(); // Trigger a re-fetch of the data in the parent component
+        onCancel();
       } else {
-          // Handle unexpected response status here
-          console.error(`Unexpected response status: ${res.status}`);
-          toast.error(`An error occurred while creating a new one.`);
+        console.error(`Unexpected response status: ${res.status}`);
+        toast.error(`An error occurred while creating a new one.`);
       }
-  } catch (error) {
-      // Handle network or other errors here
+    } catch (error) {
       console.error("Error in addNewTime:", error);
       toast.error(`An error occurred while creating a new one.`);
-  }
-};
+    }
+  };
 
     const layout = {
         labelCol: {
@@ -86,6 +91,7 @@ const addNewTime = async (data) => {
             },
           }),
         ],
+
         dateRange: [
           { required: true, message: 'Required' },
           (formInstance) => ({
@@ -118,8 +124,7 @@ const addNewTime = async (data) => {
                     .then((values) => {
                         form.resetFields();
                         addNewTime(values);
-                        reset();
-                        onCancel();
+                        
                     })
                     .catch((info) => {
                         console.log('Validate Failed:', info);
