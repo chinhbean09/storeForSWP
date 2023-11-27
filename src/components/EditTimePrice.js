@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, InputNumber, Popconfirm, Table, Typography, Button, Modal } from 'antd';
+import { Form, Input, InputNumber, Popconfirm, Table, Typography, Button, Modal, Alert } from 'antd';
 import ModalTime  from './ModalTime';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import {Switch} from 'antd';
 
 const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store";
-
 const EditableCell = ({
     editing,
     dataIndex,
@@ -44,12 +43,8 @@ const EditableCell = ({
         </td>
     );
 };
-
-
-
 const EditTimePrice = () => {
     const [data, setData] = useState([]);
-    const [time, setTime] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -60,40 +55,30 @@ const EditTimePrice = () => {
 
     useEffect(() => {
         getPricesOfTime(userInfoDTO.id);
-        getTime(userInfoDTO.id);
-        console.log(time);
     }, []);
+
+    console.log(data)
 
     //lấy tất cả giá 
     const getPricesOfTime = async (id) => {
-        const res = await axios.get(`${URL}/store-time`, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-            },
-        });
-        if (res.status === 200) {
-            setData(res.data);
+        try {
+            const res = await axios.get(`${URL}/store-time`, {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    'ngrok-skip-browser-warning': 'true'
+                },
+            });
+            if (res.status === 200) {
+                setData(res.data);
+            }
+        } catch (error) {
+            console.error("Error in getPricesOfTime:", error);
         }
     }
 
-    const getTime = async (id) => {
-        const res = await axios.get("https://magpie-aware-lark.ngrok-free.app/api/v1/base/time", {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-            },
-        });
-        if (res.status === 200) {
-            setTime(res.data);
-        }
-    }
 
-    
 
     const updateTime = async (id, data) => {
         try {
@@ -105,7 +90,6 @@ const EditTimePrice = () => {
                     'ngrok-skip-browser-warning': 'true'
                 },
             });
-
             if (res.status === 200) {
                 toast.success(`Cập nhật thành công !!!`);
                 getPricesOfTime(userInfoDTO.id);
@@ -121,7 +105,6 @@ const EditTimePrice = () => {
 
     const edit = (record) => {
         form.setFieldsValue({
-            
             price: '',
             dateRange:'',
             ...record,
@@ -131,7 +114,6 @@ const EditTimePrice = () => {
     const cancel = () => {
         setEditingKey('');
     };
-
 
     const save = async (key) => {
         try {
@@ -153,6 +135,7 @@ const EditTimePrice = () => {
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);
         }
+       
     };
 
     const columns = [
@@ -160,6 +143,7 @@ const EditTimePrice = () => {
             title: 'Name',
             dataIndex: 'name',
             width: '20%',
+            
         },
         {
             title: 'Time Range',
@@ -176,13 +160,15 @@ const EditTimePrice = () => {
         {
             title: 'Status',
             dataIndex: 'status',
-            width: '15%',  
+            width: '15%',
+            
         },
         {
             title: 'Operation',
             dataIndex: 'operation',
+
             render: (_, record) => {
-            console.log(record)
+console.log(record)
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
@@ -205,13 +191,17 @@ const EditTimePrice = () => {
                     }} onClick={() => edit(record)}>
                         Edit
                     </Typography.Link>
+
+                    
                     <span>
                         {dataSource.length >= 1 ? (
                             <Popconfirm disabled={editingKey !== ''} title="Sure to delete?" onConfirm={() => (record.key)} >
                                 <a style={{ color: "red" }}></a>
                             </Popconfirm>
                         ) : null}
+
                     </span>
+
                 </div>
                 );
             },
@@ -281,30 +271,25 @@ const EditTimePrice = () => {
       };
     
 
-      const dataSource = [];
-      for (let i = 0; i < data.length; i++) {
-          const timeCategoryName = data[i].timeCategory ? data[i].timeCategory.name : '';
-          dataSource.push({
-              key: data[i].id,
-              name: timeCategoryName,
-              dateRange: data[i].dateRange,
-              price: data[i].price,
-              status: (
-                  <Switch
-                      checked={switchStates[data[i].id] === 1}
-                      onChange={() => handleToggle(data[i].id)}
-                      color="warning"
-                      className="custom-icon"
-                  />
-              ),
-          });
-      }
-      
+      const dataSource = data.map((item) => ({
+        key: item.id,
+        name: item.timeCategory ? item.timeCategory.name : '',
+        dateRange: item.dateRange,
+        price: item.price,
+        status: (
+            <Switch
+                checked={switchStates[item.id] === 1}
+                onChange={() => handleToggle(item.id)}
+                color="warning"
+                className="custom-icon"
+            />
+        ),
+    }));
+
     return (
         <div className='p-4'>
             <div className='p-3 d-flex float-end'>
                 <Button
-
                     type="primary"
                     onClick={() => {
                         setOpen(true);
@@ -312,7 +297,7 @@ const EditTimePrice = () => {
                 >
                     Thêm giá mới
                 </Button>
-                {/* <ModalTime
+                <ModalTime
                     open={open}
                     onCreate={save}
                     onCancel={() => {
@@ -321,25 +306,32 @@ const EditTimePrice = () => {
                     reset={() => {
                         getPricesOfTime(userInfoDTO.id)
                     }}
-
-                /> */}
+                />
             </div>
 
-            <Form form={form} component={false}>
-                <Table
-                    components={{
-                        body: {cell: EditableCell,},
-                    }}
-                    bordered
-                    dataSource={dataSource}
-                    columns={mergedColumns}
-                    rowClassName="editable-row"
-                    pagination={false}
+            {data.length === 0 ? (
+                <Alert
+                    message="Chưa có phương thức giao hàng cho cửa hàng."
+                    type="info"
+                    showIcon
                 />
-            </Form>
-
+            ) : (
+                <Form form={form} component={false}>
+                    <Table
+                        components={{
+                            body: {
+                                cell: EditableCell,
+                            },
+                        }}
+                        bordered
+                        dataSource={dataSource}
+                        columns={mergedColumns}
+                        rowClassName="editable-row"
+                        pagination={false}
+                    />
+                </Form>
+            )}
         </div>
-
     );
 };
 export default EditTimePrice;

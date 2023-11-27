@@ -82,10 +82,6 @@ const Productlist = () => {
    
   }, [dispatch]);
 
-
-  //   if (!productState) {
-  //     return <div>Loading...</div>;
-  // }
   const productState = useSelector((state) => state.product.products);
   const { isSuccess } = useSelector((state) => state.product);
   const data1 = [];
@@ -95,12 +91,10 @@ const Productlist = () => {
       key: i + 1,
       id: productState[i].id,
       name: productState[i].name,
-      
       materials: productState[i].materials.map((material) => material.name + " "),
       price: productState[i].details[0].price,
       unit: productState[i].details[0].unit,
       cloth: productState[i].cloth.name,
-
       action: (
         <>
           <Link to={`update/${productState[i].id}`} className=" fs-3 text-danger">
