@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authServices";
+import { toast } from "react-toastify";
 
 let  access_token = localStorage.getItem('access_token')
   ? JSON.parse(localStorage.getItem('access_token'))
@@ -77,6 +78,7 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
+        toast.error(`Email account already exists `);
         state.isLoading = false;
       })
      

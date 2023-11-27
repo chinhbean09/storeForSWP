@@ -116,20 +116,21 @@ const Productlist = () => {
   return (
 
     <div>
+    {isSuccess && (
       <div className="btn-add">
         <Link to={'add'}>
-          <button className='add-staff-btn'>THÊM MỚI DỊCH VỤ</button>
+          <button className='add-staff-btn'>Add new service</button>
         </Link>
       </div>
-      <h3 className="mb-4 title">Dịch vụ</h3>
- 
-        <div>
-        {!isSuccess ? <LoadingSpinner /> :   <Table columns={columns} dataSource={data1} />}
-        
-        </div>
-
-
+    )}
+  
+    <h3 className="mb-4 title">Service</h3>
+  
+    <div>
+      {!isSuccess ? <LoadingSpinner /> : <Table columns={columns} dataSource={data1} />}
     </div>
+  </div>
+  
   );
 };
 
