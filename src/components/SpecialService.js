@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import React, { useState, useEffect } from 'react';
+import React, { useState,useCallback, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Checkbox, Form, Input, Upload, Radio, Select, Space } from 'antd';
+import { Checkbox, Form, Input, Upload, Radio, Select, Space, message } from 'antd';
 import { config } from "../utils/axiosconfig";
 
 const { TextArea } = Input;
@@ -48,6 +48,45 @@ const SpecialDetailForm = (props) => {
   const { name, description, price, unit, cloth, materials } = state;
   const [errors, setErrors] = useState(error_init);
   const [isSuccess, setStateIsSuccess] =  useState(false);
+  const [imageUrl, setImageUrl] = useState();
+  const [image, setImage] = useState();
+  const [file, setFile] = useState();
+  
+  const handleChange = useCallback((info) => {
+
+      if (info.file.status === 'uploading') {
+          setImageUrl({ loading: true, image: null });
+          info.file.status = 'done';
+      }
+      if (info.file.status === 'done') {
+          getBase64(info.file.originFileObj, (imageUrl) => {
+              const img = new Image();
+              img.src = imageUrl;
+              img.addEventListener('load', function () {
+                  setImageUrl({ loading: false, image: imageUrl });
+
+              });
+          });
+      }
+  }, []);
+  const getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+};
+
+const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+};
+
 
   const getOneService = async (id) => {
     try {
@@ -79,13 +118,21 @@ const SpecialDetailForm = (props) => {
 
 
   const getAllCloth = async () => {
-    const res = await axios.get('https://magpie-aware-lark.ngrok-free.app/api/v1/base/cloth/all', config);
+    const res = await axios.get('https://magpie-aware-lark.ngrok-free.app/api/v1/base/cloth/all', { headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      'ngrok-skip-browser-warning': 'true'
+  },});
     if (res.status === 200) {
       setClothes(res.data);
     }
   }
   const getAllMaterial = async () => {
-    const res = await axios.get('https://magpie-aware-lark.ngrok-free.app/api/v1/base/material/all', config);
+    const res = await axios.get('https://magpie-aware-lark.ngrok-free.app/api/v1/base/material/all',{ headers: {
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      'ngrok-skip-browser-warning': 'true'
+  },});
     if (res.status === 200) {
       setAllMaterials(res.data);
     }
@@ -116,7 +163,7 @@ const SpecialDetailForm = (props) => {
 console.log(state)
 
 
-const updateService = async (id, data) => {
+const updateService  = async (id, data) => {
   try {
       const res = await axios.put(`${URL}/update/${id}`, data, {
           headers: {
@@ -175,6 +222,35 @@ const addNewService = async (data) => {
   }
 };
 
+const uploadImage = async (data) => {
+  try {
+      const res = await axios.post(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/image/upload/${id}`, data, {
+          headers: {
+              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+              Accept: "application/json",
+              "Access-Control-Allow-Origin": "*",
+              'ngrok-skip-browser-warning': 'true',
+              "content-type": 'multipart/form-data;'
+          },
+      });
+
+      if (res.status === 200 || res.status === 201) {
+          toast.success("New Product has been added successfully ~");
+          navigate('/store/list-product');
+      } else {
+          // Handle unexpected response status here
+          console.error(`Unexpected response status: ${res.status}`);
+          // Optionally, display an error message to the user
+          // toast.error(`Error adding new product. Please try again.`);
+      }
+  } catch (error) {
+      // Handle network or other errors here
+      console.error("Error in addNewService:", error);
+      // Optionally, display an error message to the user
+      // toast.error(`Error adding new product. Please try again.`);
+  }
+};
+
   
   const validateForm = () => {
     let isValid = true;
@@ -207,6 +283,10 @@ const addNewService = async (data) => {
   const handleSubmit = (event) => {
     //event.preventDefault();
     if (validateForm()) {
+      const formData = new FormData();
+
+      formData.append('file', file);
+      uploadImage(formData);
       if (id) updateService(id, state);
       else addNewService(state);
       console.log(state)
@@ -312,7 +392,13 @@ const addNewService = async (data) => {
                   </Form.Item>
 
                   <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
-                    <Upload action="/upload.do" listType="picture-card">
+                    <Upload action="/upload.do" listType="picture-card"
+                      beforeUpload={beforeUpload}
+                      onChange={handleChange}
+                      customRequest={(options) => {
+                          setFile(options.file)
+                      }}
+                    >
                       <div>
                         <PlusOutlined />
                         <div
@@ -326,6 +412,7 @@ const addNewService = async (data) => {
                     </Upload>
 
                   </Form.Item>
+
                   <Form.Item className="float-end">
                     <button type='submit' className='form-button'>{id ? "Update" : "Submit"}</button>
                   </Form.Item>
