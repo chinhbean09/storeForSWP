@@ -59,18 +59,23 @@ const Productlist = () => {
   console.log("product:" + JSON.parse(localStorage.getItem("access_token")));
   const handleDelete = async (id) => {
     if (window.confirm(`Are you sure that you want to delete Product with ID: ${id}`)) {
-      const res = await axios.delete(`${URL}/delete/${id}`, config);
-      console.log(res)
-      if (res.status === 200) {
-        //re-render Data
-      
-        toast.success("Deleted Successfully ~");
-        dispatch(getProducts(userInfoDTO.id));
-      } else {
-        toast.error("Delete: Error!");
+      try {
+        const res = await axios.delete(`${URL}/delete/${id}`, config);
+  
+        if (res.status === 200) {
+          // Re-render Data
+          toast.success("Deleted Successfully ~");
+          dispatch(getProducts(userInfoDTO.id));
+        } else {
+          toast.error(`Delete: Unexpected response status ${res.status}`);
+        }
+      } catch (error) {
+        console.error("Error in handleDelete:", error);
+        toast.error("Delete: An error occurred while processing your request.");
       }
     }
-  }
+  };
+  
 
   
 

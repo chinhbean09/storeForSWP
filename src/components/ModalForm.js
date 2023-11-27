@@ -24,15 +24,21 @@ const ModalForm = ({ open,  onCancel , reset}) => {
           if (res.status === 200) {
               toast.success(`Tạo mới thành công`);
               navigate('/admin/laundry');
+              reset(); // Trigger a re-fetch of the data in the parent component
+              onCancel();
           } else {
               // Handle unexpected response status here
               console.error(`Unexpected response status: ${res.status}`);
+              toast.error(`An error occurred while creating a new one.`);
+
               // Optionally, display an error message to the user
               // toast.error(`Error creating new service. Please try again.`);
           }
       } catch (error) {
           // Handle network or other errors here
           console.error("Error in addNewService:", error);
+          toast.error(`An error occurred while creating a new one.`);
+
           // Optionally, display an error message to the user
           // toast.error(`Error creating new service. Please try again.`);
       }
@@ -79,8 +85,8 @@ const ModalForm = ({ open,  onCancel , reset}) => {
     return (
 
 
-        <Modal title=" Thêm mức giá mới" okText="Xác nhận"
-            cancelText="Hủy"
+        <Modal title="Add new price" okText="Confirm"
+            cancelText="Cancel"
             open={open}
             onCancel={() => {
                 form.resetFields();
@@ -92,8 +98,7 @@ const ModalForm = ({ open,  onCancel , reset}) => {
                     .then((values) => {
                         form.resetFields();
                         addNewService(values);
-                        reset();
-                        onCancel();
+                       
                     })
                     .catch((info) => {
                         console.log('Validate Failed:', info);

@@ -124,7 +124,7 @@ const addNewTime = async (data) => {
                     .then((values) => {
                         form.resetFields();
                         addNewTime(values);
-                        
+                          
                     })
                     .catch((info) => {
                         console.log('Validate Failed:', info);
