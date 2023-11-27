@@ -13,6 +13,7 @@ import ViewOrder from "./pages/ViewOrder";
 import StandardDetailForm from "./components/StandardForm";
 import SpecialDetailForm from "./components/SpecialService";
 import LaundryService from "./pages/LaundryService";
+
 function App() {
   return (
     <Router>
