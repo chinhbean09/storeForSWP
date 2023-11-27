@@ -85,7 +85,7 @@ const MainLayout = () => {
             {
               key: "manage-time",
               icon: <FaClipboardList className="fs-4" />,
-              label: "Time Management",
+              label: "Laundry Time Package  ",
             },
           ]}
         />

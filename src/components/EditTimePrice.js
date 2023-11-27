@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Popconfirm, Table, Typography, Button, Modal } from 'antd';
-import ModalForm from './ModalForm';
+import ModalTime  from './ModalTime';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import {Switch} from 'antd';
 
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service";
+const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store";
+
 const EditableCell = ({
     editing,
     dataIndex,
@@ -18,7 +20,8 @@ const EditableCell = ({
     min,
     ...restProps
 }) => {
-    const inputNode = inputType === 'number' ? <InputNumber min={min} /> : <Input />;
+    const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+
     return (
         <td {...restProps}>
             {editing ? (
@@ -32,8 +35,7 @@ const EditableCell = ({
                             required: true,
                             message: `Vui lòng nhập ${title}!`,
                         },
-                    ]}
-                >
+                    ]}>
                     {inputNode}
                 </Form.Item>
             ) : (
@@ -42,27 +44,34 @@ const EditableCell = ({
         </td>
     );
 };
+
+
+
 const EditTimePrice = () => {
     const [data, setData] = useState([]);
+    const [time, setTime] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const [form] = Form.useForm();
+
+
     const [editingKey, setEditingKey] = useState('');
     const { userInfoDTO } = useSelector((state) => state.auth);
 
     useEffect(() => {
         getPricesOfTime(userInfoDTO.id);
-        console.log(getPricesOfTime);
+        getTime(userInfoDTO.id);
+        console.log(time);
     }, []);
 
+    //lấy tất cả giá 
     const getPricesOfTime = async (id) => {
-        const res = await axios.get(`${URL}/prices?store=${id}`, {
+        const res = await axios.get(`${URL}/store-time`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
                 Accept: "application/json",
                 "Access-Control-Allow-Origin": "*",
                 'ngrok-skip-browser-warning': 'true'
-
             },
         });
         if (res.status === 200) {
@@ -70,47 +79,51 @@ const EditTimePrice = () => {
         }
     }
 
-
-
-    const updateTime = async (id, data) => {
-        const res = await axios.put(`${URL}/prices/update/${id}`, data, {
-            headers: {
-                Authorization: `Beare r ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-
-            },
-        });
-        if (res.status === 200) {
-            toast.success(`Cập nhật thành công !!!`);
-            getPricesOfTime(userInfoDTO.id);
-            navigate('/admin/laundry');
-        }
-    }
-    const deleteTime = async (id) => {
-        const res = await axios.delete(`${URL}/prices/delete/${id}`, {
+    const getTime = async (id) => {
+        const res = await axios.get("https://magpie-aware-lark.ngrok-free.app/api/v1/base/time", {
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
                 Accept: "application/json",
                 "Access-Control-Allow-Origin": "*",
                 'ngrok-skip-browser-warning': 'true'
-
             },
         });
         if (res.status === 200) {
-            toast.success(`Xóa thành công !!!`);
-            getPricesOfTime(userInfoDTO.id);
-            navigate('/admin/laundry');
+            setTime(res.data);
         }
     }
 
+    
+
+    const updateTime = async (id, data) => {
+        try {
+            const res = await axios.put(`${URL}/store-time/update/${id}`,data, {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    'ngrok-skip-browser-warning': 'true'
+                },
+            });
+
+            if (res.status === 200) {
+                toast.success(`Cập nhật thành công !!!`);
+                getPricesOfTime(userInfoDTO.id);
+                navigate('/admin/manage-time');
+            }
+        } catch (error) {
+            console.error("Error in updateTime:", error);
+        }
+    };
+    
+
     const isEditing = (record) => record.key === editingKey;
+
     const edit = (record) => {
         form.setFieldsValue({
-            from: '',
-            to: '',
+            
             price: '',
+            dateRange:'',
             ...record,
         });
         setEditingKey(record.key);
@@ -127,39 +140,31 @@ const EditTimePrice = () => {
             const index = newData.findIndex((item) => key === item.key);
             if (index > -1) {
                 const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row,
-                });
+            newData.splice(index, 1, {
+                ...item,
+                ...row,
+            });
                 updateTime(key, row)
                 setData(newData);
                 setEditingKey('');
             } else {
                 setEditingKey('');
             }
-
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);
         }
     };
+
     const columns = [
         {
             title: 'Name',
-            dataIndex: 'from',
-            width: '15%',
-            editable: true, 
-        },
-
-        {
-            title: 'From',
-            dataIndex: 'from',
-            width: '15%',
-            editable: true,
+            dataIndex: 'name',
+            width: '20%',
         },
         {
-            title: 'To',
-            dataIndex: 'to',
-            width: '15%',
+            title: 'Time Range',
+            dataIndex: 'dateRange',
+            width: '20%',
             editable: true,
         },
         {
@@ -168,19 +173,28 @@ const EditTimePrice = () => {
             width: '20%',
             editable: true,
         },
-
         {
-            title: 'operation',
+            title: 'Status',
+            dataIndex: 'status',
+            width: '15%',  
+        },
+        {
+            title: 'Operation',
             dataIndex: 'operation',
             render: (_, record) => {
+            console.log(record)
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
                         <Typography.Link
                             onClick={() => save(record.key)}
-                            style={{marginRight: 8,}}>
+                            style={{
+                                marginRight: 8,
+                            }}
+                        >
                             Save
                         </Typography.Link>
+
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
                             <a style={{ color: "red" }}>Cancel</a>
                         </Popconfirm>
@@ -193,8 +207,8 @@ const EditTimePrice = () => {
                     </Typography.Link>
                     <span>
                         {dataSource.length >= 1 ? (
-                            <Popconfirm disabled={editingKey !== ''} title="Sure to delete?" onConfirm={() => deleteTime(record.key)} >
-                                <a style={{ color: "red" }}>Delete</a>
+                            <Popconfirm disabled={editingKey !== ''} title="Sure to delete?" onConfirm={() => (record.key)} >
+                                <a style={{ color: "red" }}></a>
                             </Popconfirm>
                         ) : null}
                     </span>
@@ -211,7 +225,7 @@ const EditTimePrice = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                // inputType: col.dataIndex === 'unit' ? 'text' : 'number',
+                inputType: col.dataIndex === 'dateRange' ? 'text' : 'number',
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
@@ -219,21 +233,86 @@ const EditTimePrice = () => {
             }),
         };
     });
-    const dataSource = []
-    for (let i = 0; i < data.length; i++) {
-        dataSource.push({
-            key: data[i].id,
-            from: data[i].from,
-            to: data[i].to,
-            price: data[i].price,
-        })
-    }
+    const [switchStates, setSwitchStates] = useState(
+        data.reduce((acc, data) => ({ ...acc, [data.id]: data.status }), {})
+      );
+    
+      useEffect(() => {
+        setSwitchStates(
+          data.reduce((acc, data) => ({ ...acc, [data.id]: data.status }), {})
+        );
+      }, [data]);
+    
+      const handleToggle = (id) => {
+        setSwitchStates((prevStates) => {
+          const newStatus = prevStates[id] === 0 ? 1 : 0;
+          axios
+            .put(
+              `https://magpie-aware-lark.ngrok-free.app/api/v1/store/store-time/${id}?status=${newStatus}`,
+              {
+                status: newStatus,
+              },
+              {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    'ngrok-skip-browser-warning': 'true'
+    
+                },
+            }
+            )
+            .then((response) => {
+              console.log("Success:", response.data);
+              setData((prevData) =>
+                prevData.map((data) =>
+                  data.id === id ? { ...data, status: newStatus } : data
+                )
+              );
+              
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+           
+            });
+    
+          return { ...prevStates, [id]: newStatus };
+        });
+      };
+    
 
+      const dataSource = [];
+      for (let i = 0; i < data.length; i++) {
+          const timeCategoryName = data[i].timeCategory ? data[i].timeCategory.name : '';
+          dataSource.push({
+              key: data[i].id,
+              name: timeCategoryName,
+              dateRange: data[i].dateRange,
+              price: data[i].price,
+              status: (
+                  <Switch
+                      checked={switchStates[data[i].id] === 1}
+                      onChange={() => handleToggle(data[i].id)}
+                      color="warning"
+                      className="custom-icon"
+                  />
+              ),
+          });
+      }
+      
     return (
         <div className='p-4'>
-            {/* <div className='p-3 d-flex float-end'>
-                
-                <ModalForm
+            <div className='p-3 d-flex float-end'>
+                <Button
+
+                    type="primary"
+                    onClick={() => {
+                        setOpen(true);
+                    }}
+                >
+                    Thêm giá mới
+                </Button>
+                {/* <ModalTime
                     open={open}
                     onCreate={save}
                     onCancel={() => {
@@ -243,15 +322,13 @@ const EditTimePrice = () => {
                         getPricesOfTime(userInfoDTO.id)
                     }}
 
-                />
-            </div> */}
+                /> */}
+            </div>
 
             <Form form={form} component={false}>
                 <Table
                     components={{
-                        body: {
-                            cell: EditableCell,
-                        },
+                        body: {cell: EditableCell,},
                     }}
                     bordered
                     dataSource={dataSource}

@@ -266,6 +266,7 @@ const TableEditable = () => {
                     reset={() => {
                         getPricesOfStandardService(userInfoDTO.id)
                     }}
+                    
 
                 />
             </div>

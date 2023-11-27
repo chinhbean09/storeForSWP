@@ -4,11 +4,12 @@ import { Form, Input, InputNumber, Modal, Button, Select } from 'antd';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service/prices";
+const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/store-time/create"; 
 
-const ModalForm = ({ open,  onCancel , reset}) => {
+const ModalTime = ({ open,  onCancel , reset}) => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    
     const addNewTime = async (data) => {
         const res = await axios.post(`${URL}/create`, data, {
             headers: {
@@ -20,7 +21,7 @@ const ModalForm = ({ open,  onCancel , reset}) => {
           });
         if (res.status === 200) {
           toast.success(`Tạo mới thành công`);
-          navigate('/admin/laundry');
+          navigate('');
         }
       }
 
@@ -60,12 +61,8 @@ const ModalForm = ({ open,  onCancel , reset}) => {
         ],
         from: [{ required: true, message: 'Required' }],
       };
-
-
     return (
-
-
-        <Modal title=" Thêm mức giá mới" okText="Xác nhận"
+        <ModalTime title="Thêm mức giá mới" okText="Xác nhận"
             cancelText="Hủy"
             open={open}
             onCancel={() => {
@@ -92,26 +89,23 @@ const ModalForm = ({ open,  onCancel , reset}) => {
             initialValues={{
                 modifier: 'public',
             }}>
-                <Form.Item label="Từ" name='from' rules={rules.from}>
-                    <InputNumber min={0}/>
+                <Form.Item label="Price" name='price' rules={rules.from}>
+                    <InputNumber min={1}/>
                 </Form.Item>
-                <Form.Item label="Đến" name='to' rules={rules.to}>
-                    <InputNumber min={1} />
-                </Form.Item>
-                <Form.Item label="Giá" name='price' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !`}]}>
+                <Form.Item label="Date Range" name='dateRange' rules={rules.to}>
                     <InputNumber min={1} />
                 </Form.Item>
                 <Form.Item label="Đơn vị tính" name="unit" rules={[{ required: true, message: 'Vui lòng nhập dữ liệu!' }]}>
-    <Select >
-        <Select.Option value="kg">kg</Select.Option>
-    </Select>
+                <Select >
+                    <Select.Option value="kg">kg</Select.Option>
+                </Select>
 </Form.Item>
             </Form>
 
-        </Modal>
+        </ModalTime>
 
 
     );
 };
 
-export default ModalForm;
+export default ModalTime;
