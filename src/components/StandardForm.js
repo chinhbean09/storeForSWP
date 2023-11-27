@@ -43,21 +43,35 @@ const StandardDetailForm = () => {
   const [errors, setErrors] = useState(error_init);
 
   const updateStandardService = async (id, data) => {
-    const res = await axios.put(`${base_url}store/standard-service/update/${id}`, data, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'ngrok-skip-browser-warning': 'true',
-      },
-    });
-    if (res.status === 200) {
-      console.log(res.data);
-      toast.success(`Updated Product with ID: ${id} successfully ~`);
-      navigate('/admin/laundry');
-      setForceRerender(!forceRerender); // trigger a re-render
+    try {
+        const res = await axios.put(`${base_url}store/standard-service/update/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'ngrok-skip-browser-warning': 'true',
+            },
+        });
+
+        if (res.status === 200) {
+            console.log(res.data);
+            toast.success(`Updated Product with ID: ${id} successfully ~`);
+            navigate('/admin/laundry');
+            setForceRerender(!forceRerender); // trigger a re-render
+        } else {
+            // Handle unexpected response status here
+            console.error(`Unexpected response status: ${res.status}`);
+            // Optionally, display an error message to the user
+            // toast.error(`Error updating product. Please try again.`);
+        }
+    } catch (error) {
+        // Handle network or other errors here
+        console.error("Error in updateStandardService:", error);
+        // Optionally, display an error message to the user
+        // toast.error(`Error updating product. Please try again.`);
     }
-  };
+};
+
 
   const handleSubmit = async (event) => {
     form

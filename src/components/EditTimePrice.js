@@ -32,7 +32,7 @@ const EditableCell = ({
                     rules={[
                         {
                             required: true,
-                            message: `Vui lòng nhập ${title}!`,
+                            message: `Please Enter ${title}!`,
                         },
                     ]}>
                     {inputNode}
@@ -73,6 +73,12 @@ const EditTimePrice = () => {
             if (res.status === 200) {
                 setData(res.data);
             }
+            else {
+                // Handle unexpected response status here
+                console.error(`Unexpected response status: ${res.status}`);
+                // Optionally, display an error message to the user
+                // toast.error(`Error getting prices. Please try again.`);
+            }
         } catch (error) {
             console.error("Error in getPricesOfTime:", error);
         }
@@ -94,6 +100,11 @@ const EditTimePrice = () => {
                 toast.success(`Cập nhật thành công !!!`);
                 getPricesOfTime(userInfoDTO.id);
                 navigate('/admin/manage-time');
+            }else {
+                // Handle unexpected response status here
+                console.error(`Unexpected response status: ${res.status}`);
+                // Optionally, display an error message to the user
+                // toast.error(`Error updating service. Please try again.`);
             }
         } catch (error) {
             console.error("Error in updateTime:", error);
@@ -168,7 +179,6 @@ const EditTimePrice = () => {
             dataIndex: 'operation',
 
             render: (_, record) => {
-console.log(record)
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
@@ -295,7 +305,7 @@ console.log(record)
                         setOpen(true);
                     }}
                 >
-                    Thêm giá mới
+                    Add Washing Type
                 </Button>
                 <ModalTime
                     open={open}
@@ -311,7 +321,7 @@ console.log(record)
 
             {data.length === 0 ? (
                 <Alert
-                    message="Chưa có phương thức giao hàng cho cửa hàng."
+                    message="There is no laundry type for the store yet."
                     type="info"
                     showIcon
                 />

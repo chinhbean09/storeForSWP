@@ -77,7 +77,6 @@ const CreateStore = (props) => {
 
 
   useEffect(() => {
-
     dispatch(resetState())
     dispatch(getStore(userInfoDTO.id));
     dispatch(createStore())
@@ -103,23 +102,39 @@ const CreateStore = (props) => {
       });
   }
 
-  const updateStore = async (id,data) => {
-    const res = await axios.put(`${base_url}store/update?store=${id}`,data,{
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
-      },
-    });
-    if (res.status === 200) {
-      toast.success(`Đã thiết kế thành công cửa hàng của bạn `);
-      navigate('/admin/design-store');
-      setForceRerender(!forceRerender);
-      setComponentDisabled(true)
+  const updateStore = async (id, data) => {
+    try {
+        const res = await axios.put(`${base_url}store/update?store=${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                'ngrok-skip-browser-warning': 'true'
+            },
+        });
+
+        if (res.status === 200) {
+            if (res.data) {
+                // Assuming there is some specific property in the data that indicates success
+                toast.success(`Đã thiết kế thành công cửa hàng của bạn`);
+                navigate('/admin/design-store');
+                setForceRerender(!forceRerender);
+                setComponentDisabled(true);
+            } else {
+                // Display a message indicating no data
+                console.log("Chưa có thời gian giao hàng cho cửa hàng");
+                // Optionally, show a user-friendly message
+                // toast.info("Chưa có thời gian giao hàng cho cửa hàng");
+            }
+        }
+    } catch (error) {
+        // Handle network or other errors here
+        console.error("Error in updateStore:", error);
+        // Optionally, display an error message to the user
+        // toast.error("Error updating store. Please try again.");
     }
-    return res.data;
-  }
+};
+
 
   const [componentDisabled, setComponentDisabled] = useState(true);
 

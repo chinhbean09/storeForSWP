@@ -12,46 +12,51 @@ const ModalTime = ({ open,  onCancel , reset}) => {
     const [time, setTime] = useState([]);
 
     const getTime = async () => {
-      const res = await axios.get("https://magpie-aware-lark.ngrok-free.app/api/v1/base/time", {
+      try {
+        const res = await axios.get("https://magpie-aware-lark.ngrok-free.app/api/v1/base/time", {
           headers: {
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-              Accept: "application/json",
-              "Access-Control-Allow-Origin": "*",
-              'ngrok-skip-browser-warning': 'true'
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+            'ngrok-skip-browser-warning': 'true'
           },
-      });
-      if (res.status === 200) {
+        });
+        if (res.status === 200) {
           setTime(res.data);
+        }
+      } catch (error) {
+        console.error("Error in getTime:", error);
       }
-  }
+    };
+
   useEffect(() => {
     getTime();
 }, []);
 
 const addNewTime = async (data) => {
-  try {
+    try {
       const res = await axios.post(`${URL}`, data, {
-          headers: {
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-              Accept: "application/json",
-              "Access-Control-Allow-Origin": "*",
-              'ngrok-skip-browser-warning': 'true'
-          },
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+          'ngrok-skip-browser-warning': 'true'
+        },
       });
       if (res.status === 200) {
-          toast.success(`Tạo mới thành công`);
-          navigate('');
+        toast.success(`Created successfully`);
+        navigate('/admin/manage-time');
+        reset(); // Trigger a re-fetch of the data in the parent component
+        onCancel();
       } else {
-          // Handle unexpected response status here
-          console.error(`Unexpected response status: ${res.status}`);
-          toast.error(`Có lỗi xảy ra khi tạo mới.`);
+        console.error(`Unexpected response status: ${res.status}`);
+        toast.error(`An error occurred while creating a new one.`);
       }
-  } catch (error) {
-      // Handle network or other errors here
+    } catch (error) {
       console.error("Error in addNewTime:", error);
-      toast.error(`Có lỗi xảy ra khi tạo mới.`);
-  }
-};
+      toast.error(`An error occurred while creating a new one.`);
+    }
+  };
 
     const layout = {
         labelCol: {
@@ -69,28 +74,45 @@ const addNewTime = async (data) => {
       };
 
       const rules = {
-        // to: [
-        //   { required: true, message: 'Required' },
-        //   (formInstance) => ({
-        //     message: 'Giá trị của của "Đến" không được nhỏ hơn hoặc bằng giá trị của "Từ"',
-        //     validator(rule, value) {
-        //       if (value === null) {
-        //         return Promise.resolve();
-        //       }
-        //       const upperValue = formInstance.getFieldValue('from');
-        //       console.log(upperValue)
-        //       if (value <= upperValue) {
-        //         return Promise.reject(new Error());
-        //       }
-        //       return Promise.resolve();
-        //     },
-        //   }),
-        // ],
-        // from: [{ required: true, message: 'Required' }],
+        price: [
+          { required: true, message: 'Required' },
+          (formInstance) => ({
+            message: 'Please enter price, minimum is 1',
+            validator(rule, value) {
+              if (value === null) {
+                return Promise.resolve();
+              }
+              const upperValue = formInstance.getFieldValue('from');
+              console.log(upperValue)
+              if (value <= upperValue) {
+                return Promise.reject(new Error());
+              }
+              return Promise.resolve();
+            },
+          }),
+        ],
+
+        dateRange: [
+          { required: true, message: 'Required' },
+          (formInstance) => ({
+            message: 'Please enter date range',
+            validator(rule, value) {
+              if (value === null) {
+                return Promise.resolve();
+              }
+              const upperValue = formInstance.getFieldValue('from');
+              console.log(upperValue)
+              if (value <= upperValue) {
+                return Promise.reject(new Error());
+              }
+              return Promise.resolve();
+            },
+          }),
+        ],
       };
     return (
-        <Modal title="Thêm mức giá mới" okText="Xác nhận"
-            cancelText="Hủy"
+        <Modal title="Add Washing Type" okText="Confirm"
+            cancelText="Cancel"
             open={open}
             onCancel={() => {
                 form.resetFields();
@@ -102,8 +124,7 @@ const addNewTime = async (data) => {
                     .then((values) => {
                         form.resetFields();
                         addNewTime(values);
-                        reset();
-                        onCancel();
+                        
                     })
                     .catch((info) => {
                         console.log('Validate Failed:', info);
@@ -116,10 +137,10 @@ const addNewTime = async (data) => {
             initialValues={{
                 modifier: 'public',
             }}>
-                <Form.Item label="Price" name='price'>
+                <Form.Item label="Price" name='price' rules={rules.price}>
                     <InputNumber min={1}/>
                 </Form.Item>
-                <Form.Item label="Date Range" name='dateRange' >
+                <Form.Item label="Date Range" name='dateRange' rules={rules.dateRange} >
                     <Input min={1} />
                 </Form.Item>
                 

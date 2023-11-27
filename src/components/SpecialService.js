@@ -50,18 +50,33 @@ const SpecialDetailForm = (props) => {
   const [isSuccess, setStateIsSuccess] =  useState(false);
 
   const getOneService = async (id) => {
-    const res = await axios.get(`${URL}/${id}`, { headers: {
-      Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-      Accept: "application/json",
-      "Access-Control-Allow-Origin":"*",
-      'ngrok-skip-browser-warning': 'true'
-      
-    },});
-    if (res.status === 200) {
-      setStateIsSuccess(true);
-      setState(res.data);
+    try {
+        const res = await axios.get(`${URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                'ngrok-skip-browser-warning': 'true'
+            },
+        });
+
+        if (res.status === 200) {
+            setStateIsSuccess(true);
+            setState(res.data);
+        } else {
+            // Handle unexpected response status here
+            console.error(`Unexpected response status: ${res.status}`);
+            // Optionally, set state or display an error message to the user
+            // setStateIsError(true);
+        }
+    } catch (error) {
+        // Handle network or other errors here
+        console.error("Error in getOneService:", error);
+        // Optionally, set state or display an error message to the user
+        // setStateIsError(true);
     }
-  }
+};
+
 
   const getAllCloth = async () => {
     const res = await axios.get('https://magpie-aware-lark.ngrok-free.app/api/v1/base/cloth/all', config);
@@ -101,39 +116,65 @@ const SpecialDetailForm = (props) => {
 console.log(state)
 
 
-  const updateService = async (id, data) => {
-    const res = await axios.put(`${URL}/update/${id}`, data, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
+const updateService = async (id, data) => {
+  try {
+      const res = await axios.put(`${URL}/update/${id}`, data, {
+          headers: {
+              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+              Accept: "application/json",
+              "Access-Control-Allow-Origin": "*",
+              'ngrok-skip-browser-warning': 'true'
+          },
+      });
 
-      },
-    } );
-    if (res.status === 200) {
-      toast.success(`Updated Product with ID: ${id} successfully ~`);
-      navigate('/admin/list-product');
-    }
+      if (res.status === 200) {
+          toast.success(`Updated Product with ID: ${id} successfully ~`);
+          navigate('/admin/list-product');
+      } else {
+          // Handle unexpected response status here
+          console.error(`Unexpected response status: ${res.status}`);
+          // Optionally, display an error message to the user
+          // toast.error(`Error updating product. Please try again.`);
+      }
+  } catch (error) {
+      // Handle network or other errors here
+      console.error("Error in updateService:", error);
+      // Optionally, display an error message to the user
+      // toast.error(`Error updating product. Please try again.`);
   }
+};
+
   
   
 
-  const addNewService = async (data) => {
-    const res = await axios.post(`${URL}/create`, data,  {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
+const addNewService = async (data) => {
+  try {
+      const res = await axios.post(`${URL}/create`, data, {
+          headers: {
+              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+              Accept: "application/json",
+              "Access-Control-Allow-Origin": "*",
+              'ngrok-skip-browser-warning': 'true'
+          },
+      });
 
-      },
-    });
-    if (res.status === 200 || res.status === 201) {
-      toast.success("New Product has been added successfully ~");
-      navigate('/admin/list-product');
-    }
+      if (res.status === 200 || res.status === 201) {
+          toast.success("New Product has been added successfully ~");
+          navigate('/admin/list-product');
+      } else {
+          // Handle unexpected response status here
+          console.error(`Unexpected response status: ${res.status}`);
+          // Optionally, display an error message to the user
+          // toast.error(`Error adding new product. Please try again.`);
+      }
+  } catch (error) {
+      // Handle network or other errors here
+      console.error("Error in addNewService:", error);
+      // Optionally, display an error message to the user
+      // toast.error(`Error adding new product. Please try again.`);
   }
+};
+
   
   const validateForm = () => {
     let isValid = true;
