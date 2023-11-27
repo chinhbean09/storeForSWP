@@ -99,7 +99,7 @@ const TableEditable = () => {
             if (res.status === 200) {
                 toast.success(`Cập nhật thành công !!!`);
                 getPricesOfStandardService(userInfoDTO.id);
-                navigate('/admin/laundry');
+                navigate('/store/laundry');
             } else {
                 // Handle unexpected response status here
                 console.error(`Unexpected response status: ${res.status}`);
@@ -128,7 +128,7 @@ const TableEditable = () => {
             if (res.status === 200) {
                 toast.success(`Xóa thành công !!!`);
                 getPricesOfStandardService(userInfoDTO.id);
-                navigate('/admin/laundry');
+                navigate('/store/laundry');
             } else {
                 // Handle unexpected response status here
                 console.error(`Unexpected response status: ${res.status}`);

@@ -23,7 +23,7 @@ const ModalForm = ({ open,  onCancel , reset}) => {
   
           if (res.status === 200) {
               toast.success(`Tạo mới thành công`);
-              navigate('/admin/laundry');
+              navigate('/store/laundry');
               reset(); // Trigger a re-fetch of the data in the parent component
               onCancel();
           } else {

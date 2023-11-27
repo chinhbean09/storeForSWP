@@ -99,7 +99,7 @@ const EditTimePrice = () => {
             if (res.status === 200) {
                 toast.success(`Cập nhật thành công !!!`);
                 getPricesOfTime(userInfoDTO.id);
-                navigate('/admin/manage-time');
+                navigate('/store/manage-time');
             }else {
                 // Handle unexpected response status here
                 console.error(`Unexpected response status: ${res.status}`);
@@ -305,7 +305,7 @@ const EditTimePrice = () => {
                         setOpen(true);
                     }}
                 >
-                    Add Washing Type
+                    Add Express Laundry Service
                 </Button>
                 <ModalTime
                     open={open}

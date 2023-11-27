@@ -94,7 +94,7 @@ const CreateStore = (props) => {
         console.log(values)
         dispatch (createStore(values));
       }
-      navigate('/admin/design-store');
+      navigate('/store/design-store');
       setForceRerender(!forceRerender);
       })
       .catch((info) => {
@@ -117,7 +117,7 @@ const CreateStore = (props) => {
             if (res.data) {
                 // Assuming there is some specific property in the data that indicates success
                 toast.success(`Đã thiết kế thành công cửa hàng của bạn`);
-                navigate('/admin/design-store');
+                navigate('/store/design-store');
                 setForceRerender(!forceRerender);
                 setComponentDisabled(true);
             } else {

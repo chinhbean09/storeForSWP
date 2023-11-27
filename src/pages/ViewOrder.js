@@ -70,7 +70,7 @@ const ViewOrder = () => {
 
 
     }
-    navigate(`/admin/order/${id}`)
+    navigate(`/store/order/${id}`)
 
 
   };

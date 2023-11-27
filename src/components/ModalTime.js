@@ -45,7 +45,7 @@ const addNewTime = async (data) => {
       });
       if (res.status === 200) {
         toast.success(`Created successfully`);
-        navigate('/admin/manage-time');
+        navigate('/store/manage-time');
         reset(); // Trigger a re-fetch of the data in the parent component
         onCancel();
       } else {
@@ -111,7 +111,7 @@ const addNewTime = async (data) => {
         ],
       };
     return (
-        <Modal title="Add Washing Type" okText="Confirm"
+        <Modal title="Express Laundry Service" okText="Confirm"
             cancelText="Cancel"
             open={open}
             onCancel={() => {

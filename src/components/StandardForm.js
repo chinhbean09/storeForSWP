@@ -56,7 +56,7 @@ const StandardDetailForm = () => {
         if (res.status === 200) {
             console.log(res.data);
             toast.success(`Updated Product with ID: ${id} successfully ~`);
-            navigate('/admin/laundry');
+            navigate('/store/laundry');
             setForceRerender(!forceRerender); // trigger a re-render
         } else {
             // Handle unexpected response status here
@@ -82,7 +82,7 @@ const StandardDetailForm = () => {
         } else {
           await dispatch(addNewStandardService(values));
         }
-        navigate('/admin/laundry');
+        navigate('/store/laundry');
         setForceRerender(!forceRerender); // trigger a re-render
       })
       .catch((info) => {

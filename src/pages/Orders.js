@@ -152,7 +152,7 @@ const Orders = () => {
       total: generateCurrency(state[i].total),
       action: (
         <>
-          <Link to={`/admin/order/${state[i].id}`} className=" fs-3 text-danger">
+          <Link to={`/store/order/${state[i].id}`} className=" fs-3 text-danger">
             <BiEdit />
           </Link>
           

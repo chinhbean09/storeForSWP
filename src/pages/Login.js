@@ -34,7 +34,7 @@ const Login = () => {
  
   useEffect(() => {
     if (isSuccess) {
-      navigate("admin");
+      navigate("store");
     } else {
       navigate("");
     }
@@ -50,7 +50,7 @@ const Login = () => {
         <h3 className="text-center title">Login</h3>
         <p className="text-center">Login to your account to continue.</p>
         <div className="error text-center">
-          {message.message == "Rejected" ? "You are not an Admin" : ""}
+          {message.message == "Rejected" ? "You are not an store owner" : ""}
           
         </div>
         <form action="" onSubmit={formik.handleSubmit}>
