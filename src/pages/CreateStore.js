@@ -140,6 +140,7 @@ const CreateStore = (props) => {
 
   return (
     <Wrapper>
+       <div>
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">
@@ -229,6 +230,7 @@ const CreateStore = (props) => {
 
           </div>
         </div>
+      </div>
       </div>
     </Wrapper>
 

@@ -52,10 +52,9 @@ const columns = [
 ];
 
 const Productlist = () => {
-
   const dispatch = useDispatch();
   const { userInfoDTO } = useSelector((state) => state.auth);
-
+  
   console.log("product:" + JSON.parse(localStorage.getItem("access_token")));
   const handleDelete = async (id) => {
     if (window.confirm(`Are you sure that you want to delete Product with ID: ${id}`)) {

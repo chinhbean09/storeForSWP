@@ -38,7 +38,7 @@ const StandardDetailForm = () => {
     dispatch(getStandardService(userInfoDTO.id));
   }, [dispatch, forceRerender]); // include forceRerender in dependencies
 
-  const { standardService, isSuccess } = useSelector((state) => state.product);
+  const { standardService } = useSelector((state) => state.product);
 
   const [errors, setErrors] = useState(error_init);
 
@@ -93,6 +93,9 @@ const StandardDetailForm = () => {
   const [componentDisabled, setComponentDisabled] = useState(true);
 
   return (
+
+
+
     <Wrapper>
 
       <div class="container-fluid">
@@ -169,9 +172,11 @@ const StandardDetailForm = () => {
           </div>
         </div>
       </div>
-      
-    </Wrapper>
+                          
+     
 
+    </Wrapper>
+ 
   );
 };
 
