@@ -39,17 +39,17 @@ const addNewTime = async (data) => {
           },
       });
       if (res.status === 200) {
-          toast.success(`Tạo mới thành công`);
+          toast.success(`Created successfully`);
           navigate('');
       } else {
           // Handle unexpected response status here
           console.error(`Unexpected response status: ${res.status}`);
-          toast.error(`Có lỗi xảy ra khi tạo mới.`);
+          toast.error(`An error occurred while creating a new one.`);
       }
   } catch (error) {
       // Handle network or other errors here
       console.error("Error in addNewTime:", error);
-      toast.error(`Có lỗi xảy ra khi tạo mới.`);
+      toast.error(`An error occurred while creating a new one.`);
   }
 };
 
@@ -69,28 +69,44 @@ const addNewTime = async (data) => {
       };
 
       const rules = {
-        // to: [
-        //   { required: true, message: 'Required' },
-        //   (formInstance) => ({
-        //     message: 'Giá trị của của "Đến" không được nhỏ hơn hoặc bằng giá trị của "Từ"',
-        //     validator(rule, value) {
-        //       if (value === null) {
-        //         return Promise.resolve();
-        //       }
-        //       const upperValue = formInstance.getFieldValue('from');
-        //       console.log(upperValue)
-        //       if (value <= upperValue) {
-        //         return Promise.reject(new Error());
-        //       }
-        //       return Promise.resolve();
-        //     },
-        //   }),
-        // ],
-        // from: [{ required: true, message: 'Required' }],
+        price: [
+          { required: true, message: 'Required' },
+          (formInstance) => ({
+            message: 'Please enter price, minimum is 1',
+            validator(rule, value) {
+              if (value === null) {
+                return Promise.resolve();
+              }
+              const upperValue = formInstance.getFieldValue('from');
+              console.log(upperValue)
+              if (value <= upperValue) {
+                return Promise.reject(new Error());
+              }
+              return Promise.resolve();
+            },
+          }),
+        ],
+        dateRange: [
+          { required: true, message: 'Required' },
+          (formInstance) => ({
+            message: 'Please enter date range',
+            validator(rule, value) {
+              if (value === null) {
+                return Promise.resolve();
+              }
+              const upperValue = formInstance.getFieldValue('from');
+              console.log(upperValue)
+              if (value <= upperValue) {
+                return Promise.reject(new Error());
+              }
+              return Promise.resolve();
+            },
+          }),
+        ],
       };
     return (
-        <Modal title="Thêm mức giá mới" okText="Xác nhận"
-            cancelText="Hủy"
+        <Modal title="Add Washing Type" okText="Confirm"
+            cancelText="Cancel"
             open={open}
             onCancel={() => {
                 form.resetFields();
@@ -116,10 +132,10 @@ const addNewTime = async (data) => {
             initialValues={{
                 modifier: 'public',
             }}>
-                <Form.Item label="Price" name='price'>
+                <Form.Item label="Price" name='price' rules={rules.price}>
                     <InputNumber min={1}/>
                 </Form.Item>
-                <Form.Item label="Date Range" name='dateRange' >
+                <Form.Item label="Date Range" name='dateRange' rules={rules.dateRange} >
                     <Input min={1} />
                 </Form.Item>
                 

@@ -9,21 +9,35 @@ const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-serv
 const ModalForm = ({ open,  onCancel , reset}) => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    
     const addNewService = async (data) => {
-        const res = await axios.post(`${URL}/create`, data, {
-            headers: {
-              Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-              Accept: "application/json",
-              "Access-Control-Allow-Origin": "*",
-              'ngrok-skip-browser-warning': 'true'
-            },
+      try {
+          const res = await axios.post(`${URL}/create`, data, {
+              headers: {
+                  Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                  Accept: "application/json",
+                  "Access-Control-Allow-Origin": "*",
+                  'ngrok-skip-browser-warning': 'true'
+              },
           });
-        if (res.status === 200) {
-          toast.success(`Tạo mới thành công`);
-          navigate('/admin/laundry');
-        }
+  
+          if (res.status === 200) {
+              toast.success(`Tạo mới thành công`);
+              navigate('/admin/laundry');
+          } else {
+              // Handle unexpected response status here
+              console.error(`Unexpected response status: ${res.status}`);
+              // Optionally, display an error message to the user
+              // toast.error(`Error creating new service. Please try again.`);
+          }
+      } catch (error) {
+          // Handle network or other errors here
+          console.error("Error in addNewService:", error);
+          // Optionally, display an error message to the user
+          // toast.error(`Error creating new service. Please try again.`);
       }
-
+  };
+  
     const layout = {
         labelCol: {
           span: 6,

@@ -44,14 +44,10 @@ const EditableCell = ({
     );
 };
 const TableEditable = () => {
-
-
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const [form] = Form.useForm();
-
-
     const [editingKey, setEditingKey] = useState('');
     const { userInfoDTO } = useSelector((state) => state.auth);
     useEffect(() => {
@@ -60,54 +56,93 @@ const TableEditable = () => {
     }, []);
 
     const getPricesOfStandardService = async (id) => {
-        const res = await axios.get(`${URL}/prices?store=${id}`, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-
-            },
-        });
-        if (res.status === 200) {
-            setData(res.data);
+        try {
+            const res = await axios.get(`${URL}/prices?store=${id}`, {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    'ngrok-skip-browser-warning': 'true'
+                },
+            });
+    
+            if (res.status === 200) {
+                setData(res.data);
+            } else {
+                // Handle unexpected response status here
+                console.error(`Unexpected response status: ${res.status}`);
+                // Optionally, display an error message to the user
+                // toast.error(`Error getting prices. Please try again.`);
+            }
+        } catch (error) {
+            // Handle network or other errors here
+            console.error("Error in getPricesOfStandardService:", error);
+            // Optionally, display an error message to the user
+            // toast.error(`Error getting prices. Please try again.`);
         }
-    }
+    };
+    
 
 
 
     const updateService = async (id, data) => {
-        const res = await axios.put(`${URL}/prices/update/${id}`, data, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-
-            },
-        });
-        if (res.status === 200) {
-            toast.success(`Cập nhật thành công !!!`);
-            getPricesOfStandardService(userInfoDTO.id);
-            navigate('/admin/laundry');
+        try {
+            const res = await axios.put(`${URL}/prices/update/${id}`, data, {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    'ngrok-skip-browser-warning': 'true'
+                },
+            });
+    
+            if (res.status === 200) {
+                toast.success(`Cập nhật thành công !!!`);
+                getPricesOfStandardService(userInfoDTO.id);
+                navigate('/admin/laundry');
+            } else {
+                // Handle unexpected response status here
+                console.error(`Unexpected response status: ${res.status}`);
+                // Optionally, display an error message to the user
+                // toast.error(`Error updating service. Please try again.`);
+            }
+        } catch (error) {
+            // Handle network or other errors here
+            console.error("Error in updateService:", error);
+            // Optionally, display an error message to the user
+            // toast.error(`Error updating service. Please try again.`);
         }
-    }
+    };
+    
     const deleteService = async (id) => {
-        const res = await axios.delete(`${URL}/prices/delete/${id}`, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-
-            },
-        });
-        if (res.status === 200) {
-            toast.success(`Xóa thành công !!!`);
-            getPricesOfStandardService(userInfoDTO.id);
-            navigate('/admin/laundry');
+        try {
+            const res = await axios.delete(`${URL}/prices/delete/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    'ngrok-skip-browser-warning': 'true'
+                },
+            });
+    
+            if (res.status === 200) {
+                toast.success(`Xóa thành công !!!`);
+                getPricesOfStandardService(userInfoDTO.id);
+                navigate('/admin/laundry');
+            } else {
+                // Handle unexpected response status here
+                console.error(`Unexpected response status: ${res.status}`);
+                // Optionally, display an error message to the user
+                // toast.error(`Error deleting service. Please try again.`);
+            }
+        } catch (error) {
+            // Handle network or other errors here
+            console.error("Error in deleteService:", error);
+            // Optionally, display an error message to the user
+            // toast.error(`Error deleting service. Please try again.`);
         }
-    }
+    };
+    
 
     const isEditing = (record) => record.key === editingKey;
     const edit = (record) => {
@@ -249,13 +284,12 @@ const TableEditable = () => {
         <div className='p-4'>
             <div className='p-3 d-flex float-end'>
                 <Button
-
                     type="primary"
                     onClick={() => {
                         setOpen(true);
                     }}
                 >
-                    Thêm giá mới
+                    Add New Price
                 </Button>
                 <ModalForm
                     open={open}

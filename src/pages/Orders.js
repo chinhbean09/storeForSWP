@@ -111,21 +111,33 @@ const Orders = () => {
 
   const getHistoryOrders = async (id) => {
     try {
-    const res = await axios.get(`${URL}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        'ngrok-skip-browser-warning': 'true'
-      },
-    });
-    if (res.status === 200) {
-      setState(res.data);
-    } 
-  } catch (error) {
-      console.error("Error:", error.message);
+        const res = await axios.get(`${URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                'ngrok-skip-browser-warning': 'true'
+            },
+        });
+
+        if (res.status === 200) {
+            if (res.data) {
+                setState(res.data);
+            } else {
+                // Display a message indicating no data
+                console.log("Chưa có thời gian giao hàng cho cửa hàng");
+                // Optionally, show a user-friendly message
+                // toast.info("Chưa có thời gian giao hàng cho cửa hàng");
+            }
+        }
+    } catch (error) {
+        // Handle network or other errors here
+        console.error("Error in getHistoryOrders:", error.message);
+        // Optionally, display an error message to the user
+        // toast.error("Error fetching history orders. Please try again.");
     }
-  }
+};
+
 
   //const orderState = useSelector((state) => state.auth.orders);
   console.log(state)

@@ -32,7 +32,7 @@ const EditableCell = ({
                     rules={[
                         {
                             required: true,
-                            message: `Vui lòng nhập ${title}!`,
+                            message: `Please Enter ${title}!`,
                         },
                     ]}>
                     {inputNode}
@@ -295,7 +295,7 @@ console.log(record)
                         setOpen(true);
                     }}
                 >
-                    Thêm giá mới
+                    Add Washing Type
                 </Button>
                 <ModalTime
                     open={open}
@@ -311,7 +311,7 @@ console.log(record)
 
             {data.length === 0 ? (
                 <Alert
-                    message="Chưa có phương thức giao hàng cho cửa hàng."
+                    message="There is no laundry type for the store yet."
                     type="info"
                     showIcon
                 />
