@@ -1,0 +1,57 @@
+@media (min-width: 1025px) {
+  .h-custom {
+    height: 100vh !important;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+.h-100 {
+  height: auto !important;
+}
+
+.h-custom {
+  min-height: 100vh !important;
+}
+
+.border-color-custom {
+  border-color: #f37a27 !important;
+}
+.MDBCard {
+  width: 120%; /* Adjust this value to set the width */
+  height: auto; /* Adjust this value to set the height */
+  margin-left: -20px;
+  margin-top: -20px;
+}
+.track-line {
+  height: 2px !important;
+  background-color: #488978;
+  opacity: 1;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 0px;
+  background-color: #488978;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.big-dot {
+  height: 25px;
+  width: 25px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  background-color: #488978;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.big-dot i {
+  font-size: 12px;
+}

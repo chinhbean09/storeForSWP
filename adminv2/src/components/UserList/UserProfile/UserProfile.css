@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+.profile-container {
+  margin-top: 20px;
+}
+
+.profile-nav {
+  margin-bottom: 20px;
+}
+
+.profile-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.profile-heading {
+  background-color: #f8f9fa;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+}
+
+.profile-title {
+  margin-top: 10px;
+}
+
+.profile-list li.active {
+  background-color: #8eb6e0;
+  color: white;
+}
+
+.bio-graph-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bio-graph-title {
+  color: #007bff !important;
+  font-weight: bold;
+}
+.profile-container {
+  /* font-family: Arial, sans-serif; */
+  font-family: "Roboto", sans-serif;
+}
+
+.bio-graph-title {
+  color: #333;
+  font-size: 1.9em;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.p-2 {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); /* This adds the shadow */
+  transition: box-shadow 0.3s ease; /* This adds a smooth transition */
+  background-color: #bbd1eb;
+}
+.p-2:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0px 12px 20px 0px rgba(0, 0, 0, 0.25);
+}
+.p-2 p {
+  line-height: 1.6;
+}
+.p-2 {
+  transition: background-color 0.3s ease;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}

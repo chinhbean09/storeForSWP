@@ -1,0 +1,864 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "date": "19 - 9 - 2023",
+      "username": "Nguyễn Gia Huy",
+      "phone": "0866925217",
+      "address": "1/34 Bình Nhâm, Bình Dương",
+      "gender": "male",
+      "status": false
+    },
+    {
+      "id": 2,
+      "date": "27 - 9 - 2023",
+      "username": "Trần Thị Ngọc Hạnh",
+      "phone": "0866925217",
+      "address": "35 Xô Viết Nghệ Tĩnh",
+      "gender": "female",
+      "status": true
+    },
+    {
+      "id": 3,
+      "date": "12 - 9 - 2023",
+      "username": "Nguyễn Thanh Tùng",
+      "phone": "0866925217",
+      "address": "20 Tây Hoà",
+      "gender": "male",
+      "status": true
+    },
+    {
+      "id": 4,
+      "date": "12 - 8 - 2023",
+      "username": "Trần Thanh Vũ",
+      "phone": "0866925217",
+      "address": "18 Lê Văn Liêm",
+      "gender": "male",
+      "status": false
+    },
+    {
+      "id": 5,
+      "date": "12 - 4 - 2023",
+      "username": "Nguyễn Thị Thanh Trúc",
+      "phone": "0866925217",
+      "address": "35 Xô Viết Nghệ Tĩnh",
+      "gender": "female",
+      "status": true
+    },
+    {
+      "id": 6,
+      "date": "12 - 4 - 2023",
+      "username": "Nguyễn Thị Thanh Trúc",
+      "phone": "0866925217",
+      "address": "35 Xô Viết Nghệ Tĩnh",
+      "gender": "female",
+      "status": true
+    }
+  ],
+  "Orders": [
+    {
+      "id": 12313,
+      "date": "16 - 10 - 2023",
+      "username": "Nguyễn Gia Huy",
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": 30000
+        }
+      ],
+      "totalprice": 50000,
+      "status": "delivered"
+    },
+    {
+      "id": 13124,
+      "date": "15 - 10 - 2023",
+      "username": "Trần Thị Ngọc Hạnh",
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": 30000
+        }
+      ],
+      "totalprice": 50000,
+      "status": "delivered"
+    },
+    {
+      "id": 13125,
+      "date": "17 - 10 - 2023",
+      "username": "Nguyễn Thanh Tùng",
+      "status": "delivered",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 15000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 30000
+        }
+      ],
+      "totalprice": 45000
+    },
+    {
+      "id": 14256,
+      "date": "17 - 10 - 2023",
+      "username": "Trần Thanh Vũ",
+      "status": "delivered",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 15000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 20000
+        }
+      ],
+      "totalprice": 35000
+    },
+    {
+      "id": 11256,
+      "date": "25 - 10 - 2023",
+      "username": "Nguyễn Thị Thanh Trúc",
+      "status": "cancel",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 17000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 20000
+        }
+      ],
+      "totalprice": 37000
+    },
+    {
+      "id": 11351,
+      "date": "15 - 10 - 2023",
+      "username": "Nguyễn Thanh Hà",
+      "status": "delivering",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 15000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 20000
+        }
+      ],
+      "totalprice": 35000
+    },
+    {
+      "id": 11513,
+      "date": "17 - 10 - 2023",
+      "username": "Nguyễn Thị Thanh Trúc",
+      "status": "washing",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 10000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 20000
+        }
+      ],
+      "totalprice": 30000
+    },
+    {
+      "id": 11515,
+      "date": "17 - 10 - 2023",
+      "username": "Nguyễn Thị Thanh Hà",
+      "status": "delivering",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 30000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 20000
+        }
+      ],
+      "totalprice": 50000
+    },
+    {
+      "id": 17522,
+      "date": "17 - 10 - 2023",
+      "username": "Nguyễn Thị Hạnh",
+      "status": "washing",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 10000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 20000
+        }
+      ],
+      "totalprice": 30000
+    },
+    {
+      "id": 11212,
+      "date": "19 - 10 - 2023",
+      "username": "Nguyễn Thị Thanh Trúc",
+      "status": "cancel",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 30000
+        }
+      ],
+      "totalprice": 50000
+    },
+    {
+      "id": 11412,
+      "date": "19 - 10 - 2023",
+      "username": "Ngọc Hà",
+      "status": "delivering",
+      "services": [
+        {
+          "seiviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 10000
+        },
+        {
+          "seiviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 20000
+        }
+      ],
+      "totalprice": 30000
+    }
+  ],
+  "Stores": [
+    {
+      "id": 3,
+      "storename": "Giặt ủi Tuấn Minh",
+      "phone": "0866925217",
+      "address": "20 Tây Hoà",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 21000,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 31500,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "off"
+    },
+    {
+      "id": 4,
+      "storename": "Giặt ủi Thanh Ngân",
+      "phone": "0866925217",
+      "address": "18 Lê Văn Liêm",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 21000,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 33000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "off"
+    },
+    {
+      "id": 5,
+      "storename": "Giặt ủi Trọng",
+      "phone": "0866925217",
+      "address": "35 Xô Viết Nghệ Tĩnh",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 22000,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 33000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "id": 6,
+      "storename": "Giặt ủi Hạnh",
+      "phone": "0866925352",
+      "address": "37 Xô Viết Nghệ Tĩnh",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 22000,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 33000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "off"
+    },
+    {
+      "id": 7,
+      "storename": "Giặt ủi Hoàng Hôn",
+      "phone": "0865279217",
+      "address": "1/35 Lê Văn Khiêm",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 21500,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 32000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "off"
+    },
+    {
+      "id": 8,
+      "storename": "Giặt ủi Hạnh",
+      "phone": "0866268117",
+      "address": "25 Xô Viết Nghệ Tĩnh",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 21500,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 32000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "on"
+    },
+    {
+      "id": 9,
+      "storename": "Giặt ủi Minh",
+      "phone": "0864685227",
+      "address": "30 Đinh Bộ Lĩnh",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 21500,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 32000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "off"
+    },
+    {
+      "id": 10,
+      "storename": "Giặt ủi Hoa",
+      "phone": "0866922518",
+      "address": "12 Lê Văn Liêm",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 21500,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 32000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "on"
+    },
+    {
+      "id": 11,
+      "storename": "Giặt ủi Hạnh",
+      "phone": "086612717",
+      "address": "36 Xô Viết Nghệ Tĩnh",
+      "services": [
+        {
+          "serviceId": 1,
+          "service_types": "Áo thông thường",
+          "price": 21500,
+          "weight": "0-2kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo thông thường",
+          "price": 32000,
+          "weight": "2-4kg"
+        },
+        {
+          "serviceId": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        }
+      ],
+      "status": "on"
+    }
+  ],
+  "OrderTest": [
+    {
+      "id": 12313,
+      "orderDate": "16 - 10 - 2023",
+      "username": "Nguyễn Gia Huy",
+      "store": [
+        {
+          "id": 10,
+          "name": "fdsfsfs"
+        }
+      ],
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": 30000
+        }
+      ],
+      "total": 50000,
+      "status": 1
+    },
+    {
+      "id": 13124,
+      "orderDate": "15 - 10 - 2023",
+      "username": "Trần Thị Ngọc Hạnh",
+      "store": [
+        {
+          "id": 9,
+          "name": "fdasdas"
+        }
+      ],
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": 20000
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": 30000
+        }
+      ],
+      "total": 50000,
+      "status": 3
+    }
+  ],
+  "order": [
+    {
+      "id": 29,
+      "orderDate": "2023-11-04 14:55:08.5923361",
+      "store": {
+        "id": 3,
+        "name": "Minh Chinh",
+        "address": "778 Vo Van Ngan",
+        "district": "Thu Duc",
+        "phone": "0123456789"
+      },
+      "noteText": null,
+      "total": 19999998,
+      "status": 0,
+      "items": [
+        {
+          "id": 50,
+          "total": 19999998,
+          "quantity": 2,
+          "weight": 0,
+          "laundryService": {
+            "id": 7,
+            "store": {
+              "id": 3,
+              "name": "Minh Chinh",
+              "address": "778 Vo Van Ngan",
+              "district": "Thu Duc",
+              "phone": "0123456789"
+            },
+            "name": "AnhQuocNguyen'",
+            "imageBanner": null,
+            "description": "clean-fast-trustfully",
+            "details": [
+              {
+                "id": 7,
+                "price": 9999999,
+                "from": 0,
+                "to": 0,
+                "unit": "set"
+              }
+            ],
+            "price": null,
+            "materials": [
+              {
+                "id": 1,
+                "name": "Material 1"
+              },
+              {
+                "id": 2,
+                "name": "Material 2"
+              },
+              {
+                "id": 4,
+                "name": "Material 4"
+              }
+            ],
+            "cloth": {
+              "id": 5,
+              "name": "Áo thun"
+            },
+            "feedbacks": null,
+            "isStandard": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "orderDate": "2023-11-04 15:03:59.9259658",
+      "store": {
+        "id": 1,
+        "name": "Anh Quoc",
+        "address": "12 Le Duan ",
+        "district": "Quan 1",
+        "phone": "0125489796"
+      },
+      "noteText": null,
+      "total": 30000,
+      "status": 0,
+      "items": [
+        {
+          "id": 51,
+          "total": 0,
+          "quantity": 1,
+          "weight": 0,
+          "laundryService": {
+            "id": 10,
+            "store": {
+              "id": 1,
+              "name": "Anh Quoc",
+              "address": "12 Le Duan ",
+              "district": "Quan 1",
+              "phone": "0125489796"
+            },
+            "name": "Name10",
+            "imageBanner": "asdada",
+            "description": "description1",
+            "details": [
+              {
+                "id": 12,
+                "price": 20000,
+                "from": 5,
+                "to": 8,
+                "unit": "kg"
+              },
+              {
+                "id": 24,
+                "price": 30000,
+                "from": 9,
+                "to": 15,
+                "unit": "kg"
+              },
+              {
+                "id": 11,
+                "price": 10000,
+                "from": 3,
+                "to": 5,
+                "unit": "kg"
+              }
+            ],
+            "price": null,
+            "materials": [],
+            "cloth": null,
+            "feedbacks": null,
+            "isStandard": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "orderDate": "2023-11-04 15:41:35.1778169",
+      "store": {
+        "id": 1,
+        "name": "Anh Quoc",
+        "address": "12 Le Duan ",
+        "district": "Quan 1",
+        "phone": "0125489796"
+      },
+      "noteText": null,
+      "total": 11000,
+      "status": 0,
+      "items": [
+        {
+          "id": 52,
+          "total": 11000,
+          "quantity": 1,
+          "weight": 0,
+          "laundryService": {
+            "id": 3,
+            "store": {
+              "id": 1,
+              "name": "Anh Quoc",
+              "address": "12 Le Duan ",
+              "district": "Quan 1",
+              "phone": "0125489796"
+            },
+            "name": "Name3",
+            "imageBanner": "asdada",
+            "description": "description1",
+            "details": [
+              {
+                "id": 3,
+                "price": 11000,
+                "from": 0,
+                "to": 0,
+                "unit": "set"
+              }
+            ],
+            "price": null,
+            "materials": [
+              {
+                "id": 3,
+                "name": "Material 3"
+              }
+            ],
+            "cloth": {
+              "id": 2,
+              "name": "Quần jeans"
+            },
+            "feedbacks": null,
+            "isStandard": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "orderDate": "2023-11-08 16:00:39.8057840",
+      "store": {
+        "id": 1,
+        "name": "Anh Quoc",
+        "address": "12 Le Duan ",
+        "district": "Quan 1",
+        "phone": "0125489796"
+      },
+      "noteText": null,
+      "total": 82000,
+      "status": 0,
+      "items": [
+        {
+          "id": 53,
+          "total": 60000,
+          "quantity": 3,
+          "weight": 0,
+          "laundryService": {
+            "id": 2,
+            "store": {
+              "id": 1,
+              "name": "Anh Quoc",
+              "address": "12 Le Duan ",
+              "district": "Quan 1",
+              "phone": "0125489796"
+            },
+            "name": "Name2",
+            "imageBanner": "asdada",
+            "description": "description1",
+            "details": [
+              {
+                "id": 2,
+                "price": 20000,
+                "from": 0,
+                "to": 0,
+                "unit": "set"
+              }
+            ],
+            "price": null,
+            "materials": [
+              {
+                "id": 2,
+                "name": "Material 2"
+              }
+            ],
+            "cloth": {
+              "id": 3,
+              "name": "Áo khoác"
+            },
+            "feedbacks": null,
+            "isStandard": false
+          }
+        },
+        {
+          "id": 54,
+          "total": 22000,
+          "quantity": 2,
+          "weight": 0,
+          "laundryService": {
+            "id": 3,
+            "store": {
+              "id": 1,
+              "name": "Anh Quoc",
+              "address": "12 Le Duan ",
+              "district": "Quan 1",
+              "phone": "0125489796"
+            },
+            "name": "Name3",
+            "imageBanner": "asdada",
+            "description": "description1",
+            "details": [
+              {
+                "id": 3,
+                "price": 11000,
+                "from": 0,
+                "to": 0,
+                "unit": "set"
+              }
+            ],
+            "price": null,
+            "materials": [
+              {
+                "id": 3,
+                "name": "Material 3"
+              }
+            ],
+            "cloth": {
+              "id": 2,
+              "name": "Quần jeans"
+            },
+            "feedbacks": null,
+            "isStandard": false
+          }
+        }
+      ]
+    }
+  ],
+  "material": [
+    {
+      "id": 1,
+      "name": "Material 1"
+    },
+    {
+      "id": 2,
+      "name": "Material 2"
+    },
+    {
+      "id": 3,
+      "name": "Material 3"
+    },
+    {
+      "id": 4,
+      "name": "Material 4"
+    },
+    {
+      "id": 5,
+      "name": "Material 5"
+    }
+  ]
+}
