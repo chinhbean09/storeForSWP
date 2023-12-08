@@ -1,0 +1,14 @@
+.back-button {
+  display: inline-block;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+.back-button:hover {
+  background-color: black;
+  color: aliceblue;
+}
+.back-button:active {
+  background-color: black;
+  color: beige;
+  border-color: whitesmokes;
+}

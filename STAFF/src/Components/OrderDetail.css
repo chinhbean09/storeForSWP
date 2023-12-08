@@ -1,0 +1,33 @@
+@media (min-width: 1025px) {
+  .h-custom {
+    height: 100vh !important;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.h-100 {
+  height: auto !important;
+}
+
+.h-custom {
+  min-height: 100vh !important;
+}
+
+.border-color-custom {
+  border-color: #f37a27 !important;
+}
+.MDBCard {
+  width: 120%; /* Adjust this value to set the width */
+  height: auto; /* Adjust this value to set the height */
+  margin-left: -20px;
+  margin-top: -20px;
+}

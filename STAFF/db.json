@@ -1,0 +1,99 @@
+{
+  "Orders": [
+    {
+      "id": 12313,
+      "date": "16 - 10 - 2023",
+      "username": "Nguyễn Gia Huy",
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": "15000"
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": "30000"
+        }
+      ],
+      "totalprice": "45000",
+      "status": "delivering"
+    },
+    {
+      "id": 13124,
+      "date": "15 - 10 - 2023",
+      "username": "Trần Thị Ngọc Hạnh",
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": "20000"
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": "30000"
+        }
+      ],
+      "totalprice": "50000",
+      "status": "delivered"
+    },
+    {
+      "id": 13125,
+      "date": "25 - 10 - 2023",
+      "username": "Trần Thị Ngọc",
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": "25000"
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": "30000"
+        }
+      ],
+      "totalprice": "55000",
+      "status": "delivering"
+    },
+    {
+      "id": 13126,
+      "date": "15 - 10 - 2023",
+      "username": "Trần Thị Hạnh",
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": "16000"
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": "30000"
+        }
+      ],
+      "totalprice": "46000",
+      "status": "delivering"
+    },
+    {
+      "id": 13127,
+      "date": "25 - 4 - 2023",
+      "username": "Trần Thị Hoàng",
+      "services": [
+        {
+          "id": 2,
+          "service_types": "Áo đặc biệt",
+          "price": "18000"
+        },
+        {
+          "id": 1,
+          "service_types": "Áo thông thường",
+          "price": "30000"
+        }
+      ],
+      "totalprice": "48000",
+      "status": "delivered"
+    }
+  ]
+}

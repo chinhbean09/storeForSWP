@@ -1,0 +1,177 @@
+.block {
+  display: block;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.card {
+  background: #fff;
+  border-radius: 0.5rem;
+  display: block;
+  position: relative;
+  padding: 1rem;
+}
+
+.shadow-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.shadow-1:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.shadow-2 {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.shadow-3 {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.shadow-4 {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.shadow-5 {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+.stat-box-icon {
+  width: 75px;
+  height: 75px;
+  margin-top: -2rem;
+  background: #e1f5fe;
+  padding: 0.5rem;
+}
+.statbox {
+  background-color: #e49191;
+  padding: 15px;
+  border-radius: 15px;
+  border: black 3px solid;
+}
+
+/* Styles for the table component */
+.custom-table {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table th {
+  background-color: #eaeaea;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.custom-table td {
+  background-color: #fff;
+  color: #333;
+}
+
+.custom-table tr:nth-child(even) td {
+  background-color: #f9f9f9;
+}
+
+.custom-table tr:hover td {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.custom-icon {
+  font-size: 24px;
+  margin-right: 10px;
+  color: #888;
+}
+
+.custom-table tbody td > img {
+  position: relative;
+  max-width: 50px;
+  float: left;
+  margin-right: 15px;
+  border-radius: 50%;
+}
+.custom-table tbody > tr > td:first-child,
+.custom-table thead > tr > th:first-child {
+  padding-left: 20px;
+  width: 5%;
+}
+.custom-table thead > tr > th:last-child {
+  padding-top: 10px;
+  padding-left: 20px;
+  width: 7%;
+}
+.custom-table thead > tr > th:nth-child(5) {
+  padding-left: 10px;
+  width: 7%;
+}
+.custom-table .custom-icon {
+  display: flex;
+  justify-content: center;
+  height: 6vh;
+  margin: 0 auto;
+}
+.custom-icon:hover {
+  color: #333;
+}
+.profile-button {
+  background: rgb(99, 39, 120);
+  box-shadow: none;
+  border: none;
+}
+
+.profile-button:hover {
+  background: #682773;
+}
+
+.profile-button:focus {
+  background: #682773;
+  box-shadow: none;
+}
+
+.profile-button:active {
+  background: #682773;
+  box-shadow: none;
+}
+.user-info {
+  margin-left: 20px;
+}
+.labels {
+  font-size: 20px;
+  font-weight: bold;
+}
+.custom-table a {
+  display: flex;
+  justify-content: center; /* This centers horizontally */
+  align-items: center; /* This centers vertically */
+  height: 100%; /* Take up full height of the container */
+  width: 100%; /* Take up full width of the container */
+  text-align: center; /* Center the text within the link */
+  color: #682773 !important;
+}
+.custom-table a:hover {
+  color: #e49191 !important;
+}
+
+.custom-table .table th:nth-child(5) {
+  width: 170px;
+}
+
+#myDropdown {
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 16px;
+}
+.container1 {
+  display: flex;
+  background-color: antiquewhite;
+}
+main {
+  width: 100%;
+  padding: 20px;
+}
