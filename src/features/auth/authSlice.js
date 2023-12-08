@@ -78,7 +78,6 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-        toast.error(`Email account already exists `);
         state.isLoading = false;
       })
      
