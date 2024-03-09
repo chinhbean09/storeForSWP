@@ -11,7 +11,7 @@ import '../styles/dashboard.css';
 import { config } from "../utils/axiosconfig";
 import StandardDetailForm from "../components/StandardForm";
 
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service";
+const URL = "http://localhost:8001/api/v1/store/special-service";
 
 
 const columns = [

@@ -17,9 +17,6 @@ const cartSlice = createSlice({
 
 
         addToCart(state, action) {
-
-
-
             const sameStore = state.cartItems.findIndex(
                 (item) => item.storeId === action.payload.storeId
             )

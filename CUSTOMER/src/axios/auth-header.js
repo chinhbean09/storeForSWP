@@ -6,10 +6,7 @@ console.log('headers')
 export const config = {
   
   headers: {
-  //   Authorization: `Bearer ${
-  //   getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.access_token: ""
-    
-  // }`,
+  
      Accept: "application/json",
     "Access-Control-Allow-Origin":"*",
     'ngrok-skip-browser-warning': '69420'

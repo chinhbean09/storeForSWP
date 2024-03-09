@@ -1,27 +1,25 @@
-// LoadingSpinner component
+// import React from "react";
+// import "../styles/spinner.css";
 
-import React, { useState, useEffect } from "react";
-import "../styles/spinner.css";
+// export default function LoadingSpinner() {
+//   return (
+//     <div className="spinner-container">
+//       <h2 style={{ color: "red" }}>Hiện tại cửa hàng chưa có dịch vụ nào</h2>
+//       <h2 style={{ color: "red" }}>Tạo thêm dịch vụ của riêng bạn </h2>
+//     </div>
+//   );
+// }
+import React from "react";
+import  "../styles/spinner.css";
 
-export default function LoadingSpinner({ isSuccess }) {
-  const [showSpinner, setShowSpinner] = useState(false);
-
-  useEffect(() => {
-    if (isSuccess) {
-      // Delay showing the spinner for 4 seconds
-      const timer = setTimeout(() => {
-        setShowSpinner(true);
-      }, 4000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isSuccess]);
-
+export default function LoadingSpinner() {
   return (
-    <div className={`spinner-container ${showSpinner ? "show-spinner" : ""}`}>
-      <h2 style={{ color: "red" }}>Hiện tại cửa hàng chưa có dịch vụ nào</h2>
-      <h2 style={{ color: "red" }}>Hãy tạo cửa hàng trước khi tạo dịch vụ</h2>
-      {showSpinner && <div className="spinner"></div>}
+    <div className="spinner-container" style={{marginLeft:"5%", marginTop:"-10%"}}>
+      <div className="loading-spinner">
+       
+      </div>
+      <h2>Loading.....</h2>
     </div>
+    
   );
 }

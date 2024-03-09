@@ -9,12 +9,7 @@ function MultipleSelect(props) {
   //      setSelectedValue(e);
 
   // }
-
-
   return (
-
-
-
     <Select
       mode="multiple"
       size='small'

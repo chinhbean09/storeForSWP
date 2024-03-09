@@ -67,7 +67,7 @@ const Cart = () => {
 
   const apiTime = async () => {
    
-    const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/base/store-time/${storeId}`, {
+    const res = await axios.get(`http://localhost:8001/api/v1/base/store-time/${storeId}`, {
       headers: {
 
         Accept: "application/json",

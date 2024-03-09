@@ -11,7 +11,7 @@ export const FeedbackProvider = ({ children }) => {
   useEffect(() => {
     axios
       .get(
-        "https://magpie-aware-lark.ngrok-free.app/api/v1/user/feedback/all",
+        "http://localhost:8001/api/v1/user/feedback/all",
         {
           headers: {
             Authorization: `Bearer ${JSON.parse(
@@ -40,7 +40,7 @@ export const FeedbackProvider = ({ children }) => {
     {
       try {
         const response = await axios.delete(
-          `https://magpie-aware-lark.ngrok-free.app/api/v1/user/feedback/delete/${id}`,
+          `http://localhost:8001/api/v1/user/feedback/delete/${id}`,
           {
             headers: {
               Authorization: `Bearer ${JSON.parse(

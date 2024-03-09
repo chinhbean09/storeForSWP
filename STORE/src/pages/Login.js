@@ -34,7 +34,7 @@ const Login = () => {
  
   useEffect(() => {
     if (isSuccess) {
-      navigate("store");
+      navigate("admin");
     } else {
       navigate("");
     }
@@ -49,10 +49,6 @@ const Login = () => {
       <div className="my-5 w-25 bg-white rounded-3 mx-auto p-4">
         <h3 className="text-center title">Login</h3>
         <p className="text-center">Login to your account to continue.</p>
-        <div className="error text-center">
-          {message.message == "Rejected" ? "You are not an store owner" : ""}
-          
-        </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
             type="text"

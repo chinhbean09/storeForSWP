@@ -7,8 +7,9 @@ import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { } from "../features/auth/authSlice";
 import { config } from "../utils/axiosconfig";
+import Loading from "../components/LoadingSpinner";
 
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/all";
+const URL = "http://localhost:8001/api/v1/store/order/all";
 function renderComponent(params) {
   return (
     <div>
@@ -57,8 +58,10 @@ function renderComponent(params) {
   )
 }
 
+
+
 function generateCurrency(params) {
-  return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  return params.toLocaleString('it-IT', { style: 'currency', currency: 'USD' });
 }
 function getDate(params) {
   const data = params?.split(".");
@@ -105,38 +108,43 @@ const Orders = () => {
 
   const [state, setState] = useState([]);
 
+  const [isLoading, setLoading] = useState(true);
+
+  const [statusChanged, setStatusChanged] = useState(false);
+
+
+
   useEffect(() => {
-    getHistoryOrders(userInfoDTO.id);
+    // Call the function once when the component mounts
+    getHistoryOrders(userInfoDTO.id).finally(() => setLoading(false));
+
+    const interval = setInterval(() => {
+      getHistoryOrders(userInfoDTO.id);
+    }, 1500); // Changed to 2 seconds as per your requirement
+
+    // Clear the interval when the component is unmounted
+    return () => clearInterval(interval);
   }, []);
 
   const getHistoryOrders = async (id) => {
     try {
-        const res = await axios.get(`${URL}/${id}`, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-            },
-        });
-
-        if (res.status === 200) {
-            if (res.data) {
-                setState(res.data);
-            } else {
-                // Display a message indicating no data
-                console.log("Chưa có thời gian giao hàng cho cửa hàng");
-                // Optionally, show a user-friendly message
-                // toast.info("Chưa có thời gian giao hàng cho cửa hàng");
-            }
-        }
-    } catch (error) {
-        // Handle network or other errors here
-        console.error("Error in getHistoryOrders:", error.message);
-        // Optionally, display an error message to the user
-        // toast.error("Error fetching history orders. Please try again.");
+    const res = await axios.get(`${URL}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        'ngrok-skip-browser-warning': 'true'
+      },
+    });
+    if (res.status === 200) {
+      setState(res.data);
+    } 
+  } catch (error) {
+      console.error("Error:", error.message);
     }
-};
+  }
+
+
 
 
   //const orderState = useSelector((state) => state.auth.orders);
@@ -152,7 +160,7 @@ const Orders = () => {
       total: generateCurrency(state[i].total),
       action: (
         <>
-          <Link to={`/store/order/${state[i].id}`} className=" fs-3 text-danger">
+          <Link to={`/admin/order/${state[i].id}`} className=" fs-3 text-danger">
             <BiEdit />
           </Link>
           
@@ -162,12 +170,22 @@ const Orders = () => {
   }
   return (
     <div>
-    <h3 className="mb-4 title">Quản lý đơn hàng</h3>
-    {state.length > 0 ? (
+    <h3 className="mb-4 title">Order management</h3>
+    {/* {state.length > 0 ? (
       <Table columns={columns} dataSource={data1} />
     ) : (
-      <p className="text-danger">Error fetching data. Please try again later.</p>
-    )}
+      <p className="text-danger1" style={{}}>There are no orders yet.</p>
+    )} */}
+    {isLoading ? (
+        // Show loading spinner while data is loading
+        <Loading></Loading>
+      ) : state.length > 0 ? (
+        // Show the table if there is data
+        <Table columns={columns} dataSource={data1} />
+      ) : (
+        // Show the message if there are no orders
+        <p className="text-danger1">There are no orders yet.</p>
+      )}
   </div>
   );
 };

@@ -13,7 +13,7 @@ import productService from "../features/product/productService";
 import { base_url } from "../utils/baseUrl";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/special-service";
+const URL = "http://localhost:8001/api/v1/store/special-service";
 
 const columns = [
   {
@@ -52,29 +52,25 @@ const columns = [
 ];
 
 const Productlist = () => {
+
   const dispatch = useDispatch();
   const { userInfoDTO } = useSelector((state) => state.auth);
-  
+
   console.log("product:" + JSON.parse(localStorage.getItem("access_token")));
   const handleDelete = async (id) => {
     if (window.confirm(`Are you sure that you want to delete Product with ID: ${id}`)) {
-      try {
-        const res = await axios.delete(`${URL}/delete/${id}`, config);
-  
-        if (res.status === 200) {
-          // Re-render Data
-          toast.success("Deleted Successfully ~");
-          dispatch(getProducts(userInfoDTO.id));
-        } else {
-          toast.error(`Delete: Unexpected response status ${res.status}`);
-        }
-      } catch (error) {
-        console.error("Error in handleDelete:", error);
-        toast.error("Delete: An error occurred while processing your request.");
+      const res = await axios.delete(`${URL}/delete/${id}`, config);
+      console.log(res)
+      if (res.status === 200) {
+        //re-render Data
+      
+        toast.success("Deleted Successfully ~");
+        dispatch(getProducts(userInfoDTO.id));
+      } else {
+        toast.error("Delete: Error!");
       }
     }
-  };
-  
+  }
 
   
 
@@ -86,6 +82,10 @@ const Productlist = () => {
    
   }, [dispatch]);
 
+
+  //   if (!productState) {
+  //     return <div>Loading...</div>;
+  // }
   const productState = useSelector((state) => state.product.products);
   const { isSuccess } = useSelector((state) => state.product);
   const data1 = [];
@@ -99,6 +99,7 @@ const Productlist = () => {
       price: productState[i].details[0].price,
       unit: productState[i].details[0].unit,
       cloth: productState[i].cloth.name,
+
       action: (
         <>
           <Link to={`update/${productState[i].id}`} className=" fs-3 text-danger">
@@ -115,21 +116,20 @@ const Productlist = () => {
   return (
 
     <div>
-    {isSuccess && (
       <div className="btn-add">
         <Link to={'add'}>
           <button className='add-staff-btn'>Add new service</button>
         </Link>
       </div>
-    )}
-  
-    <h3 className="mb-4 title">Service</h3>
-  
-    <div>
-      {!isSuccess ? <LoadingSpinner /> : <Table columns={columns} dataSource={data1} />}
+      <h3 className="mb-4 title">Services</h3>
+ 
+        <div>
+        {!isSuccess ? <LoadingSpinner /> :   <Table columns={columns} dataSource={data1} />}
+        
+        </div>
+
+
     </div>
-  </div>
-  
   );
 };
 

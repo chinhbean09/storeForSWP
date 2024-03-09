@@ -25,7 +25,7 @@ const SpecialDetailForm = () => {
     useEffect(() => {
         axios
             .get(
-                `https://magpie-aware-lark.ngrok-free.app/api/v1/base/laundry/feedback/${id}`,
+                `http://localhost:8001/api/v1/base/laundry/feedback/${id}`,
                 {
                     headers: {
 

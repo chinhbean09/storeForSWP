@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service";
+const URL = "http://localhost:8001/api/v1/store/standard-service";
 const EditableCell = ({
     editing,
     dataIndex,
@@ -18,7 +18,7 @@ const EditableCell = ({
     min,
     ...restProps
 }) => {
-    const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+    const inputNode = inputType === 'number' ? <InputNumber min={min} /> : <Input />;
     return (
         <td {...restProps}>
             {editing ? (
@@ -30,7 +30,7 @@ const EditableCell = ({
                     rules={[
                         {
                             required: true,
-                            message: `Vui lòng nhập ${title}!`,
+                            message: `Please enter ${title}!`,
                         },
                     ]}
 
@@ -44,10 +44,14 @@ const EditableCell = ({
     );
 };
 const TableEditable = () => {
+
+
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const [form] = Form.useForm();
+
+
     const [editingKey, setEditingKey] = useState('');
     const { userInfoDTO } = useSelector((state) => state.auth);
     useEffect(() => {
@@ -56,93 +60,54 @@ const TableEditable = () => {
     }, []);
 
     const getPricesOfStandardService = async (id) => {
-        try {
-            const res = await axios.get(`${URL}/prices?store=${id}`, {
-                headers: {
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    'ngrok-skip-browser-warning': 'true'
-                },
-            });
-    
-            if (res.status === 200) {
-                setData(res.data);
-            } else {
-                // Handle unexpected response status here
-                console.error(`Unexpected response status: ${res.status}`);
-                // Optionally, display an error message to the user
-                // toast.error(`Error getting prices. Please try again.`);
-            }
-        } catch (error) {
-            // Handle network or other errors here
-            console.error("Error in getPricesOfStandardService:", error);
-            // Optionally, display an error message to the user
-            // toast.error(`Error getting prices. Please try again.`);
+        const res = await axios.get(`${URL}/prices?store=${id}`, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                'ngrok-skip-browser-warning': 'true'
+
+            },
+        });
+        if (res.status === 200) {
+            setData(res.data);
         }
-    };
-    
+    }
 
 
 
     const updateService = async (id, data) => {
-        try {
-            const res = await axios.put(`${URL}/prices/update/${id}`, data, {
-                headers: {
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    'ngrok-skip-browser-warning': 'true'
-                },
-            });
-    
-            if (res.status === 200) {
-                toast.success(`Cập nhật thành công !!!`);
-                getPricesOfStandardService(userInfoDTO.id);
-                navigate('/store/laundry');
-            } else {
-                // Handle unexpected response status here
-                console.error(`Unexpected response status: ${res.status}`);
-                // Optionally, display an error message to the user
-                // toast.error(`Error updating service. Please try again.`);
-            }
-        } catch (error) {
-            // Handle network or other errors here
-            console.error("Error in updateService:", error);
-            // Optionally, display an error message to the user
-            // toast.error(`Error updating service. Please try again.`);
+        const res = await axios.put(`${URL}/prices/update/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                'ngrok-skip-browser-warning': 'true'
+
+            },
+        });
+        if (res.status === 200) {
+            toast.success(`Update successful !!!`);
+            getPricesOfStandardService(userInfoDTO.id);
+            navigate('/admin/laundry');
         }
-    };
-    
+    }
     const deleteService = async (id) => {
-        try {
-            const res = await axios.delete(`${URL}/prices/delete/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    'ngrok-skip-browser-warning': 'true'
-                },
-            });
-    
-            if (res.status === 200) {
-                toast.success(`Xóa thành công !!!`);
-                getPricesOfStandardService(userInfoDTO.id);
-                navigate('/store/laundry');
-            } else {
-                // Handle unexpected response status here
-                console.error(`Unexpected response status: ${res.status}`);
-                // Optionally, display an error message to the user
-                // toast.error(`Error deleting service. Please try again.`);
-            }
-        } catch (error) {
-            // Handle network or other errors here
-            console.error("Error in deleteService:", error);
-            // Optionally, display an error message to the user
-            // toast.error(`Error deleting service. Please try again.`);
+        const res = await axios.delete(`${URL}/prices/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*",
+                'ngrok-skip-browser-warning': 'true'
+
+            },
+        });
+        if (res.status === 200) {
+            toast.success(`Deleted successfully!!!`);
+            getPricesOfStandardService(userInfoDTO.id);
+            navigate('/admin/laundry');
         }
-    };
-    
+    }
 
     const isEditing = (record) => record.key === editingKey;
     const edit = (record) => {
@@ -185,25 +150,25 @@ const TableEditable = () => {
 
     const columns = [
         {
-            title: 'Từ',
+            title: 'From',
             dataIndex: 'from',
             width: '15%',
             editable: true,
         },
         {
-            title: 'Đến',
+            title: 'To',
             dataIndex: 'to',
             width: '15%',
             editable: true,
         },
         {
-            title: 'Giá',
+            title: 'Price',
             dataIndex: 'price',
             width: '20%',
             editable: true,
         },
         {
-            title: 'Đơn vị',
+            title: 'Unit',
             dataIndex: 'unit',
             width: '10%',
             editable: true,
@@ -284,12 +249,13 @@ const TableEditable = () => {
         <div className='p-4'>
             <div className='p-3 d-flex float-end'>
                 <Button
+
                     type="primary"
                     onClick={() => {
                         setOpen(true);
                     }}
                 >
-                    Add New Price
+                    Add new price
                 </Button>
                 <ModalForm
                     open={open}
@@ -300,7 +266,6 @@ const TableEditable = () => {
                     reset={() => {
                         getPricesOfStandardService(userInfoDTO.id)
                     }}
-                    
 
                 />
             </div>

@@ -58,7 +58,6 @@ const ViewOrder = () => {
   const { id } = useParams()
 
 
-
   const onFinish = (e) => {
     const item = order.items[checkStandardd(data1)];
     console.log("sssss" + item)
@@ -70,7 +69,7 @@ const ViewOrder = () => {
 
 
     }
-    navigate(`/store/order/${id}`)
+    navigate(`/admin/order/${id}`)
 
 
   };
@@ -78,7 +77,7 @@ const ViewOrder = () => {
   const getOrder = async (id) => {
     try {
       setError("");
-      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/${id}`, {
+      const res = await axios.get(`http://localhost:8001/api/v1/store/order/${id}`, {
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
           "Accept": "application/json",
@@ -107,7 +106,7 @@ const ViewOrder = () => {
 
   const getPrices = async (id) => {
     try {
-      const res = await axios.get(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/standard-service/prices?store=${id}`, {
+      const res = await axios.get(`http://localhost:8001/api/v1/store/standard-service/prices?store=${id}`, {
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
           "Accept": "application/json",
@@ -131,7 +130,7 @@ const ViewOrder = () => {
 
   const updateOrder = async (values) => {
 
-    const res = await axios.put(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/update/${id}?status=${values}`,null,{
+    const res = await axios.put(`http://localhost:8001/api/v1/store/order/update/${id}?status=${values}`,null,{
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
         Accept: "application/json",
@@ -148,9 +147,9 @@ const ViewOrder = () => {
     }
   }
 
-  const updateWeight = async (values) => {
+  const updateWeight = async (id,values) => {
 
-    const res = await axios.put(`https://magpie-aware-lark.ngrok-free.app/api/v1/store/order/item/update/${id}?weight=${values}`,null,{
+    const res = await axios.put(`http://localhost:8001/api/v1/store/order/item/update/${id}?weight=${values}`,null,{
      
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
@@ -169,11 +168,17 @@ const ViewOrder = () => {
 
 
 
+  // function generateCurrency(params) {
+  //   return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  // }
+
   function generateCurrency(params) {
-    return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    return params.toLocaleString('it-IT', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2, // Đảm bảo hiển thị ít nhất 2 chữ số thập phân
+    });
   }
-
-
 
 
   function checkStandardd(params) {
@@ -188,6 +193,7 @@ const ViewOrder = () => {
       quantity: order.items[i].quantity,
       price: order.items[i].laundryService.isStandard ? "" : generateCurrency(order.items[i].laundryService.details[0].price),
       total: generateCurrency(order.items[i].total),
+      
 
 
       isStandard: order.items[i].laundryService.isStandard ? ("Giặt sấy") : ("Giặt hấp")
@@ -304,6 +310,22 @@ const ViewOrder = () => {
       </div>
     )
   }
+  const [showNoOrderMessage, setShowNoOrderMessage] = useState(false);
+
+  useEffect(() => {
+    // Giả sử sau 3 giây, bạn muốn dừng màn hình loading
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+
+      // Giả sử bạn không có dữ liệu đơn hàng (trong thực tế, bạn cần thay thế dòng này với logic lấy dữ liệu đơn hàng từ API)
+      // setShowNoOrderMessage(true);
+    }, 3000);
+
+    // Làm sạch timeout khi component bị unmount
+    return () => clearTimeout(timeoutId);
+  }, []); // Chỉ chạy một lần khi component được mount
+
+
 
 
   console.log(error.length)
@@ -312,8 +334,19 @@ const ViewOrder = () => {
 
 
 
-    <>
-      {error.length < 1 ? (isLoading ? <LoadingSpinner /> : <div class="container-fluid py-2">
+    <div>
+      {error ? (
+        // Hiển thị lỗi
+        <h2 style={{ color: 'red' }}>{error}</h2>
+      ) : (
+        <>
+          {isLoading ? (
+            // Hiển thị màn hình loading
+            // <div>Loading...</div>
+            <LoadingSpinner></LoadingSpinner>
+          ) : order ? (
+            // Hiển thị thông tin đơn hàng
+      <div class="container-fluid py-2">
         <div class="row">
           <div class="col-lg-8">
 
@@ -333,19 +366,18 @@ const ViewOrder = () => {
 
                     <Divider></Divider>
                     <div className="card-data row" >
-                      <div className="col-10 fw-bold" style={{ textAlign: "left" }}>
-
+                      
+                      <div className="" style={{ textAlign: "left" }}>
+                        
+                        <h5>Phụ phí thời gian giặt: </h5><h5 style={{ textAlign: "right", color: "green" }}>{order?.time ? generateCurrency(order?.time.price) : ""}</h5>
                         <h5>Tổng chi phí:</h5>
-
 
                       </div>
                       <div className="col-2" style={{ textAlign: "left" }}>
 
-
-
-
                       </div>
-                      <h4 style={{ textAlign: "right", color: "green" }}>{order.total ? (generateCurrency(order?.total)) : ""}</h4>
+                      
+                      <h4 style={{ textAlign: "right", color: "green" }}>{order.total ? generateCurrency(order?.total) : ""}</h4>
 
                     </div>
 
@@ -353,16 +385,8 @@ const ViewOrder = () => {
 
                 </div>
 
-
-
-
-
-
               </div>
             </div>
-
-
-
 
           </div>
 
@@ -373,60 +397,33 @@ const ViewOrder = () => {
               <div className="card m-3">
 
                 {renderComponent(order?.status)}
-
-
-
-
-
-
               </div>
-
-
-
-
             </div>
 
             <div className="card mb-4 p-3">
-
-
 
               <h5 class="fw-bolder">Thông tin khách hàng</h5>
 
               <div className="card my-2">
 
-                <div className="row p-3" >
-                  <div className="col-3 fw-bold" style={{ textAlign: "left" }}>
+                <div className="row p-5" >
+                  <div className="col-5 fw-bold" style={{ textAlign: "left" }}>
                     <p >Họ và tên: </p>
                     <p >Email: </p>
                     <p >Địa chỉ: </p>
                     <p >Số điện thoại: </p>
 
                   </div>
-                  <div className="col-9" style={{ textAlign: "left" }}>
+                  <div className="col-7" style={{ textAlign: "left" }}>
                     <p>{order?.user?.fullName}</p>
                     <p>{order?.user?.email}</p>
                     <p>{order?.user?.address}</p>
                     <p>{order?.user?.phone}</p>
                   </div>
 
-
-
                 </div>
 
-
-
-
-
               </div>
-
-
-
-
-
-
-
-
-
 
             </div>
 
@@ -434,12 +431,13 @@ const ViewOrder = () => {
 
         </div>
       </div>
-      ) : <><h2 style={{ color: "red" }}>{error}</h2></>}
-
-
-
-    </>
-
+      ) : (
+        // Hiển thị thông báo khi không có đơn hàng
+        showNoOrderMessage && <div>Hiện tại không có đơn hàng nào.</div>
+      )}</>
+      )} 
+    
+</div>
   );
 };
 

@@ -14,7 +14,6 @@ import StandardDetailForm from "./components/StandardForm";
 import SpecialDetailForm from "./components/SpecialService";
 import LaundryService from "./pages/LaundryService";
 import CreateStore from "./pages/CreateStore";
-import TimeManagement from "./pages/TimeManagement";
 function App() {
   return (
     <Router>
@@ -23,7 +22,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
-        <Route path="/store" element={<MainLayout />}>       
+        <Route path="/admin" element={<MainLayout />}>       
           <Route index element={<Dashboard />} />       
           <Route path="orders" element={<Orders />} />
           <Route path="design-store" element={<CreateStore />} />
@@ -35,8 +34,6 @@ function App() {
           <Route path="list-product/update/:id" element={<SpecialDetailForm />} />
           <Route path="special-service/add" element={<StandardDetailForm />} />
           <Route path="special-service/update/:id" element={<StandardDetailForm />} />
-          <Route path="manage-time" element={<TimeManagement />} />
-
         </Route>
       </Routes>
     </Router> 

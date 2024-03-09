@@ -27,11 +27,11 @@ export default function ProfileDetailForm() {
   const { Option } = Select;
   const user = useParams();
   const [open, setOpen] = useState(false);
-  const putUserUrl = `https://magpie-aware-lark.ngrok-free.app/api/v1/user/profile/${user.id}`;
+  const putUserUrl = `http://localhost:8001/api/v1/user/profile/${user.id}`;
   const [state, setState] = useState(initialState);
   const { id, fullName, email, phone, address, image, status, role } = state;
   const { userInfoDTO } = useSelector((state) => state.auth);
-  const getUsersUrl = `https://magpie-aware-lark.ngrok-free.app/api/v1/base/profile/2`;
+  const getUsersUrl = `http://localhost:8001/api/v1/base/profile/2`;
 
   const [userProfile, setUserProfile] = useState(userInfoDTO);
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function ProfileDetailForm() {
   const onFinish = async (values) => {
     try {
       const response = await axios.put(
-        `https://magpie-aware-lark.ngrok-free.app/api/v1/user/profile/update/${userInfoDTO.id}`,
+        `http://localhost:8001/api/v1/user/profile/update/${userInfoDTO.id}`,
         values,
         {
           headers: {

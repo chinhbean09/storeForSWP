@@ -38,40 +38,26 @@ const StandardDetailForm = () => {
     dispatch(getStandardService(userInfoDTO.id));
   }, [dispatch, forceRerender]); // include forceRerender in dependencies
 
-  const { standardService } = useSelector((state) => state.product);
+  const { standardService, isSuccess } = useSelector((state) => state.product);
 
   const [errors, setErrors] = useState(error_init);
 
   const updateStandardService = async (id, data) => {
-    try {
-        const res = await axios.put(`${base_url}store/standard-service/update/${id}`, data, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'ngrok-skip-browser-warning': 'true',
-            },
-        });
-
-        if (res.status === 200) {
-            console.log(res.data);
-            toast.success(`Updated Product with ID: ${id} successfully ~`);
-            navigate('/store/laundry');
-            setForceRerender(!forceRerender); // trigger a re-render
-        } else {
-            // Handle unexpected response status here
-            console.error(`Unexpected response status: ${res.status}`);
-            // Optionally, display an error message to the user
-            // toast.error(`Error updating product. Please try again.`);
-        }
-    } catch (error) {
-        // Handle network or other errors here
-        console.error("Error in updateStandardService:", error);
-        // Optionally, display an error message to the user
-        // toast.error(`Error updating product. Please try again.`);
+    const res = await axios.put(`${base_url}store/standard-service/update/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    });
+    if (res.status === 200) {
+      console.log(res.data);
+      toast.success(`Updated Product with ID: ${id} successfully ~`);
+      navigate('/admin/laundry');
+      setForceRerender(!forceRerender); // trigger a re-render
     }
-};
-
+  };
 
   const handleSubmit = async (event) => {
     form
@@ -82,7 +68,7 @@ const StandardDetailForm = () => {
         } else {
           await dispatch(addNewStandardService(values));
         }
-        navigate('/store/laundry');
+        navigate('/admin/laundry');
         setForceRerender(!forceRerender); // trigger a re-render
       })
       .catch((info) => {
@@ -92,10 +78,20 @@ const StandardDetailForm = () => {
   
   const [componentDisabled, setComponentDisabled] = useState(true);
 
+  function starRating(params) {
+    const stars = [];
+    for (let index = 0; index < params; index++) {
+      stars.push(<AiFillStar className='checked' key={index} />);
+    }
+    return stars;
+  }
+
+  function generateCurrency(params) {
+    return params.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  }
+
+
   return (
-
-
-
     <Wrapper>
 
       <div class="container-fluid">
@@ -103,11 +99,11 @@ const StandardDetailForm = () => {
           <div class="col-lg-8">
             <div class="card mb-4">
               <div class="card-body">
-                <h2>{standardService?.id ? "Cập nhật thông tin dịch vụ" : "Tạo mới dịch vụ tiêu chuẩn"}</h2>
+                <h2>{standardService?.id ? "Update standard service information" : "Create a new standard service"}</h2>
                 <Checkbox
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}>
-                  Biểu mẫu bị vô hiệu hóa
+                  Form disabled
                 </Checkbox>
                 <Form
                   form={form}
@@ -135,15 +131,15 @@ const StandardDetailForm = () => {
                     
                     
                   ]}>
-                  <Form.Item label="Tên Dịch Vụ" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
+                  <Form.Item label="Service name" name='name' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]}>
                     <Input defaultValue={standardService?.name} ></Input>
                     {/* {errors.name_err && <span className='error'>{errors.name_err}</span>} */}
                   </Form.Item>
-                  <Form.Item label="Mô tả" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} >
+                  <Form.Item label="Description" name='description' rules={[{ required: true, message: `Vui lòng nhập dữ liệu !` }]} >
                     <TextArea rows={4} defaultValue={standardService?.description} />
                     {/* {errors.description_err && <span className='error'>{errors.description_err}</span>} */}
                   </Form.Item>
-                  <Form.Item label="Tải lên" valuePropName="fileList">
+                  <Form.Item label="Upload" valuePropName="fileList">
                     <Upload action="/upload.do" listType="picture-card">
                       <div>
                         <PlusOutlined />
@@ -159,24 +155,22 @@ const StandardDetailForm = () => {
 
                   </Form.Item>
                   <Form.Item className="float-end">
-                    <button type='submit' className='form-button'>{standardService?.id ? "Cập Nhật" : "Tạo"}</button>
+                    <button type='submit' className='form-button'>{standardService?.id ? "Update" : "Creat"}</button>
                   </Form.Item>
 
                 </Form>
               </div>
             </div>
 
-            {standardService?.id ? (<><h3 className="px-5 fw-bold">Bảng Giá : </h3>
+            {standardService?.id ? (<><h3 className="px-5 fw-bold">Price list : </h3>
               <TableEditable /></>) : ""}
 
           </div>
         </div>
       </div>
-                          
-     
-
+      
     </Wrapper>
- 
+
   );
 };
 

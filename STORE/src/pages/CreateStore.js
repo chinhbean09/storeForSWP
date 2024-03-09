@@ -61,7 +61,7 @@ const districts = [
   },
 ];
 
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/store";
+const URL = "http://localhost:8001/api/v1/store";
 
 const CreateStore = (props) => {
 
@@ -77,6 +77,7 @@ const CreateStore = (props) => {
 
 
   useEffect(() => {
+
     dispatch(resetState())
     dispatch(getStore(userInfoDTO.id));
     dispatch(createStore())
@@ -94,7 +95,7 @@ const CreateStore = (props) => {
         console.log(values)
         dispatch (createStore(values));
       }
-      navigate('/store/design-store');
+      navigate('/admin/design-store');
       setForceRerender(!forceRerender);
       })
       .catch((info) => {
@@ -102,56 +103,39 @@ const CreateStore = (props) => {
       });
   }
 
-  const updateStore = async (id, data) => {
-    try {
-        const res = await axios.put(`${base_url}store/update?store=${id}`, data, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-                'ngrok-skip-browser-warning': 'true'
-            },
-        });
-
-        if (res.status === 200) {
-            if (res.data) {
-                // Assuming there is some specific property in the data that indicates success
-                toast.success(`Đã thiết kế thành công cửa hàng của bạn`);
-                navigate('/store/design-store');
-                setForceRerender(!forceRerender);
-                setComponentDisabled(true);
-            } else {
-                // Display a message indicating no data
-                console.log("Chưa có thời gian giao hàng cho cửa hàng");
-                // Optionally, show a user-friendly message
-                // toast.info("Chưa có thời gian giao hàng cho cửa hàng");
-            }
-        }
-    } catch (error) {
-        // Handle network or other errors here
-        console.error("Error in updateStore:", error);
-        // Optionally, display an error message to the user
-        // toast.error("Error updating store. Please try again.");
+  const updateStore = async (id,data) => {
+    const res = await axios.put(`${base_url}store/update?store=${id}`,data,{
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token'))}`,
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        'ngrok-skip-browser-warning': 'true'
+      },
+    });
+    if (res.status === 200) {
+      toast.success(`Đã thiết kế thành công cửa hàng của bạn `);
+      navigate('/admin/design-store');
+      setForceRerender(!forceRerender);
+      setComponentDisabled(true)
     }
-};
-
+    return res.data;
+  }
 
   const [componentDisabled, setComponentDisabled] = useState(true);
 
   return (
     <Wrapper>
-       <div>
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-8">
             <div class="card mb-4">
               <div class="card-body">
-                <h2>{store?.id? " Cập nhật thông tin cửa hàng": "Đăng ký thông tin cửa hàng"}</h2>
+                <h2>{store?.id? "Update store information": "Register store information"}</h2>
                 <br></br>
                 <Checkbox
                   checked={componentDisabled}
                   onChange={(e) => setComponentDisabled(e.target.checked)}>
-                  Biểu mẫu bị vô hiệu hóa
+                  Form disabled
               
                 </Checkbox>
             
@@ -189,20 +173,20 @@ const CreateStore = (props) => {
                     
                   ]}>
                        <br></br> 
-                  <Form.Item label="Tên Cửa Hàng" name='name' rules={[{  required: true, message: `Vui lòng nhập tên cửa hàng !` }]}>
+                  <Form.Item label="Store name"  name='name' rules={[{  required: true, message: `Please enter store name!` }]}>
                     <Input  defaultValue={store?.name} ></Input>
                   </Form.Item>
-                  <Form.Item label="Địa Chỉ" name='address' rules={[{ required: true, message: `Vui lòng nhập địa chỉ !` }]}>
+                  <Form.Item label="Address" name='address' rules={[{ required: true, message: `Please enter store address!` }]}>
                     <Input  defaultValue={store?.address} ></Input>
                   </Form.Item>
-                  <Form.Item label="Quận Cửa Hàng" name="district" rules={[{ required: true, message: `Vui lòng chọn quận cửa hàng !` }]}>
+                  <Form.Item label="District" name="district" rules={[{ required: true, message: `Please select a store district!` }]}>
                     <Select
                       size='large'
-                      placeholder="Chọn Quận Cửa Hàng"
+                      placeholder="Select Store District"
                       defaultValue={store?.district}
                       options={districts}/>
                   </Form.Item>
-                  <Form.Item label="Số Điện Thoại" name="phone" rules={[{required: true,message: "Vui lòng nhập số điện thoại!"}]}>
+                  <Form.Item label="Phone number" name="phone" rules={[{required: true,message: "Please enter the phone number!"}]}>
                     <InputNumber
                       type="text"
                       defaultValue={store?.phone}
@@ -210,7 +194,7 @@ const CreateStore = (props) => {
                         width: "100%",}}/>
                   </Form.Item>
 
-                  <Form.Item label="Tải lên" valuePropName="fileList" getValueFromEvent={normFile}>
+                  <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
                     <Upload action="/upload.do" listType="picture-card">
                       <div>
                         <PlusOutlined />
@@ -222,7 +206,7 @@ const CreateStore = (props) => {
 
                   </Form.Item>
                   <Form.Item className="float-end">
-                    <button type='submit' className='form-button'>{store?.id ? "Cập Nhật" : "Đăng ký"}</button>
+                    <button type='submit' className='form-button'>{store?.id ? "Update" : "Register"}</button>
                   </Form.Item>
                 </Form>
               </div>
@@ -230,7 +214,6 @@ const CreateStore = (props) => {
 
           </div>
         </div>
-      </div>
       </div>
     </Wrapper>
 

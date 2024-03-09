@@ -26,7 +26,7 @@ export default function OrderDetails() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://magpie-aware-lark.ngrok-free.app/api/v1/user/order/${id}`,
+        `http://localhost:8001/api/v1/user/order/${id}`,
         {
           headers: {
             Authorization: `Bearer ${JSON.parse(
@@ -50,7 +50,7 @@ export default function OrderDetails() {
   const payment = async (param1, param2) => {
     try {
       const response = await axios.get(
-        `https://magpie-aware-lark.ngrok-free.app/api/v1/base/confirm?paymentId=${param1}&PayerID=${param2}`,
+        `http://localhost:8001/api/v1/base/confirm?paymentId=${param1}&PayerID=${param2}`,
         {
           headers: {
             Accept: "application/json",
@@ -91,7 +91,7 @@ export default function OrderDetails() {
   const handleButtonClick = async () => {
     try {
       const response = await axios.delete(
-        `https://magpie-aware-lark.ngrok-free.app/api/v1/user/order/cancel/${id}`,
+        `http://localhost:8001/api/v1/user/order/cancel/${id}`,
         {headers: {
           Authorization: `Bearer ${JSON.parse(
             localStorage.getItem("access_token")
@@ -138,7 +138,7 @@ let pendingStatus = statusMap[order.status];
 const handlepayment = async () => {
   try {
     const response = await axios.post(
-      `https://magpie-aware-lark.ngrok-free.app/api/v1/base/checkout/${id}`,
+      `http://localhost:8001/api/v1/base/checkout/${id}`,
       {
         headers: {
           Authorization: `Bearer ${JSON.parse(

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import { Tag } from "antd";
 
-const URL = "https://magpie-aware-lark.ngrok-free.app/api/v1/user/order/all";
+const URL = "http://localhost:8001/api/v1/user/order/all";
 
 const columns = [
   {

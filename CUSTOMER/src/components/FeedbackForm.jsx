@@ -71,7 +71,7 @@ function FeedbackForm() {
         addFeedback(newFeedbackState);
         axios
           .post(
-            "https://magpie-aware-lark.ngrok-free.app/api/v1/user/feedback/create",
+            "http://localhost:8001/api/v1/user/feedback/create",
             newFeedback,
             {
               headers: {

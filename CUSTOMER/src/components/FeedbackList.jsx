@@ -9,7 +9,7 @@ function FeedbackList() {
   const fetchFeedback = async () => {
     try {
       const response = await axios.get(
-        "https://magpie-aware-lark.ngrok-free.app/api/v1/user/feedback/all",
+        "http://localhost:8001/api/v1/user/feedback/all",
         {
           headers: {
             Authorization: `Bearer ${JSON.parse(

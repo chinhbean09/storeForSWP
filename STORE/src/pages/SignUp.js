@@ -11,9 +11,9 @@ let loginschema = yup.object().shape({
     .string()
     .email("Email is not valid")
     .required("Requires email entry"),
-  password: yup.string().required("Required to enter password"),
-  address: yup.string().required("Required to enter address"),
-  phone: yup.string().matches(/^[0-9]{10}$/g, 'Invalid phone number'),
+  password: yup.string().required("Requires password entry"),
+  address: yup.string().required("Requires address entry"),
+  phone: yup.string().matches(/^[0-9]{10}$/g, 'invalid phone number'),
   fullName: yup.string().matches(/^[\p{L}\s\-',.]+$/u, 'Full name is not valid')
 });
   
@@ -55,10 +55,10 @@ const SignUp = () => {
       <br />
       <br />
       <div className="my-5 w-25 bg-white rounded-3 mx-auto p-4">
-        <h3 className="text-center title">Sign Up</h3>
-        <p className="text-center">Sign up an account to continue.</p>
+        <h3 className="text-center title">Login</h3>
+        <p className="text-center">Login to your account to continue.</p>
         <div className="error text-center">
-          {message.message == "Rejected" ? "Email account already exists" : ""}
+          {message.message == "Rejected" ? "You are not an Admin" : ""}
         </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
@@ -100,7 +100,7 @@ const SignUp = () => {
                </div>
                 <CustomInput
                  type="text"
-                 label="Full Name"
+                 label="Full name"
                  id="fullName"
                  name="fullName"
                  onChng={formik.handleChange("fullName")}
@@ -112,7 +112,7 @@ const SignUp = () => {
                </div> 
                <CustomInput
                  type="text"
-                 label="Phone"
+                 label="Phone number"
                  id="phone"
                  name="phone"
                  onChng={formik.handleChange("phone")}
@@ -133,7 +133,7 @@ const SignUp = () => {
             style={{ background: "#ffd333" }}
             type="submit"
           >
-            Sign Up
+            Đăng Kí
           </button>
           {/* <div className="mb-2 text-first">
             Don't have any account?
